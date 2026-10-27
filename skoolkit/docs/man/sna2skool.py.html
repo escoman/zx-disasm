@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>sna2skool.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">sna2skool.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sna2skool-py">
+<h1>sna2skool.py<a class="headerlink" href="#sna2skool-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sna2skool.py</span></code> [options] FILE</p>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sna2skool.py</span></code> converts a binary (raw memory) file or a SNA, SZX or Z80
+snapshot into a skool file. The skool file is written to standard output. When
+FILE is ‘-’, <code class="docutils literal notranslate"><span class="pre">sna2skool.py</span></code> reads from standard input.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>-c, –ctl <cite>PATH</cite></dt><dd><p>Specify a control file to use, or a directory from which to read control
+files. By default, any files whose names start with the input snapshot name
+(minus the .bin, .sna, .szx or .z80 suffix, if any) and end with .ctl are
+used, if present. If <cite>PATH</cite> is ‘-’, standard input is used. If <cite>PATH</cite> is ‘0’,
+no control file is used. This option may be used multiple times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-C</span>, <span class="option">--comments</span></kbd></dt>
+<dd><p>Generate instruction comments.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-d, –defb <cite>SIZE</cite></dt><dd><p>Disassemble as DEFB statements of this size (instead of as code).</p>
+</dd>
+<dt>-e, –end <cite>ADDR</cite></dt><dd><p>Stop disassembling at this address; the default end address is 65536. <cite>ADDR</cite>
+must be a decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-H</span>, <span class="option">--hex</span></kbd></dt>
+<dd><p>Write hexadecimal addresses and operands in the disassembly.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-I, –ini <cite>param=value</cite></dt><dd><p>Set the value of a configuration parameter (see <code class="docutils literal notranslate"><span class="pre">CONFIGURATION</span></code>),
+overriding any value found in <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>. This option may be used
+multiple times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-l</span>, <span class="option">--lower</span></kbd></dt>
+<dd><p>Write the disassembly in lower case.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-o, –org <cite>ADDR</cite></dt><dd><p>Specify the origin address of a binary (.bin) file; the default origin
+address is 65536 minus the length of the file. <cite>ADDR</cite> must be a decimal
+number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-p, –page <cite>PAGE</cite></dt><dd><p>Specify the page (0-7) of a 128K snapshot to map to 49152-65535.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-r</span>, <span class="option">--handle-rst</span></kbd></dt>
+<dd><p>Handle RST instruction arguments.</p>
+</dd>
+<dt><kbd><span class="option">--show-config</span></kbd></dt>
+<dd><p>Show configuration parameter values.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-s, –start <cite>ADDR</cite></dt><dd><p>Start disassembling at this address; the default start address is 16384 for a
+snapshot, or the origin address for a raw memory file. <cite>ADDR</cite> must be a
+decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-w, –line-width <cite>WIDTH</cite></dt><dd><p>Set the maximum line width of the skool file (79 by default).</p>
+</dd>
+</dl>
+</section>
+<section id="configuration">
+<h2>CONFIGURATION<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sna2skool.py</span></code> will read configuration from a file named <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code> in
+the current working directory or in <code class="docutils literal notranslate"><span class="pre">~/.skoolkit</span></code>, if present. The recognised
+configuration parameters are:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Base<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Write addresses and instruction operands in hexadecimal (<code class="docutils literal notranslate"><span class="pre">16</span></code>) or
+decimal (<code class="docutils literal notranslate"><span class="pre">10</span></code>, the default).</p>
+</dd>
+<dt class="field-even">Case<span class="colon">:</span></dt>
+<dd class="field-even"><p>Write the disassembly in lower case (<code class="docutils literal notranslate"><span class="pre">1</span></code>) or upper case (<code class="docutils literal notranslate"><span class="pre">2</span></code>, the
+default).</p>
+</dd>
+<dt class="field-odd">Comments<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate instruction comments (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the
+default).</p>
+</dd>
+<dt class="field-even">CommentWidthMin<span class="colon">:</span></dt>
+<dd class="field-even"><p>Minimum width of the instruction comment field in the skool
+file (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>).</p>
+</dd>
+<dt class="field-odd">DefbSize<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Maximum number of bytes in a DEFB statement (default: <code class="docutils literal notranslate"><span class="pre">8</span></code>).</p>
+</dd>
+<dt class="field-even">DefmSize<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum number of characters in a DEFM statement (default:
+<code class="docutils literal notranslate"><span class="pre">65</span></code>).</p>
+</dd>
+<dt class="field-odd">DefwSize<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Maximum number of words in a DEFW statement (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>).</p>
+</dd>
+<dt class="field-even">EntryPointRef<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template used to format the comment for an entry point with
+exactly one referrer (default: <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">entry</span> <span class="pre">point</span> <span class="pre">is</span> <span class="pre">used</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">routine</span> <span class="pre">at</span>
+<span class="pre">{ref}.</span></code>).</p>
+</dd>
+<dt class="field-odd">EntryPointRefs<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the comment for an entry point with
+two or more referrers (default: <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">entry</span> <span class="pre">point</span> <span class="pre">is</span> <span class="pre">used</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">routines</span>
+<span class="pre">at</span> <span class="pre">{refs}</span> <span class="pre">and</span> <span class="pre">{ref}.</span></code>).</p>
+</dd>
+<dt class="field-even">HandleRST<span class="colon">:</span></dt>
+<dd class="field-even"><p>Handle RST instruction arguments (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the
+default).</p>
+</dd>
+<dt class="field-odd">InstructionWidth<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Minimum width of the instruction field in the skool file
+(default: <code class="docutils literal notranslate"><span class="pre">13</span></code>).</p>
+</dd>
+<dt class="field-even">LineWidth<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum line width of the skool file (default: <code class="docutils literal notranslate"><span class="pre">79</span></code>).</p>
+</dd>
+<dt class="field-odd">ListRefs<span class="colon">:</span></dt>
+<dd class="field-odd"><p>When to add a comment that lists routine or entry point referrers:
+never (<code class="docutils literal notranslate"><span class="pre">0</span></code>), if no other comment is defined at the entry point (<code class="docutils literal notranslate"><span class="pre">1</span></code>,
+the default), or always (<code class="docutils literal notranslate"><span class="pre">2</span></code>).</p>
+</dd>
+<dt class="field-even">Opcodes<span class="colon">:</span></dt>
+<dd class="field-even"><p>Comma-separated list of values specifying additional opcode
+sequences to disassemble (see below).</p>
+</dd>
+<dt class="field-odd">Ref<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the comment for a routine with exactly one
+referrer (default: <code class="docutils literal notranslate"><span class="pre">Used</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">routine</span> <span class="pre">at</span> <span class="pre">{ref}.</span></code>).</p>
+</dd>
+<dt class="field-even">RefFormat<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template used to format referrers in the <code class="docutils literal notranslate"><span class="pre">{ref}</span></code> and <code class="docutils literal notranslate"><span class="pre">{refs}</span></code>
+fields of the <code class="docutils literal notranslate"><span class="pre">Ref</span></code> and <code class="docutils literal notranslate"><span class="pre">Refs</span></code> templates (default: <code class="docutils literal notranslate"><span class="pre">#R{address}</span></code>).
+The replacement field <code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the referrer formatted
+as a decimal or hexadecimal number in accordance with the <code class="docutils literal notranslate"><span class="pre">Base</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Case</span></code> configuration parameters.</p>
+</dd>
+<dt class="field-odd">Refs<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the comment for a routine with two or more
+referrers (default: <code class="docutils literal notranslate"><span class="pre">Used</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">routines</span> <span class="pre">at</span> <span class="pre">{refs}</span> <span class="pre">and</span> <span class="pre">{ref}.</span></code>).</p>
+</dd>
+<dt class="field-even">Semicolons<span class="colon">:</span></dt>
+<dd class="field-even"><p>Block types (<code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">g</span></code>, <code class="docutils literal notranslate"><span class="pre">i</span></code>, <code class="docutils literal notranslate"><span class="pre">s</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code>, <code class="docutils literal notranslate"><span class="pre">u</span></code>,
+<code class="docutils literal notranslate"><span class="pre">w</span></code>) in which comment semicolons are written for instructions that have
+no comment (default: <code class="docutils literal notranslate"><span class="pre">c</span></code>).</p>
+</dd>
+<dt class="field-odd">Text<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Show ASCII text in the comment fields (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the
+default).</p>
+</dd>
+<dt class="field-even">Timings<span class="colon">:</span></dt>
+<dd class="field-even"><p>Show instruction timings in the comment fields (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or don’t
+(<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default).</p>
+</dd>
+<dt class="field-odd">Title-b<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the title for an untitled ‘b’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">block</span> <span class="pre">at</span> <span class="pre">{address}</span></code>).</p>
+</dd>
+<dt class="field-even">Title-c<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template used to format the title for an untitled ‘c’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Routine</span> <span class="pre">at</span> <span class="pre">{address}</span></code>).</p>
+</dd>
+<dt class="field-odd">Title-g<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the title for an untitled ‘g’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Game</span> <span class="pre">status</span> <span class="pre">buffer</span> <span class="pre">entry</span> <span class="pre">at</span> <span class="pre">{address}</span></code>).</p>
+</dd>
+<dt class="field-even">Title-i<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template used to format the title for an untitled ‘i’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Ignored</span></code>).</p>
+</dd>
+<dt class="field-odd">Title-s<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the title for an untitled ‘s’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Unused</span></code>).</p>
+</dd>
+<dt class="field-even">Title-t<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template used to format the title for an untitled ‘t’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Message</span> <span class="pre">at</span> <span class="pre">{address}</span></code>).</p>
+</dd>
+<dt class="field-odd">Title-u<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Template used to format the title for an untitled ‘u’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Unused</span></code>).</p>
+</dd>
+<dt class="field-even">Title-w<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template used to format the title for an untitled ‘w’ block
+(default: <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">block</span> <span class="pre">at</span> <span class="pre">{address}</span></code>).</p>
+</dd>
+<dt class="field-odd">Wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Disassemble an instruction that wraps around the 64K boundary (<code class="docutils literal notranslate"><span class="pre">1</span></code>),
+or don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default).</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">Opcodes</span></code> list is empty by default, but may contain any of the following
+values:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ED63</span></code> - LD (nn),HL (4-byte variant)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ED6B</span></code> - LD HL,(nn) (4-byte variant)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ED70</span></code> - IN F,(C)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ED71</span></code> - OUT (C),0</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">IM</span></code> - IM 0/1/2 variants (ED followed by 4E/66/6E/76/7E)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">NEG</span></code> - NEG variants (ED followed by 4C/54/5C/64/6C/74/7C)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RETN</span></code> - RETN variants (ED followed by 55/5D/65/6D/75/7D)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">XYCB</span></code> - undocumented instructions with DDCB or FDCB opcode prefixes</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ALL</span></code> - all of the above</div>
+</div>
+</div></blockquote>
+<p>Configuration parameters must appear in a <code class="docutils literal notranslate"><span class="pre">[sna2skool]</span></code> section. For example,
+to make <code class="docutils literal notranslate"><span class="pre">sna2skool.py</span></code> generate hexadecimal skool files with a line width of
+120 characters by default (without having to use the <code class="docutils literal notranslate"><span class="pre">-H</span></code> and <code class="docutils literal notranslate"><span class="pre">-w</span></code> options
+on the command line), add the following section to <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[sna2skool]
+Base=16
+LineWidth=120
+</pre></div>
+</div>
+<p>Configuration parameters may also be set on the command line by using the
+<code class="docutils literal notranslate"><span class="pre">--ini</span></code> option. Parameter values set this way will override any found in
+<code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>.</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.z80</span></code> into a skool file named <code class="docutils literal notranslate"><span class="pre">game.skool</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sna2skool.py</span> <span class="pre">game.z80</span> <span class="pre">&gt;</span> <span class="pre">game.skool</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.sna</span></code> into a skool file, beginning the disassembly at 24576:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sna2skool.py</span> <span class="pre">-s</span> <span class="pre">24576</span> <span class="pre">game.sna</span> <span class="pre">&gt;</span> <span class="pre">game.skool</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.z80</span></code> into a skool file, using the control file
+<code class="docutils literal notranslate"><span class="pre">blocks.ctl</span></code> to identify code and data blocks:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sna2skool.py</span> <span class="pre">-c</span> <span class="pre">blocks.ctl</span> <span class="pre">game.z80</span> <span class="pre">&gt;</span> <span class="pre">game.skool</span></code></div>
+</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">sna2skool.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#configuration">CONFIGURATION</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/sna2skool.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">sna2skool.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+# br4_pause — p = PAUSE (ветка $D0BA), ENTER = снятие ($D0D8); u+g = debug-эффект ($D0A5)
+CHECKPOINT 1200
+CHECKPOINT 2400
+CHECKPOINT 3000
+CHECKPOINT 3600
+CHECKPOINT 4200
+CHECKPOINT 5000
+CHECKPOINT 6000
+CHECKPOINT 8000
+30 NONE
+3 SPACE
+150 NONE
+3 SPACE
+60 NONE
+3 1
+60 NONE
+3 6
+3 SPACE
+# --- разгон ---
+400 q 5
+400 k 5
+# --- PAUSE: p, висит 200 кадров ---
+10 p
+200 NONE
+# --- снятие ENTER, экшен ---
+10 ENTER
+400 j 5
+# --- PAUSE снова, долго висит, снятие ---
+10 p
+300 NONE
+10 ENTER
+300 a 5
+# --- debug-эффект u+g ---
+20 u+g
+60 NONE
+20 u+g
+600 NONE
+# --- длинный экшен после ---
+1200 q k 5
+1200 a j 5
+- NONE

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>skool2asm.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">skool2asm.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="skool2asm-py">
+<h1>skool2asm.py<a class="headerlink" href="#skool2asm-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">skool2asm.py</span></code> [options] FILE</p>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">skool2asm.py</span></code> converts a skool file into an ASM file that can be used by a
+Z80 assembler. The ASM file is written to standard output. When FILE is ‘-‘,
+<code class="docutils literal notranslate"><span class="pre">skool2asm.py</span></code> reads from standard input.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="option-list">
+<dt><kbd><span class="option">-c</span>, <span class="option">--create-labels</span></kbd></dt>
+<dd><p>Create default labels for unlabelled instructions.</p>
+</dd>
+<dt><kbd><span class="option">-D</span>, <span class="option">--decimal</span></kbd></dt>
+<dd><p>Write the disassembly in decimal.</p>
+</dd>
+</dl>
+<dl>
+<dt>-E, –end <cite>ADDR</cite></dt><dd><p>Stop converting at this address. <cite>ADDR</cite> must be a decimal number, or a
+hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-f, –fixes <cite>N</cite></dt><dd><p>Apply fixes; <cite>N</cite> may be one of:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line">0: None (default)</div>
+<div class="line">1: &#64;ofix only</div>
+<div class="line">2: &#64;ofix and &#64;bfix</div>
+<div class="line">3: &#64;ofix, &#64;bfix and &#64;rfix (implies <code class="docutils literal notranslate"><span class="pre">-r</span></code>)</div>
+</div>
+</div>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-F</span>, <span class="option">--force</span></kbd></dt>
+<dd><p>Force conversion of the entire skool file, ignoring any <code class="docutils literal notranslate"><span class="pre">&#64;start</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&#64;end</span></code> directives.</p>
+</dd>
+<dt><kbd><span class="option">-H</span>, <span class="option">--hex</span></kbd></dt>
+<dd><p>Write the disassembly in hexadecimal.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-I, –ini <cite>param=value</cite></dt><dd><p>Set the value of a configuration parameter (see <code class="docutils literal notranslate"><span class="pre">CONFIGURATION</span></code>),
+overriding any value found in <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>. This option may be used
+multiple times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-l</span>, <span class="option">--lower</span></kbd></dt>
+<dd><p>Write the disassembly in lower case.</p>
+</dd>
+<dt><kbd><span class="option">-p</span>, <span class="option">--package-dir</span></kbd></dt>
+<dd><p>Show the path to the skoolkit package directory and exit.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-P, –set <cite>property=value</cite></dt><dd><p>Set the value of an ASM writer property (see <code class="docutils literal notranslate"><span class="pre">ASM</span> <span class="pre">WRITER</span> <span class="pre">PROPERTIES</span></code>). This
+option may be used multiple times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-q</span>, <span class="option">--quiet</span></kbd></dt>
+<dd><p>Be quiet. This option suppresses both the timing information, and the message
+about the AsmWriter class being used, but does not suppress warnings.</p>
+</dd>
+<dt><kbd><span class="option">-r</span>, <span class="option">--rsub</span></kbd></dt>
+<dd><p>Apply safe substitutions (&#64;ssub) and relocatability substitutions (&#64;rsub)
+(implies <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">1</span></code>).</p>
+</dd>
+<dt><kbd><span class="option">--show-config</span></kbd></dt>
+<dd><p>Show configuration parameter values.</p>
+</dd>
+<dt><kbd><span class="option">-s</span>, <span class="option">--ssub</span></kbd></dt>
+<dd><p>Apply safe substitutions (&#64;ssub).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-S, –start <cite>ADDR</cite></dt><dd><p>Start converting at this address. <cite>ADDR</cite> must be a decimal number, or a
+hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-u</span>, <span class="option">--upper</span></kbd></dt>
+<dd><p>Write the disassembly in upper case.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–var <cite>name=value</cite></dt><dd><p>Define a variable that can be used by the <code class="docutils literal notranslate"><span class="pre">&#64;if</span></code> directive and the
+<code class="docutils literal notranslate"><span class="pre">#EVAL</span></code>, <code class="docutils literal notranslate"><span class="pre">#IF</span></code> and <code class="docutils literal notranslate"><span class="pre">#MAP</span></code> macros. This option may be used multiple
+times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+<dt><kbd><span class="option">-w</span>, <span class="option">--no-warnings</span></kbd></dt>
+<dd><p>Suppress warnings.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-W, –writer <cite>CLASS</cite></dt><dd><p>Specify the ASM writer class to use; this will override any &#64;writer directive
+in the skool file.</p>
+</dd>
+</dl>
+</section>
+<section id="configuration">
+<h2>CONFIGURATION<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">skool2asm.py</span></code> will read configuration from a file named <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code> in
+the current working directory or in <code class="docutils literal notranslate"><span class="pre">~/.skoolkit</span></code>, if present. The recognised
+configuration parameters are:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The format of the default link text for the <code class="docutils literal notranslate"><span class="pre">#R</span></code> macro when the
+target address has no label (default: ‘’). This format string recognises
+the replacement field <code class="docutils literal notranslate"><span class="pre">address</span></code>. If the format string is blank, the
+address is formatted exactly as it appears in the skool file (without any
+<code class="docutils literal notranslate"><span class="pre">$</span></code> prefix).</p>
+</dd>
+<dt class="field-even">Base<span class="colon">:</span></dt>
+<dd class="field-even"><p>Convert addresses and instruction operands to hexadecimal (<code class="docutils literal notranslate"><span class="pre">16</span></code>) or
+decimal (<code class="docutils literal notranslate"><span class="pre">10</span></code>), or leave them as they are (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default).</p>
+</dd>
+<dt class="field-odd">Case<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Write the disassembly in lower case (<code class="docutils literal notranslate"><span class="pre">1</span></code>) or upper case (<code class="docutils literal notranslate"><span class="pre">2</span></code>), or
+leave it as it is (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default).</p>
+</dd>
+<dt class="field-even">CreateLabels<span class="colon">:</span></dt>
+<dd class="field-even"><p>Create default labels for unlabelled instructions (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or
+don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default).</p>
+</dd>
+<dt class="field-odd">EntryLabel<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The format of the default label for the first instruction in a
+routine or data block (default: <code class="docutils literal notranslate"><span class="pre">L{address}</span></code>).</p>
+</dd>
+<dt class="field-even">EntryPointLabel<span class="colon">:</span></dt>
+<dd class="field-even"><p>The format of the default label for an instruction other
+than the first in a routine or data block (default: <code class="docutils literal notranslate"><span class="pre">{main}_{index}</span></code>).</p>
+</dd>
+<dt class="field-odd">Quiet<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Be quiet (<code class="docutils literal notranslate"><span class="pre">1</span></code>) or verbose (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default).</p>
+</dd>
+<dt class="field-even">Set-property<span class="colon">:</span></dt>
+<dd class="field-even"><p>Set an ASM writer property value (see <code class="docutils literal notranslate"><span class="pre">ASM</span> <span class="pre">WRITER</span>
+<span class="pre">PROPERTIES</span></code>), e.g. <code class="docutils literal notranslate"><span class="pre">Set-bullet=+</span></code>.</p>
+</dd>
+<dt class="field-odd">Templates<span class="colon">:</span></dt>
+<dd class="field-odd"><p>File from which to read custom ASM templates.</p>
+</dd>
+<dt class="field-even">Warnings<span class="colon">:</span></dt>
+<dd class="field-even"><p>Show warnings (<code class="docutils literal notranslate"><span class="pre">1</span></code>, the default), or suppress them (<code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">EntryLabel</span></code> and <code class="docutils literal notranslate"><span class="pre">EntryPointLabel</span></code> are standard Python format strings.
+<code class="docutils literal notranslate"><span class="pre">EntryLabel</span></code> recognises the following replacement fields:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The address of the routine or data block as it appears in the skool
+file.</p>
+</dd>
+<dt class="field-even">location<span class="colon">:</span></dt>
+<dd class="field-even"><p>The address of the routine or data block as an integer.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">EntryPointLabel</span></code> recognises the following replacement fields:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The address of the instruction as it appears in the skool file.</p>
+</dd>
+<dt class="field-even">index<span class="colon">:</span></dt>
+<dd class="field-even"><p>0 for the first unlabelled instruction in the routine or data block,
+1 for the second, etc.</p>
+</dd>
+<dt class="field-odd">location<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The address of the instruction as an integer.</p>
+</dd>
+<dt class="field-even">main<span class="colon">:</span></dt>
+<dd class="field-even"><p>The label of the first instruction in the routine or data block.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Configuration parameters must appear in a <code class="docutils literal notranslate"><span class="pre">[skool2asm]</span></code> section. For example,
+to make <code class="docutils literal notranslate"><span class="pre">skool2asm.py</span></code> write the disassembly in hexadecimal with a line width
+of 120 characters by default (without having to use the <code class="docutils literal notranslate"><span class="pre">-H</span></code> and <code class="docutils literal notranslate"><span class="pre">-P</span></code>
+options on the command line), add the following section to <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[skool2asm]
+Base=16
+Set-line-width=120
+</pre></div>
+</div>
+<p>Configuration parameters may also be set on the command line by using the
+<code class="docutils literal notranslate"><span class="pre">--ini</span></code> option. Parameter values set this way will override any found in
+<code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>.</p>
+</section>
+<section id="asm-writer-properties">
+<h2>ASM WRITER PROPERTIES<a class="headerlink" href="#asm-writer-properties" title="Link to this heading">¶</a></h2>
+<p>Recognised ASM writer property names and their default values are:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">bullet<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bullet character(s) to use for list items specified in a
+<code class="docutils literal notranslate"><span class="pre">#LIST</span></code> macro (default: <code class="docutils literal notranslate"><span class="pre">*</span></code>).</p>
+</dd>
+<dt class="field-even">comment-width-min<span class="colon">:</span></dt>
+<dd class="field-even"><p>The minimum width of the instruction comment field
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>).</p>
+</dd>
+<dt class="field-odd">crlf<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> to use CR+LF to terminate lines, or <code class="docutils literal notranslate"><span class="pre">0</span></code> to use the system
+default (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+</dd>
+<dt class="field-even">handle-unsupported-macros<span class="colon">:</span></dt>
+<dd class="field-even"><p>How to handle an unsupported macro: <code class="docutils literal notranslate"><span class="pre">1</span></code> to
+expand it to an empty string, or <code class="docutils literal notranslate"><span class="pre">0</span></code> to exit with an error (default:
+<code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+</dd>
+<dt class="field-odd">indent<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of spaces by which to indent instructions (default:
+<code class="docutils literal notranslate"><span class="pre">2</span></code>).</p>
+</dd>
+<dt class="field-even">instruction-width<span class="colon">:</span></dt>
+<dd class="field-even"><p>The width of the instruction field (default: <code class="docutils literal notranslate"><span class="pre">23</span></code>).</p>
+</dd>
+<dt class="field-odd">label-colons<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> to append a colon to labels, or <code class="docutils literal notranslate"><span class="pre">0</span></code> to leave labels
+unadorned (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>).</p>
+</dd>
+<dt class="field-even">line-width<span class="colon">:</span></dt>
+<dd class="field-even"><p>The maximum width of each line (default: <code class="docutils literal notranslate"><span class="pre">79</span></code>).</p>
+</dd>
+<dt class="field-odd">tab<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> to use a tab character to indent instructions, or <code class="docutils literal notranslate"><span class="pre">0</span></code> to use
+spaces (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+</dd>
+<dt class="field-even">table-border-horizontal<span class="colon">:</span></dt>
+<dd class="field-even"><p>The character to use for the horizontal borders of
+a table defined by a <code class="docutils literal notranslate"><span class="pre">#TABLE</span></code> macro (default: <code class="docutils literal notranslate"><span class="pre">-</span></code>). If two characters
+are specified, the first is used for the external borders and the second is
+used for the internal borders.</p>
+</dd>
+<dt class="field-odd">table-border-join<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The character to use for the horizontal and vertical
+border joins of a table defined by a <code class="docutils literal notranslate"><span class="pre">#TABLE</span></code> macro (default: <code class="docutils literal notranslate"><span class="pre">+</span></code>).</p>
+</dd>
+<dt class="field-even">table-border-vertical<span class="colon">:</span></dt>
+<dd class="field-even"><p>The character to use for the vertical borders of a
+table defined by a <code class="docutils literal notranslate"><span class="pre">#TABLE</span></code> macro (default: <code class="docutils literal notranslate"><span class="pre">|</span></code>).</p>
+</dd>
+<dt class="field-odd">table-row-separator<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The character used to separate non-header cells in
+adjacent rows of a table defined by a <code class="docutils literal notranslate"><span class="pre">#TABLE</span></code> macro. By default, such
+cells are not separated.</p>
+</dd>
+<dt class="field-even">warnings<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> to print any warnings that are produced while writing ASM
+output (after parsing the skool file), or <code class="docutils literal notranslate"><span class="pre">0</span></code> to suppress them (default:
+<code class="docutils literal notranslate"><span class="pre">1</span></code>).</p>
+</dd>
+<dt class="field-odd">wrap-column-width-min<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum width of a wrappable table column
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>).</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Property values may be set in <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code> by using the <code class="docutils literal notranslate"><span class="pre">Set-property</span></code>
+configuration parameter (see <code class="docutils literal notranslate"><span class="pre">CONFIGURATION</span></code>), or on the command line by
+using the <code class="docutils literal notranslate"><span class="pre">--set</span></code> option, or in the skool file by using the <code class="docutils literal notranslate"><span class="pre">&#64;set</span></code>
+directive.</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.skool</span></code> into an ASM file named <code class="docutils literal notranslate"><span class="pre">game.asm</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">skool2asm.py</span> <span class="pre">game.skool</span> <span class="pre">&gt;</span> <span class="pre">game.asm</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.skool</span></code> into an ASM file, applying &#64;ssub substitutions and
+creating default labels for unlabelled instructions in the process:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">skool2asm.py</span> <span class="pre">-s</span> <span class="pre">-c</span> <span class="pre">game.skool</span> <span class="pre">&gt;</span> <span class="pre">game.asm</span></code></div>
+</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">skool2asm.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#configuration">CONFIGURATION</a></li>
+<li><a class="reference internal" href="#asm-writer-properties">ASM WRITER PROPERTIES</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/skool2asm.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">skool2asm.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>bin2tap.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">bin2tap.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="bin2tap-py">
+<h1>bin2tap.py<a class="headerlink" href="#bin2tap-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">bin2tap.py</span></code> [options] FILE [OUTFILE]</p>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">bin2tap.py</span></code> converts a binary (raw memory) file or a SNA, SZX or Z80
+snapshot into a PZX or TAP file. FILE may be a regular file, or ‘-’ to read a
+binary file from standard input. If OUTFILE is not given, a TAP file is
+created.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>–7ffd <cite>N</cite></dt><dd><p>Add 128K RAM banks to the tape file and write <cite>N</cite> to port 0x7ffd after
+they’ve loaded.</p>
+</dd>
+<dt>–banks <cite>N[,N…]</cite></dt><dd><p>Add only these 128K RAM banks to the tape file (default: 0,1,3,4,6,7).</p>
+</dd>
+<dt>-b, –begin <cite>BEGIN</cite></dt><dd><p>Begin conversion at this address. The default begin address is the origin
+address (<cite>ORG</cite>) for a binary file, or 16384 for a snapshot. <cite>BEGIN</cite> must be a
+decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-c, –clear <cite>N</cite></dt><dd><p>Use a <code class="docutils literal notranslate"><span class="pre">CLEAR</span> <span class="pre">N</span></code> command in the BASIC loader, and leave the stack pointer
+alone. This option overrides the <code class="docutils literal notranslate"><span class="pre">--stack</span></code> option. <cite>N</cite> must be a decimal
+number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-e, –end <cite>END</cite></dt><dd><p>End conversion at this address. <cite>END</cite> must be a decimal number, or a
+hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>–loader <cite>ADDR</cite></dt><dd><p>Place the 128K RAM bank loader at this address (default: CLEAR address + 1).
+<cite>ADDR</cite> must be a decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-o, –org <cite>ORG</cite></dt><dd><p>Set the origin address for a binary file. The default origin address is 65536
+minus the length of FILE. <cite>ORG</cite> must be a decimal number, or a hexadecimal
+number prefixed by ‘0x’.</p>
+</dd>
+<dt>-p, –stack <cite>STACK</cite></dt><dd><p>Set the stack pointer. The default value is <cite>BEGIN</cite>. <cite>STACK</cite> must be a
+decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-s, –start <cite>START</cite></dt><dd><p>Set the start address to JP to. The default start address is <cite>BEGIN</cite>. <cite>START</cite>
+must be a decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-S, –screen <cite>FILE</cite></dt><dd><p>Add a loading screen to the tape file. <cite>FILE</cite> may be a snapshot or a
+6912-byte SCR file.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+</dl>
+</section>
+<section id="stack-pointer">
+<h2>STACK POINTER<a class="headerlink" href="#stack-pointer" title="Link to this heading">¶</a></h2>
+<p>The ROM tape loading routine at 1366 (0x0556) and the load routine used by
+<code class="docutils literal notranslate"><span class="pre">bin2tap.py</span></code> together require 14 bytes for stack operations, and so <cite>STACK</cite>
+must be at least 16384+14=16398 (0x400E). This means that if <cite>ORG</cite> is less than
+16398, you should use the <code class="docutils literal notranslate"><span class="pre">--stack</span></code> option to set the stack pointer to
+something appropriate. If the data block overlaps any of the last four bytes of
+the stack, <code class="docutils literal notranslate"><span class="pre">bin2tap.py</span></code> will replace those bytes with the values required by
+the tape loading routine for correct operation upon returning. Stack operations
+will overwrite the bytes in the address range <cite>STACK</cite>-14 to <cite>STACK</cite>-1
+inclusive, so those addresses should not be used to store essential code or
+data.</p>
+<p>If the input file contains a program that returns to BASIC, you should use the
+<code class="docutils literal notranslate"><span class="pre">--clear</span></code> option to add a CLEAR command to the BASIC loader. This option
+leaves the stack pointer alone, enabling the program to return to BASIC without
+crashing. The lowest usable address with the <code class="docutils literal notranslate"><span class="pre">--clear</span></code> option on a bare 48K
+Spectrum is 23952 (0x5D90).</p>
+</section>
+<section id="k-tapes">
+<h2>128K TAPES<a class="headerlink" href="#k-tapes" title="Link to this heading">¶</a></h2>
+<p>To create a tape file that loads a 128K game, use the <code class="docutils literal notranslate"><span class="pre">--7ffd</span></code>, <code class="docutils literal notranslate"><span class="pre">--begin</span></code>
+and <code class="docutils literal notranslate"><span class="pre">--clear</span></code> options along with a 128K snapshot or a 128K binary file as
+input, where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--7ffd</span></code> specifies the value to write to port 0x7FFD after all the RAM
+banks have loaded and before starting the game</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--begin</span></code> specifies the start address of the code/data below 49152 (0xC000)
+to include on the tape</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--clear</span></code> specifies the address of the CLEAR command in the BASIC loader</p></li>
+</ul>
+<p>By default, the 128K RAM bank loader (which is 39-45 bytes long, depending on
+the number of RAM banks to load) is placed one above the CLEAR address. Use the
+<code class="docutils literal notranslate"><span class="pre">--loader</span></code> option to place it at an alternative address. The lowest usable
+address with the <code class="docutils literal notranslate"><span class="pre">--clear</span></code> option on a bare 128K Spectrum is 23977 (0x5DA9)
+if a loading screen is used, or 23957 (0x5D95) otherwise.</p>
+<p>By default, 128K RAM banks 0, 1, 3, 4, 6 and 7 are added to the tape file. If
+one or more of these RAM banks are not required, use the <code class="docutils literal notranslate"><span class="pre">--banks</span></code> option to
+specify a smaller set of RAM banks to add. If none of these RAM banks are
+required, use <code class="docutils literal notranslate"><span class="pre">,</span></code> (a single comma) as the argument to the <code class="docutils literal notranslate"><span class="pre">--banks</span></code> option.
+The contents of RAM banks 5 and 2 - from the <code class="docutils literal notranslate"><span class="pre">--begin</span></code> address and up to but
+not including the <code class="docutils literal notranslate"><span class="pre">--end</span></code> address (if given) - are included in the main code
+block on the tape.</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.bin</span></code> into a TAP file named <code class="docutils literal notranslate"><span class="pre">game.tap</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">bin2tap.py</span> <span class="pre">game.bin</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">game.bin</span></code> into a PZX file that starts execution at 32768 when
+loaded:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">bin2tap.py</span> <span class="pre">-s</span> <span class="pre">32768</span> <span class="pre">game.bin</span> <span class="pre">game.pzx</span></code></div>
+</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">bin2tap.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#stack-pointer">STACK POINTER</a></li>
+<li><a class="reference internal" href="#k-tapes">128K TAPES</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/bin2tap.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">bin2tap.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

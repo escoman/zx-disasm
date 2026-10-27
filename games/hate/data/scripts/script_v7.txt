@@ -1,0 +1,32 @@
+# script_v7 — SELECT: '1'=KEYBOARD, затем '5' (ставит $F0DB=$FF -> игровой цикл)
+CHECKPOINT 250
+CHECKPOINT 400
+CHECKPOINT 550
+CHECKPOINT 700
+CHECKPOINT 900
+CHECKPOINT 1100
+CHECKPOINT 1400
+30 NONE
+3 SPACE              # титул -> attract
+150 NONE
+3 SPACE              # -> SELECT
+60 NONE
+3 1                  # KEYBOARD
+60 NONE
+3 5                  # старт ($F0DB=$FF)
+250 NONE             # кадровый цикл игры; C290 должен оживать
+120 q
+60 NONE
+120 a
+60 NONE
+120 j
+60 NONE
+120 k
+60 NONE
+120 5
+120 5 q
+120 5 j
+200 NONE
+300 q
+300 k
+- NONE

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HATE_engine_web: Routine at E94F</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="../skoolkit.css" />
+</head>
+<body class="Asm-c">
+<table class="header">
+<tr>
+<td class="logo"><a href="../index.html">HATE_engine_web</a></td>
+<td class="page-header">Routines</td>
+</tr>
+</table>
+<table class="asm-navigation">
+<tr>
+<td class="prev">
+Prev: <a href="59651.html">E903</a>
+</td>
+<td class="up">Up: <a href="../maps/all.html#59727">Map</a></td>
+<td class="next">
+Next: <a href="59762.html">E972</a>
+</td>
+</tr>
+</table>
+<div class="description">E94F: code</div>
+<table class="disassembly">
+<tr>
+<td class="routine-comment" colspan="5">
+<div class="details">
+<div class="paragraph">
+Used by the routine at <a href="59529.html">E889</a>.
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="address-2"><span id="59727"></span>E94F</td>
+<td class="instruction">LD DE,$5FF7</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59730"></span>E952</td>
+<td class="instruction">LD HL,($C001)</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59733"></span>E955</td>
+<td class="instruction">SRL H</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59735"></span>E957</td>
+<td class="instruction">RR L</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59737"></span>E959</td>
+<td class="instruction">ADD HL,DE</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59738"></span>E95A</td>
+<td class="instruction">LD B,$05</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59740"></span>E95C</td>
+<td class="instruction">LD C,$00</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59742"></span>E95E</td>
+<td class="instruction">LD A,(HL)</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59743"></span>E95F</td>
+<td class="instruction">BIT 7,A</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59745"></span>E961</td>
+<td class="instruction">JR NZ,$E969</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59747"></span>E963</td>
+<td class="instruction">INC C</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59748"></span>E964</td>
+<td class="instruction">BIT 6,A</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59750"></span>E966</td>
+<td class="instruction">JR NZ,$E969</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59752"></span>E968</td>
+<td class="instruction">INC C</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-2"><span id="59753"></span>E969</td>
+<td class="instruction">LD A,(HL)</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-2"><span id="59754"></span>E96A</td>
+<td class="instruction">INC HL</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59755"></span>E96B</td>
+<td class="instruction">OR (HL)</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59756"></span>E96C</td>
+<td class="instruction">DJNZ $E96A</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59758"></span>E96E</td>
+<td class="instruction">LD E,$47</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59760"></span>E970</td>
+<td class="instruction">RLA</td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+<tr>
+<td class="address-1"><span id="59761"></span>E971</td>
+<td class="instruction">JR NC,<a href="59844.html">$E9C4</a></td>
+<td class="comment-0" rowspan="1"></td>
+</tr>
+</table>
+<table class="asm-navigation">
+<tr>
+<td class="prev">
+Prev: <a href="59651.html">E903</a>
+</td>
+<td class="up">Up: <a href="../maps/all.html#59727">Map</a></td>
+<td class="next">
+Next: <a href="59762.html">E972</a>
+</td>
+</tr>
+</table>
+<footer>
+<div class="release"></div>
+<div class="copyright"></div>
+<div class="created">Created using <a href="https://skoolkit.ca">SkoolKit</a> 10.1.</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tap2sna.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tap2sna.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="tap2sna-py">
+<h1>tap2sna.py<a class="headerlink" href="#tap2sna-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> [options] INPUT [INPUT] [OUTFILE]</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> &#64;FILE [args]</div>
+</div>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> converts one or two PZX, TAP or TZX files (which may be inside a
+zip archive) into an SZX or Z80 snapshot. INPUT may be the full URL to a remote
+zip archive or tape file, or the path to a local file. If two INPUTs are given,
+they must both be (local or remote) tape files. Arguments may be read from
+FILE instead of (or as well as) being given on the command line.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>-c, –sim-load-config <cite>name=value</cite></dt><dd><p>Set the value of a simulated LOAD configuration parameter. Do <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">help</span></code> for
+more information, or <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">help-name</span></code> for help on a specific parameter. Also
+see the section on <code class="docutils literal notranslate"><span class="pre">SIMULATED</span> <span class="pre">LOAD</span></code> below. This option may be used multiple
+times.</p>
+</dd>
+<dt>-d, –output-dir <cite>DIR</cite></dt><dd><p>Write the snapshot file in this directory.</p>
+</dd>
+<dt>-I, –ini <cite>param=value</cite></dt><dd><p>Set the value of a configuration parameter (see <code class="docutils literal notranslate"><span class="pre">CONFIGURATION</span></code>),
+overriding any value found in <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>. This option may be used
+multiple times.</p>
+</dd>
+<dt>–press <cite>N:KEYS</cite></dt><dd><p>Pause the tape at block number N and press KEYS before resuming. KEYS must be
+a space-separated list of key identifiers (see <code class="docutils literal notranslate"><span class="pre">USER</span> <span class="pre">INPUT</span></code>). This option
+may be used multiple times.</p>
+</dd>
+<dt>-p, –stack <cite>STACK</cite></dt><dd><p>Set the stack pointer. This option is equivalent to <code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">sp=STACK</span></code>.
+<cite>STACK</cite> must be a decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--ram <var>OPERATION</var></span></kbd></dt>
+<dd><p>Perform a load operation or otherwise modify the memory snapshot being built.
+Do <code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">help</span></code> for more information, or see the sections on the <code class="docutils literal notranslate"><span class="pre">CALL</span></code>,
+<code class="docutils literal notranslate"><span class="pre">LOAD</span></code>, <code class="docutils literal notranslate"><span class="pre">MOVE</span></code>, <code class="docutils literal notranslate"><span class="pre">PATCH</span></code>, <code class="docutils literal notranslate"><span class="pre">POKE</span></code> and <code class="docutils literal notranslate"><span class="pre">SYSVARS</span></code> operations below.
+This option may be used multiple times.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–reg <cite>name=value</cite></dt><dd><p>Set the value of a register. Do <code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">help</span></code> for more information, or see
+the section on <code class="docutils literal notranslate"><span class="pre">REGISTERS</span></code> below. This option may be used multiple times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--screen</span></kbd></dt>
+<dd><p>Display screen contents while running (requires pygame).</p>
+</dd>
+<dt><kbd><span class="option">--show-config</span></kbd></dt>
+<dd><p>Show configuration parameter values.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-s, –start <cite>START</cite></dt><dd><p>Set the start address to JP to. This option is equivalent to
+<code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">pc=START</span></code>. <cite>START</cite> must be a decimal number, or a hexadecimal number
+prefixed by ‘0x’.</p>
+</dd>
+<dt>–state <cite>name=value</cite></dt><dd><p>Set a hardware state attribute. Do <code class="docutils literal notranslate"><span class="pre">--state</span> <span class="pre">help</span></code> for more information, or
+see the section on <code class="docutils literal notranslate"><span class="pre">HARDWARE</span> <span class="pre">STATE</span></code> below. This option may be used multiple
+times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--tape-analysis</span></kbd></dt>
+<dd><p>Show an analysis of the tape’s tones, pulse sequences and data blocks.</p>
+</dd>
+<dt><kbd><span class="option">--tape-name <var>NAME</var></span></kbd></dt>
+<dd><p>Specify the name of a tape file in a zip archive. By default, the first tape
+file found in the zip archive is selected. Use this option twice when loading
+two tape files.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>–tape-skip <cite>A[-B]</cite></dt><dd><p>Skip block numbers A-B on the tape.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--tape-start <var>BLOCK</var></span></kbd></dt>
+<dd><p>Start the tape at this block number. In a tape file, the first block is
+number 1, the second is 2, etc.</p>
+</dd>
+<dt><kbd><span class="option">--tape-stop <var>BLOCK</var></span></kbd></dt>
+<dd><p>Stop the tape at this block number. In a tape file, the first block is number
+1, the second is 2, etc.</p>
+</dd>
+<dt><kbd><span class="option">--tape-sum <var>MD5SUM</var></span></kbd></dt>
+<dd><p>Specify the MD5 checksum of the tape file. <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> will abort if there
+is a checksum mismatch. This option may be used twice if loading two tape
+files.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-u, –user-agent <cite>AGENT</cite></dt><dd><p>Set the User-Agent header used in an HTTP(S) request.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+</dl>
+</section>
+<section id="tzx-support">
+<h2>TZX SUPPORT<a class="headerlink" href="#tzx-support" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> cannot read data from TZX block types 0x18 (CSW recording) or
+0x19 (generalized data block).</p>
+</section>
+<section id="simulated-load">
+<h2>SIMULATED LOAD<a class="headerlink" href="#simulated-load" title="Link to this heading">¶</a></h2>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> simulates a freshly booted 48K ZX Spectrum running
+LOAD “” (or LOAD “”CODE, if the first block on the tape is a ‘Bytes’ header).
+Whenever the Spectrum ROM’s load routine at $0556 is called, a shortcut is
+taken by “fast loading” the next block on the tape. All other code (including
+any custom loader) is fully simulated. Simulation continues until the program
+counter hits the start address given by the <code class="docutils literal notranslate"><span class="pre">--start</span></code> option, or 15 minutes
+of simulated Z80 CPU time has elapsed, or the end of the tape is reached and
+one of the following conditions is satisfied:</p>
+<ul class="simple">
+<li><p>a custom loader was detected</p></li>
+<li><p>the program counter hits an address outside the ROM</p></li>
+<li><p>more than one second of simulated Z80 CPU time has elapsed since the end of
+the tape was reached</p></li>
+</ul>
+<p>A simulated LOAD can also be aborted by pressing Ctrl-C. When a simulated LOAD
+has completed or been aborted, the values of the registers (including the
+program counter) in the simulator are used to populate the snapshot.</p>
+<p>A simulated LOAD can be configured via parameters that are set by the
+<code class="docutils literal notranslate"><span class="pre">--sim-load-config</span></code> (or <code class="docutils literal notranslate"><span class="pre">-c</span></code>) option. The recognised configuration
+parameters are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">accelerate-dec-a</span></code> - enable acceleration of ‘DEC A: JR NZ,$-1’ delay loops
+only (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or ‘DEC A: JP NZ,$-1’ delay loops only (<code class="docutils literal notranslate"><span class="pre">2</span></code>), or both (<code class="docutils literal notranslate"><span class="pre">3</span></code>,
+the default) or neither (<code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">accelerator</span></code> - a comma-separated list of tape-sampling loop accelerators
+to use (see the <code class="docutils literal notranslate"><span class="pre">ACCELERATORS</span></code> section below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmio</span></code> - enable simulation of memory and I/O contention delays and the
+MEMPTR register (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or disable it (<code class="docutils literal notranslate"><span class="pre">0</span></code>); this is disabled by default
+to improve performance, but some loaders may require it; when this is
+enabled, all acceleration is disabled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fast-load</span></code> - enable fast loading whenever the ROM loader is called (<code class="docutils literal notranslate"><span class="pre">1</span></code>,
+the default), or disable it (<code class="docutils literal notranslate"><span class="pre">0</span></code>); fast loading (also known as “flash
+loading”) significantly reduces the load time for many tapes, but can also
+cause some loaders to fail</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">finish-tape</span></code> - run the tape to the end before stopping the simulation at
+the address specified by the <code class="docutils literal notranslate"><span class="pre">--start</span></code> option (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or stop the
+simulation as soon as that address is reached, regardless of whether the tape
+has finished (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">first-edge</span></code> - the time (in T-states) from the start of the tape at which
+to place the leading edge of the first pulse (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">in-flags</span></code> - various flags specifying how to handle ‘IN’ instructions (see
+below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load</span></code> - a space-separated list of keys to press to build an alternative
+command line to load the tape (see the <code class="docutils literal notranslate"><span class="pre">LOAD</span> <span class="pre">COMMAND</span></code> section below)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">machine</span></code> - the type of machine to simulate: a 48K Spectrum (<code class="docutils literal notranslate"><span class="pre">48</span></code>, the
+default), or a 128K Spectrum (<code class="docutils literal notranslate"><span class="pre">128</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pause</span></code> - pause the tape between blocks and resume playback when port 254
+is read (<code class="docutils literal notranslate"><span class="pre">1</span></code>, the default), or run the tape continuously (<code class="docutils literal notranslate"><span class="pre">0</span></code>); pausing
+can help with tapes that require (but do not actually contain) long pauses
+between blocks, but can cause some loaders to fail</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">polarity</span></code> - the EAR bit reading produced by the first pulse on the tape:
+<code class="docutils literal notranslate"><span class="pre">0</span></code> (the default) or <code class="docutils literal notranslate"><span class="pre">1</span></code>; subsequent pulses give readings that alternate
+between 0 and 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span></code> - whether to use the pure Python Z80 simulator (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or the
+much faster C version if available (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> - the number of seconds of Z80 CPU time after which to abort the
+simulated LOAD if it’s still in progress (default: 900)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trace</span></code> - the file to which to log all instructions executed during the
+simulated LOAD (default: none)</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">in-flags</span></code> parameter is the sum of the following values, chosen according
+to the desired behaviour:</p>
+<ul class="simple">
+<li><p>1 - interpret ‘IN A,($FE)’ instructions in the address range $4000-$7FFF as
+reading the tape (by default they are ignored)</p></li>
+<li><p>2 - ignore ‘IN’ instructions in the address range $4000-$FFFF (i.e. in RAM)
+that read port $FE</p></li>
+<li><p>4 - yield a simulated port reading when executing an ‘IN r,(C)’ instruction
+(by default such an instruction always yields the value $FF)</p></li>
+</ul>
+<p>By default, the EAR bit reading produced by a pulse is 0 if the 0-based index
+of the pulse is even (i.e. first, third, fifth pulses etc.), or 1 otherwise.
+This can be reversed by setting <code class="docutils literal notranslate"><span class="pre">polarity=1</span></code>. Run <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> with the
+<code class="docutils literal notranslate"><span class="pre">--tape-analysis</span></code> option to see the timings and EAR bit readings of the
+pulses on a tape.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">--screen</span></code> option is given and pygame is installed, <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code>
+will use it to render the Spectrum’s screen contents at 50 frames per second
+with a scale factor of 2 while the simulated LOAD is running. The frame rate
+and scale factor can be changed by setting the <code class="docutils literal notranslate"><span class="pre">ScreenFps</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ScreenScale</span></code> configuration parameters.</p>
+</section>
+<section id="accelerators">
+<h2>ACCELERATORS<a class="headerlink" href="#accelerators" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">accelerator</span></code> simulated LOAD configuration parameter must be either a
+comma-separated list of specific accelerator names or one of the following
+special values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> - select accelerators automatically (this is the default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code> - list the accelerators used during a simulated LOAD, along with the
+hit/miss counts generated by the tape-sampling loop detector</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code> - disable acceleration; the loading time for a game with a custom
+loader that uses an unrecognised tape-sampling loop may be reduced by
+specifying this value</p></li>
+</ul>
+<p>A tape-sampling loop accelerator works by effectively fast-forwarding the tape
+(and the state of the loop itself) to the next edge whenever the loop is
+entered. This technique is known as “edge loading”.</p>
+<p>The output produced by <code class="docutils literal notranslate"><span class="pre">accelerator=list</span></code> looks something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Accelerators: microsphere: 5500; rom: 793036; misses: 0; dec-a: 800708/0/23
+</pre></div>
+</div>
+<p>This means that:</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">microsphere</span></code> and <code class="docutils literal notranslate"><span class="pre">rom</span></code> tape-sampling loops were detected, 5500 times
+and 793036 times respectively</p></li>
+<li><p>no instances of an ‘IN A,($FE)’ instruction outside a recognised
+tape-sampling loop were executed (0 misses)</p></li>
+<li><p>800708 ‘DEC A: JR NZ,$-1’ delay loops were entered, no ‘DEC A: JP NZ,$-1’
+delay loops were entered, and 23 instances of ‘DEC A’ outside such delay
+loops were executed</p></li>
+</ul>
+<p>To show the names of the available tape-sampling loop accelerators:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">-c</span> <span class="pre">help-accelerator</span></code></div>
+</div>
+</div>
+</section>
+<section id="load-command">
+<h2>LOAD COMMAND<a class="headerlink" href="#load-command" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">load</span></code> simulated LOAD configuration parameter may be used to specify an
+alternative command line to load the tape in cases where neither ‘LOAD “”’ nor
+‘LOAD “”CODE’ works. Its value is a space-separated list of ‘words’ (a ‘word’
+being a sequence of any characters other than space), each of which is broken
+down into a sequence of one or more keypresses. If a word contains the ‘+’
+symbol, the tokens it separates are converted into keypresses made
+simultaneously. If a word matches a BASIC token, the corresponding sequence of
+keypresses to produce that token are substituted. Otherwise, each character in
+the word is converted individually into the appropriate keypresses.</p>
+<p>The following special tokens are also recognised:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">CS</span></code> - CAPS SHIFT</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SS</span></code> - SYMBOL SHIFT</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SPACE</span></code> - SPACE</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ENTER</span></code> - ENTER</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">DOWN</span></code> - Cursor down (‘CS+6’)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GOTO</span></code> - GO TO (‘g’)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GOSUB</span></code> - GO SUB (‘h’)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">DEFFN</span></code> - DEF FN (‘CS+SS SS+1’)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OPEN#</span></code> - OPEN # (‘CS+SS SS+4’)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">CLOSE#</span></code> - CLOSE # (‘CS+SS SS+5’)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">PC=address</span></code> - Stop the keyboard input simulation at this address</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">PC=address</span></code> token, if present, must appear last. The default address is
+either 0x0605 (when a 48K Spectrum is being simulated) or 0x13BE (on a 128K
+Spectrum). The simulated LOAD begins at this address.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ENTER</span></code> is automatically appended to the command line if not already present.</p>
+<p>For example, the <code class="docutils literal notranslate"><span class="pre">load</span></code> parameter may be set to:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line">CLEAR 34999: LOAD “” CODE : RANDOMIZE USR 35000</div>
+</div>
+</div>
+<p>Note that the spaces around <code class="docutils literal notranslate"><span class="pre">CLEAR</span></code>, <code class="docutils literal notranslate"><span class="pre">LOAD</span></code>, <code class="docutils literal notranslate"><span class="pre">CODE</span></code>, <code class="docutils literal notranslate"><span class="pre">RANDOMIZE</span></code> and
+<code class="docutils literal notranslate"><span class="pre">USR</span></code> are required in order for them to be recognised as BASIC tokens.</p>
+</section>
+<section id="user-input">
+<h2>USER INPUT<a class="headerlink" href="#user-input" title="Link to this heading">¶</a></h2>
+<p>Some tapes require the user to pause the tape before loading has finished,
+press one or more keys, and then start the tape again to resume loading. Such
+tapes can be handled by using the <code class="docutils literal notranslate"><span class="pre">--press</span></code> option. Its single argument takes
+the form:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N:KEYS
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">N</span></code> is the block number at which to pause the tape</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KEYS</span></code> is a space-separated list of key identifiers</p></li>
+</ul>
+<p>For example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">--press</span> <span class="pre">5:ENTER</span> <span class="pre">game.tzx</span></code></div>
+</div>
+</div>
+<p>This will load blocks 1-4 of game.tzx, pause the tape, simulate pressing the
+ENTER key until the appropriate key row has been read, and then start the tape
+(whereupon block 5 and any other remaining blocks will be loaded).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">KEYS</span></code> list recognises the digits 0-9 and lower case letters a-z as valid
+key identifiers, along with the following special tokens:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">CS</span></code> - CAPS SHIFT</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SS</span></code> - SYMBOL SHIFT</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SPACE</span></code> - SPACE</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ENTER</span></code> - ENTER</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">NONE</span></code> - no key</div>
+</div>
+</div>
+<p>Sometimes a single keypress may need to be read more than once before the
+game’s loader responds to it. In such cases the <code class="docutils literal notranslate"><span class="pre">*</span></code> notation is useful:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">--press</span> <span class="pre">6:s*3</span> <span class="pre">game.tzx</span></code></div>
+</div>
+</div>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">6:s</span> <span class="pre">s</span> <span class="pre">s</span></code>, this will wait until the ‘s’ keypress has been read
+three times before resuming the tape at block number 6.</p>
+</section>
+<section id="call-operations">
+<h2>CALL OPERATIONS<a class="headerlink" href="#call-operations" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--ram</span></code> option can be used to call a Python function to perform arbitrary
+modification of the memory snapshot.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">call=[/path/to/moduledir:]module.function</span></code></div>
+</div>
+</div>
+<p>The function is called with the memory snapshot (a list of 65536 byte values)
+as the sole positional argument. The function must modify the snapshot in
+place. The path to the module’s location may be omitted if the module is
+already in the module search path.</p>
+<p>For example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">call=:ram.modify</span></code> # Call modify(snapshot) in ./ram.py</div>
+</div>
+</div>
+</section>
+<section id="load-operations">
+<h2>LOAD OPERATIONS<a class="headerlink" href="#load-operations" title="Link to this heading">¶</a></h2>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> attempts to load a tape exactly as a 48K Spectrum
+would (see the section on <code class="docutils literal notranslate"><span class="pre">SIMULATED</span> <span class="pre">LOAD</span></code> above). If that doesn’t work, the
+<code class="docutils literal notranslate"><span class="pre">--ram</span></code> option can be used to load bytes from specific tape blocks at the
+appropriate addresses. The syntax is:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">load=[+]block[+],start[,length,step,offset,inc]</span></code></div>
+</div>
+</div>
+<p>where the parameters have the following meanings:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">block</span></code></dt><dd><p>The tape block number; the first block is 1, the next is 2, etc. Attach a ‘+’
+prefix to load the first byte of the block (which is usually the flag byte),
+and a ‘+’ suffix to load the last byte (which is usually the parity byte).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">start</span></code></dt><dd><p>The destination address at which to start loading.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">length</span></code></dt><dd><p>The number of bytes to load (optional; defaults to the number of bytes
+remaining in the block).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span></code></dt><dd><p>This number is added to the destination address after each byte is loaded
+(optional; default=1).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">offset</span></code></dt><dd><p>This number is added to the destination address before a byte is loaded, and
+subtracted after the byte is loaded (optional; default=0). It is analogous to
+the offset <code class="docutils literal notranslate"><span class="pre">d</span></code> in the <code class="docutils literal notranslate"><span class="pre">LD</span> <span class="pre">(IX+d),L</span></code> operation that is commonly used in
+load routines to copy the byte just loaded from tape (<code class="docutils literal notranslate"><span class="pre">L</span></code>) into memory.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inc</span></code></dt><dd><p>After <code class="docutils literal notranslate"><span class="pre">step</span></code> is added to the destination address, this number is added too
+if the result overflowed past 65535 (optional; default=0).</p>
+</dd>
+</dl>
+<p>A single tape block can be loaded in two or more stages; for example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">load=2,32768,2048</span></code> # Load the first 2K at 32768</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">load=2,0xC000</span></code>     # Load the remainder at 49152</div>
+</div>
+</div>
+</section>
+<section id="move-operations">
+<h2>MOVE OPERATIONS<a class="headerlink" href="#move-operations" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--ram</span></code> option can be used to copy a block of bytes from one location to
+another before saving the snapshot.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">move=[s:]src,N,[d:]dest</span></code></div>
+</div>
+</div>
+<p>This copies a block of <code class="docutils literal notranslate"><span class="pre">N</span></code> bytes from <code class="docutils literal notranslate"><span class="pre">src</span></code> in RAM bank <code class="docutils literal notranslate"><span class="pre">s</span></code> to <code class="docutils literal notranslate"><span class="pre">dest</span></code>
+in RAM bank <code class="docutils literal notranslate"><span class="pre">d</span></code>. For example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">move=32512,256,32768</span></code> # Copy 32512-32767 to 32768-33023</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">move=3:0,8,4:0</span></code>       # Copy the first 8 bytes of bank 3 to bank 4</div>
+</div>
+</div>
+</section>
+<section id="patch-operations">
+<h2>PATCH OPERATIONS<a class="headerlink" href="#patch-operations" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--ram</span></code> option can be used to apply a binary patch file to the snapshot
+before saving it.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">patch=[p:]a,file</span></code></div>
+</div>
+</div>
+<p>This applies the named binary patch file at address <code class="docutils literal notranslate"><span class="pre">a</span></code> in RAM bank <code class="docutils literal notranslate"><span class="pre">p</span></code>.
+For example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">patch=32768,patch.bin</span></code> # Apply patch.bin at 32768</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">patch=1:256,patch.bin</span></code> # Apply patch.bin at 256 in RAM bank 1</div>
+</div>
+</div>
+</section>
+<section id="poke-operations">
+<h2>POKE OPERATIONS<a class="headerlink" href="#poke-operations" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--ram</span></code> option can be used to POKE values into the snapshot before saving
+it.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">poke=[P:]A[-B[-C]],[^+]V</span></code></div>
+</div>
+</div>
+<p>This does <code class="docutils literal notranslate"><span class="pre">POKE</span> <span class="pre">N,V</span></code> in RAM bank <code class="docutils literal notranslate"><span class="pre">P</span></code> for <code class="docutils literal notranslate"><span class="pre">N</span></code> in <code class="docutils literal notranslate"><span class="pre">{A,</span> <span class="pre">A+C,</span> <span class="pre">A+2C...,</span> <span class="pre">B}</span></code>,
+where:</p>
+<p><code class="docutils literal notranslate"><span class="pre">P</span></code> is the RAM bank to POKE (0-7; 128K only)</p>
+<p><code class="docutils literal notranslate"><span class="pre">A</span></code> is the first address to POKE</p>
+<p><code class="docutils literal notranslate"><span class="pre">B</span></code> is the last address to POKE (optional; default is <code class="docutils literal notranslate"><span class="pre">A</span></code>)</p>
+<p><code class="docutils literal notranslate"><span class="pre">C</span></code> is the step (optional; default=1)</p>
+<p><code class="docutils literal notranslate"><span class="pre">V</span></code> is the value to POKE; prefix the value with ‘^’ to perform an XOR
+operation, or ‘+’ to perform an ADD operation</p>
+<p>For example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">poke=0x6000,0x10</span></code>     # POKE 24576,16</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">poke=30000-30002,^85</span></code> # Perform ‘XOR 85’ on addresses 30000-30002</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">poke=40000-40004-2,1</span></code> # POKE 40000,1: POKE 40002,1: POKE 40004,1</div>
+</div>
+</div>
+</section>
+<section id="sysvars-operation">
+<h2>SYSVARS OPERATION<a class="headerlink" href="#sysvars-operation" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--ram</span></code> option can be used to initialise the system variables at
+23552-23754 (5C00-5CCA) with values suitable for a 48K ZX Spectrum.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--ram</span> <span class="pre">sysvars</span></code></div>
+</div>
+</div>
+</section>
+<section id="registers">
+<h2>REGISTERS<a class="headerlink" href="#registers" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--reg</span></code> option sets the value of a register in the snapshot.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">name=value</span></code></div>
+</div>
+</div>
+<p>For example:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">hl=32768</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">b=0x1f</span></code></div>
+</div>
+</div>
+<p>To set the value of an alternate (shadow) register, use the ‘^’ prefix:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--reg</span> <span class="pre">^hl=10072</span></code></div>
+</div>
+</div>
+<p>Recognised register names are:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">^a</span></code>, <code class="docutils literal notranslate"><span class="pre">^b</span></code>, <code class="docutils literal notranslate"><span class="pre">^bc</span></code>, <code class="docutils literal notranslate"><span class="pre">^c</span></code>, <code class="docutils literal notranslate"><span class="pre">^d</span></code>, <code class="docutils literal notranslate"><span class="pre">^de</span></code>, <code class="docutils literal notranslate"><span class="pre">^e</span></code>, <code class="docutils literal notranslate"><span class="pre">^f</span></code>, <code class="docutils literal notranslate"><span class="pre">^h</span></code>, <code class="docutils literal notranslate"><span class="pre">^hl</span></code>, <code class="docutils literal notranslate"><span class="pre">^l</span></code>,</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">bc</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code>, <code class="docutils literal notranslate"><span class="pre">de</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code>, <code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">h</span></code>, <code class="docutils literal notranslate"><span class="pre">hl</span></code>, <code class="docutils literal notranslate"><span class="pre">l</span></code>,</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">i</span></code>, <code class="docutils literal notranslate"><span class="pre">ix</span></code>, <code class="docutils literal notranslate"><span class="pre">iy</span></code>, <code class="docutils literal notranslate"><span class="pre">memptr</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">r</span></code>, <code class="docutils literal notranslate"><span class="pre">sp</span></code></div>
+</div>
+</div>
+<p>The default value for each register is 0, with the following exceptions:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">i=63</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">iy=23610</span></code></div>
+</div>
+</div>
+</section>
+<section id="hardware-state">
+<h2>HARDWARE STATE<a class="headerlink" href="#hardware-state" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--state</span></code> option sets a hardware state attribute.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">--state</span> <span class="pre">name=value</span></code></div>
+</div>
+</div>
+<p>Recognised attribute names and their default values are:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">7ffd</span></code>    - last OUT to port 0x7ffd (128K only)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ay[N]</span></code>   - contents of AY register N (N=0-15; 128K only)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">border</span></code>  - border colour (default=0)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">fe</span></code>      - last OUT to port 0xfe (SZX only)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">fffd</span></code>    - last OUT to port 0xfffd (128K only)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">iff</span></code>     - interrupt flip-flop: 0=disabled, 1=enabled (default=1)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">im</span></code>      - interrupt mode (default=1)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">issue2</span></code>  - issue 2 emulation: 0=disabled, 1=enabled (default=0)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tstates</span></code> - T-states elapsed since start of frame (default=34943)</div>
+</div>
+</div>
+</section>
+<section id="reading-arguments-from-a-file">
+<h2>READING ARGUMENTS FROM A FILE<a class="headerlink" href="#reading-arguments-from-a-file" title="Link to this heading">¶</a></h2>
+<p>For complex snapshots that require many options to build, it may be more
+convenient to store the arguments to <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> in a file. For example, if
+the file <code class="docutils literal notranslate"><span class="pre">game.t2s</span></code> has the following contents:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line">;</div>
+<div class="line">; tap2sna.py file for GAME</div>
+<div class="line">;</div>
+<div class="line">http://example.com/pub/games/GAME.zip</div>
+<div class="line">-c fast-load=0      # Disable fast loading</div>
+<div class="line">-c accelerator=none # Disable tape-sampling loop acceleration</div>
+<div class="line">--state issue2=1    # Enable issue 2 keyboard emulation</div>
+<div class="line">--start 34816       # Start at 34816</div>
+</div>
+</div>
+<p>then:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">&#64;game.t2s</span></code></div>
+</div>
+</div>
+<p>will create <code class="docutils literal notranslate"><span class="pre">game.z80</span></code> as if the arguments specified in <code class="docutils literal notranslate"><span class="pre">game.t2s</span></code> had been
+given on the command line. When <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> reads arguments from a file
+whose name ends with ‘.t2s’, the output snapshot filename defaults to the name
+of that arguments file with ‘.t2s’ replaced by either ‘.z80’ or ‘.szx’
+(depending on the value of the <code class="docutils literal notranslate"><span class="pre">DefaultSnapshotFormat</span></code> configuration
+parameter).</p>
+</section>
+<section id="configuration">
+<h2>CONFIGURATION<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> will read configuration from a file named <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code> in
+the current working directory or in <code class="docutils literal notranslate"><span class="pre">~/.skoolkit</span></code>, if present. The recognised
+configuration parameters are:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">DefaultSnapshotFormat<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The format of the snapshot written when no output
+snapshot argument is specified. Valid values are <code class="docutils literal notranslate"><span class="pre">z80</span></code> (the default) and
+<code class="docutils literal notranslate"><span class="pre">szx</span></code>.</p>
+</dd>
+<dt class="field-even">ScreenFps<span class="colon">:</span></dt>
+<dd class="field-even"><p>Screen refresh rate in frames per second (default:<code class="docutils literal notranslate"><span class="pre">50</span></code>). If set
+to 0, <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> runs at maximum speed.</p>
+</dd>
+<dt class="field-odd">ScreenScale<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Screen scale factor (default: <code class="docutils literal notranslate"><span class="pre">2</span></code>).</p>
+</dd>
+<dt class="field-even">TraceLine<span class="colon">:</span></dt>
+<dd class="field-even"><p>The format of each line in the trace log file for a simulated
+LOAD (default: <code class="docutils literal notranslate"><span class="pre">${pc:04X}</span> <span class="pre">{i}</span></code>).</p>
+</dd>
+<dt class="field-odd">TraceOperand<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The prefix, byte format, and word format for the numeric
+operands of instructions in the trace log file for a simulated LOAD,
+separated by commas (default: <code class="docutils literal notranslate"><span class="pre">$,02X,04X</span></code>). The byte and word formats are
+standard Python format specifiers for numeric values, and default to empty
+strings if not supplied.</p>
+</dd>
+<dt class="field-even">UserAgent<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the User-Agent header in HTTP/HTTPS requests
+(default: empty string).</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">TraceLine</span></code> is a standard Python format string that recognises the following
+replacement fields:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">i</span></code> - the current instruction</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">m[address]</span></code> - the contents of a memory address</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">pc</span></code> - the address of the current instruction (program counter)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">r[X]</span></code> - the X register (see below)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">t</span></code> - the current timestamp</div>
+</div>
+</div>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">m</span></code> (memory) replacement field, <code class="docutils literal notranslate"><span class="pre">address</span></code> must be either a
+decimal number, or a hexadecimal number prefixed by ‘$’ or ‘0x’.</p>
+<p>The register name <code class="docutils literal notranslate"><span class="pre">X</span></code> in <code class="docutils literal notranslate"><span class="pre">r[X]</span></code> must be one of the following:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>a b c d e f h l bc de hl
+^a ^b ^c ^d ^e ^f ^h ^l ^bc ^de ^hl
+ix ixh ixl iy iyh iyl
+i r sp memptr
+</pre></div>
+</div>
+<p>The names that begin with <code class="docutils literal notranslate"><span class="pre">^</span></code> denote the shadow registers.</p>
+<p>The current timestamp (<code class="docutils literal notranslate"><span class="pre">t</span></code>) is the number of T-states that have elapsed since
+the start of the simulation, according to the simulator’s internal clock. In
+order to maintain synchronisation with the tape being loaded, the simulator’s
+clock is adjusted to match the timestamp of the first pulse in each block (as
+shown by the <code class="docutils literal notranslate"><span class="pre">--tape-analysis</span></code> option) when that block is reached. (The
+simulator’s clock may at times become desynchronised with the tape because, by
+default, the tape is paused between blocks, and resumed when port 254 is read.)</p>
+<p>Configuration parameters must appear in a <code class="docutils literal notranslate"><span class="pre">[tap2sna]</span></code> section. For example,
+to make <code class="docutils literal notranslate"><span class="pre">tap2sna.py</span></code> write instruction addresses and operands in a trace log
+file in decimal format by default, add the following section to
+<code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[tap2sna]
+TraceLine={pc:05} {i}
+TraceOperand=
+</pre></div>
+</div>
+<p>Configuration parameters may also be set on the command line by using the
+<code class="docutils literal notranslate"><span class="pre">--ini</span></code> option. Parameter values set this way will override any found in
+<code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>.</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Extract the tape file from a remote zip archive and convert it into a Z80
+snapshot:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">ftp://example.com/game.zip</span> <span class="pre">game.z80</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Extract the tape file from a zip archive, and convert it into an SZX
+snapshot with the program counter set to 32768:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">--start</span> <span class="pre">32768</span> <span class="pre">game.zip</span> <span class="pre">game.szx</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert a TZX file into a Z80 snapshot by loading the third block on the
+tape at 25000:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">--ram</span> <span class="pre">load=3,25000</span> <span class="pre">game.tzx</span> <span class="pre">game.z80</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert a TZX file into an SZX snapshot using options read from the file
+<code class="docutils literal notranslate"><span class="pre">game.t2s</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">&#64;game.t2s</span> <span class="pre">game.tzx</span> <span class="pre">game.szx</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Extract two tape files from a zip archive and convert them into a Z80
+snapshot:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">--tape-name</span> <span class="pre">side1.tzx</span> <span class="pre">--tape-name</span> <span class="pre">side2.tzx</span> <span class="pre">game.zip</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Convert two tape files into an SZX snapshot:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">tap2sna.py</span> <span class="pre">side1.tzx</span> <span class="pre">side2.tzx</span> <span class="pre">game.szx</span></code></div>
+</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">tap2sna.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#tzx-support">TZX SUPPORT</a></li>
+<li><a class="reference internal" href="#simulated-load">SIMULATED LOAD</a></li>
+<li><a class="reference internal" href="#accelerators">ACCELERATORS</a></li>
+<li><a class="reference internal" href="#load-command">LOAD COMMAND</a></li>
+<li><a class="reference internal" href="#user-input">USER INPUT</a></li>
+<li><a class="reference internal" href="#call-operations">CALL OPERATIONS</a></li>
+<li><a class="reference internal" href="#load-operations">LOAD OPERATIONS</a></li>
+<li><a class="reference internal" href="#move-operations">MOVE OPERATIONS</a></li>
+<li><a class="reference internal" href="#patch-operations">PATCH OPERATIONS</a></li>
+<li><a class="reference internal" href="#poke-operations">POKE OPERATIONS</a></li>
+<li><a class="reference internal" href="#sysvars-operation">SYSVARS OPERATION</a></li>
+<li><a class="reference internal" href="#registers">REGISTERS</a></li>
+<li><a class="reference internal" href="#hardware-state">HARDWARE STATE</a></li>
+<li><a class="reference internal" href="#reading-arguments-from-a-file">READING ARGUMENTS FROM A FILE</a></li>
+<li><a class="reference internal" href="#configuration">CONFIGURATION</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/tap2sna.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tap2sna.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

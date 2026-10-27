@@ -1,0 +1,392 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "TRACE.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+trace.py \- simulate code execution in a 48K or 128K memory snapshot
+.SH SYNOPSIS
+.sp
+\fBtrace.py\fP [options] FILE [OUTFILE...]
+.SH DESCRIPTION
+.sp
+\fBtrace.py\fP simulates the execution of machine code in a 48K, 128K or +2 SNA,
+SZX or Z80 snapshot, or a binary (raw memory) file. If FILE is \(aq48\(aq, \(aq128\(aq or
+\(aq+2\(aq, no snapshot is loaded, and the RAM is left blank (all zeroes). If
+\(aqOUTFILE\(aq is given, an SZX/Z80 snapshot, WAV file or PNG file is written after
+execution has completed.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B  \-\-audio
+Show a list of the delays (in T\-states) between changes in the state of the
+ZX Spectrum speaker made by the code that was executed.
+.TP
+.B  \-\-ay
+Capture AY audio (when writing a WAV file).
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-ay\-mode \fIMODE\fP
+Set the AY stereo mode to ABC, ACB or MONO (the default).
+.TP
+.B \-\-ay\-res \fIT\fP
+Set the AY sampling resolution to this many T\-states. The default value of
+622 is equivalent to 5700Hz, which is usually good enough for capturing AY
+speech. A higher value such as 70908 (50Hz) is usually good enough for
+capturing AY music, and may also require less time to produce the WAV file.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-beeper
+Capture beeper audio (when used with \fB\-\-ay\fP).
+.TP
+.B  \-c\fP,\fB  \-\-cmio
+Simulate memory and I/O contention delays and the MEMPTR register.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-depth \fIN\fP
+Simplify audio delays to this depth (default: 2). When this option is given,
+any sequence of delays up to length \fIN\fP that repeats is shown in a simplified
+form. For example, if \fIN\fP is 3, the run of delay values [1, 2, 3, 1, 2, 3] is
+reduced to [1, 2, 3]*2.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-D\fP,\fB  \-\-decimal
+Show decimal values in verbose (\fB\-v\fP, \fB\-vv\fP) mode.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-I, \-\-ini \fIparam=value\fP
+Set the value of a configuration parameter (see \fBCONFIGURATION\fP),
+overriding any value found in \fBskoolkit.ini\fP\&. This option may be used
+multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.BI \-\-map \ FILE
+Log addresses of executed instructions to a file.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-m, \-\-max\-operations \fIMAX\fP
+Maximum number of instructions to execute. Overrides the \fISTOP\fP address (if
+given).
+.TP
+.B \-M, \-\-max\-tstates \fIMAX\fP
+Maximum number of (simulated) T\-states to run for. Overrides the \fISTOP\fP
+address (if given).
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-n\fP,\fB  \-\-no\-interrupts
+Don\(aqt execute interrupt routines.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-o, \-\-org \fIORG\fP
+Specify the origin address of a binary (raw memory) file. The default origin
+address is 65536 minus the length of the file. \fIORG\fP must be a decimal
+number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-p, \-\-poke \fI[p:]a[\-b[\-c]],[^+]v\fP
+POKE N,v in RAM bank p for N in {a, a+c, a+2c..., b} before execution begins.
+Prefix \(aqv\(aq with \(aq^\(aq to perform an XOR operation, or \(aq+\(aq to perform an ADD
+operation. This option may be used multiple times. \(aqa\(aq, \(aqb\(aq, \(aqc\(aq and \(aqv\(aq must
+each be a decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-python
+Use the pure Python Z80 simulator even if the C version is available.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-r, \-\-reg \fIname=value\fP
+Set the value of a register before execution begins. Do \fB\-\-reg help\fP for
+more information, or see the section on \fBREGISTERS\fP below. This option may
+be used multiple times.
+.TP
+.B \-\-rom \fIFILE\fP
+Patch in a ROM at address 0 from this file.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-show\-config
+Show configuration parameter values.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-s, \-\-start \fIADDR\fP
+Start execution at this address. \fIADDR\fP must be a decimal number, or a
+hexadecimal number prefixed by \(aq0x\(aq. If this option is omitted, execution
+starts either at the address given by the value of the program counter (for a
+SNA, SZX or Z80 snapshot), or at the origin address of the raw memory file.
+.TP
+.B \-S, \-\-stop \fIADDR\fP
+Stop execution at this address. \fIADDR\fP must be a decimal number, or a
+hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-screen
+Display screen contents and respond to keypresses while running (requires
+pygame). The left shift key is mapped to CAPS SHIFT on the Spectrum keyboard,
+and the left Ctrl key is mapped to SYMBOL SHIFT.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-state name=value
+Set a hardware state attribute before execution begins. Do \fB\-\-state help\fP
+for more information, or see the section on \fBHARDWARE STATE\fP below. This
+option may be used multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-stats
+Show statistics after execution.
+.TP
+.B  \-v\fP,\fB  \-\-verbose
+Show executed instructions. Repeat this option (\fB\-vv\fP) to show register
+values too.
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show SkoolKit version number and exit.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-volume \fIVOL\fP
+Set audio volume percentage (default: 100).
+.UNINDENT
+.SH REGISTERS
+.sp
+The \fB\-\-reg\fP option sets the value of a register before execution begins.
+.nf
+
+.in +2
+\fB\-\-reg name=value\fP
+.in -2
+.fi
+.sp
+.sp
+For example:
+.nf
+
+.in +2
+\fB\-\-reg hl=32768\fP
+\fB\-\-reg b=0x1f\fP
+.in -2
+.fi
+.sp
+.sp
+To set the value of an alternate (shadow) register, use the \(aq^\(aq prefix:
+.nf
+
+.in +2
+\fB\-\-reg ^hl=10072\fP
+.in -2
+.fi
+.sp
+.sp
+Recognised register names are:
+.nf
+
+.in +2
+\fB^a\fP, \fB^b\fP, \fB^bc\fP, \fB^c\fP, \fB^d\fP, \fB^de\fP, \fB^e\fP, \fB^f\fP, \fB^h\fP, \fB^hl\fP, \fB^l\fP,
+\fBa\fP, \fBb\fP, \fBbc\fP, \fBc\fP, \fBd\fP, \fBde\fP, \fBe\fP, \fBf\fP, \fBh\fP, \fBhl\fP, \fBl\fP,
+\fBi\fP, \fBix\fP, \fBiy\fP, \fBmemptr\fP, \fBpc\fP, \fBr\fP, \fBsp\fP
+.in -2
+.fi
+.sp
+.SH HARDWARE STATE
+.sp
+The \fB\-\-state\fP option sets a hardware state attribute before execution begins.
+.nf
+
+.in +2
+\fB\-\-state name=value\fP
+.in -2
+.fi
+.sp
+.sp
+Recognised attribute names and their default values are:
+.nf
+
+.in +2
+\fB7ffd\fP    \- last OUT to port 0x7ffd (128K only)
+\fBay[N]\fP   \- contents of AY register N (N=0\-15; 128K only)
+\fBborder\fP  \- border colour
+\fBfe\fP      \- last OUT to port 0xfe (SZX only)
+\fBfffd\fP    \- last OUT to port 0xfffd (128K only)
+\fBiff\fP     \- interrupt flip\-flop: 0=disabled, 1=enabled
+\fBim\fP      \- interrupt mode
+\fBtstates\fP \- T\-states elapsed since start of frame
+.in -2
+.fi
+.sp
+.SH CONFIGURATION
+.sp
+\fBtrace.py\fP will read configuration from a file named \fBskoolkit.ini\fP in the
+current working directory or in \fB~/.skoolkit\fP, if present. The recognised
+configuration parameters are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B PNGScale
+The PNG image scale factor (default: \fB2\fP).
+.TP
+.B Screen
+Display screen contents while running (\fB1\fP), or don\(aqt (\fB0\fP, the
+default).
+.TP
+.B ScreenFps
+Screen refresh rate in frames per second (default:\fB50\fP). If set
+to 0, \fBtrace.py\fP runs at maximum speed.
+.TP
+.B ScreenScale
+Screen scale factor (default: \fB2\fP).
+.TP
+.B TraceHeader
+The header to print when \fB\-v\fP is used (default: None).
+.TP
+.B TraceHeader2
+The header to print when \fB\-vv\fP is used (default: None).
+.TP
+.B TraceLine
+The format of each instruction line when \fB\-v\fP is used
+(default: \fB${pc:04X} {i}\fP).
+.TP
+.B TraceLine2
+The format of each instruction line when \fB\-vv\fP is used. Use
+\fB\-\-show\-config\fP to see the default value.
+.TP
+.B TraceLineDecimal
+The format of each instruction line when \fB\-Dv\fP is used
+(default: \fB{pc:05} {i}\fP).
+.TP
+.B TraceLineDecimal2
+The format of each instruction line when \fB\-Dvv\fP is
+used. Use \fB\-\-show\-config\fP to see the default value.
+.TP
+.B TraceOperand
+The prefix, byte format, and word format for the numeric
+operands of instructions, separated by commas (default: \fB$,02X,04X\fP); the
+byte and word formats are standard Python format specifiers for numeric
+values, and default to empty strings if not supplied.
+.TP
+.B TraceOperandDecimal
+As \fBTraceOperand\fP when \fB\-D\fP is used (default:
+\fB,,\fP).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+The \fBTraceLine*\fP parameters are standard Python format strings that recognise
+the following replacement fields:
+.nf
+
+.in +2
+\fBi\fP \- the current instruction
+\fBm[address]\fP \- the contents of a memory address
+\fBpc\fP \- the address of the current instruction (program counter)
+\fBr[X]\fP \- the \(aqX\(aq register (see below)
+\fBt\fP \- the current timestamp (in T\-states)
+.in -2
+.fi
+.sp
+.sp
+When using the \fBm\fP (memory) replacement field, \fBaddress\fP must be either a
+decimal number, or a hexadecimal number prefixed by \(aq$\(aq or \(aq0x\(aq.
+.sp
+The register name \fBX\fP in \fBr[X]\fP must be one of the following:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+a b c d e f h l bc de hl
+^a ^b ^c ^d ^e ^f ^h ^l ^bc ^de ^hl
+ix iy ixh iyh ixl iyl
+i r sp memptr
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The names that begin with \fB^\fP denote the shadow registers.
+.sp
+Wherever \fB\en\fP appears in a \fBTraceLine*\fP parameter value, it is replaced by
+a newline character.
+.sp
+Configuration parameters must appear in a \fB[trace]\fP section. For example,
+to make \fBtrace.py\fP write a timestamp for each instruction when \fB\-v\fP is
+used, add the following section to \fBskoolkit.ini\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+[trace]
+TraceLine={t:>10} ${pc:04X} {i}
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters may also be set on the command line by using the
+\fB\-\-ini\fP option. Parameter values set this way will override any found in
+\fBskoolkit.ini\fP\&.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Execute and show instructions in the routine at 32768\-32798 in \fBgame.z80\fP:
+.UNINDENT
+.nf
+
+.in +2
+\fBtrace.py \-v \-s 32768 \-S 32798 game.z80\fP
+.in -2
+.fi
+.sp
+.INDENT 0.0
+.IP 2. 3
+Show delays between changes in the state of the ZX Spectrum speaker produced
+by the sound effect routine at 49152\-49193 in \fBgame.z80\fP:
+.UNINDENT
+.nf
+
+.in +2
+\fBtrace.py \-\-audio \-s 49152 \-S 49193 game.z80\fP
+.in -2
+.fi
+.sp
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

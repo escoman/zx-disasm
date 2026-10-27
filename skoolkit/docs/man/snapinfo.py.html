@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>snapinfo.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">snapinfo.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="snapinfo-py">
+<h1>snapinfo.py<a class="headerlink" href="#snapinfo-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">snapinfo.py</span></code> [options] FILE</p>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">snapinfo.py</span></code> shows information on the registers or RAM in a binary (raw
+memory) file or a SNA, SZX or Z80 snapshot.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="option-list">
+<dt><kbd><span class="option">-b</span>, <span class="option">--basic</span></kbd></dt>
+<dd><p>List the BASIC program.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-c, –ctl <cite>PATH</cite></dt><dd><p>When generating a call graph, specify a control file to use, or a directory
+from which to read control files. By default, any files whose names start
+with the input snapshot name (minus the .bin, .sna, .szx or .z80 suffix, if
+any) and end with .ctl are used, if present. If <cite>PATH</cite> is ‘-’, standard input
+is used. This option may be used multiple times.</p>
+</dd>
+<dt>-f, –find <cite>A[,B…[-M[-N]]]</cite></dt><dd><p>Search for the byte sequence <cite>A</cite>, <cite>B</cite>… with distance ranging from <cite>M</cite> to
+<cite>N</cite> (default=1) between bytes. <cite>A</cite>, <cite>B</cite>, etc. and <cite>M</cite> and <cite>N</cite> must each be a
+decimal number, or a hexadecimal number prefixed by ‘0x’. By default, all RAM
+banks in a 128K snapshot are searched; use the <code class="docutils literal notranslate"><span class="pre">--page</span></code> option to restrict
+the search to the address range 16384-65535 (0x4000-0xFFFF).</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-g</span>, <span class="option">--call-graph</span></kbd></dt>
+<dd><p>Generate a call graph in DOT format.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-I, –ini <cite>param=value</cite></dt><dd><p>Set the value of a configuration parameter (see <code class="docutils literal notranslate"><span class="pre">CONFIGURATION</span></code>),
+overriding any value found in <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>. This option may be used
+multiple times.</p>
+</dd>
+<dt>-o, –org <cite>ADDR</cite></dt><dd><p>Specify the origin address of a binary (raw memory) file. The default origin
+address is 65536 minus the length of the file. <cite>ADDR</cite> must be a decimal
+number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-p, –peek <cite>A[-B[-C]]</cite></dt><dd><p>Show the contents of addresses <cite>A</cite> TO <cite>B</cite> STEP <cite>C</cite>. This option may be used
+multiple times. <cite>A</cite>, <cite>B</cite> and <cite>C</cite> must each be a decimal number, or a
+hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-P, –page <cite>PAGE</cite></dt><dd><p>Specify the page (0-7) of a 128K snapshot to map to 49152-65535.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">--show-config</span></kbd></dt>
+<dd><p>Show configuration parameter values.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-t, –find-text <cite>TEXT</cite></dt><dd><p>Search for a text string. By default, all RAM banks in a 128K snapshot are
+searched; use the <code class="docutils literal notranslate"><span class="pre">--page</span></code> option to restrict the search to the address
+range 16384-65535 (0x4000-0xFFFF).</p>
+</dd>
+<dt>-T, –find-tile <cite>X,Y[-M[-N]]</cite></dt><dd><p>Search for the graphic data of the tile at (X,Y) with distance ranging from M
+to N (default=1) between bytes. <cite>M</cite> and <cite>N</cite> must each be a decimal number, or
+a hexadecimal number prefixed by ‘0x’. By default, all RAM banks in a 128K
+snapshot are searched; use the <code class="docutils literal notranslate"><span class="pre">--page</span></code> option to restrict the search to
+the address range 16384-65535 (0x4000-0xFFFF).</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-v</span>, <span class="option">--variables</span></kbd></dt>
+<dd><p>List the contents of the variables area.</p>
+</dd>
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-w, –word <cite>A[-B[-C]]</cite></dt><dd><p>Show the words (2-byte values) at addresses <cite>A</cite> TO <cite>B</cite> STEP <cite>C</cite>. This option
+may be used multiple times. <cite>A</cite>, <cite>B</cite> and <cite>C</cite> must each be a decimal number,
+or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+</section>
+<section id="configuration">
+<h2>CONFIGURATION<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">snapinfo.py</span></code> will read configuration from a file named <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code> in
+the current working directory or in <code class="docutils literal notranslate"><span class="pre">~/.skoolkit</span></code>, if present. The recognised
+configuration parameters are:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">EdgeAttributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The default attributes for edges in a call graph (default:
+none).</p>
+</dd>
+<dt class="field-even">GraphAttributes<span class="colon">:</span></dt>
+<dd class="field-even"><p>The default attributes for a call graph (default: none).</p>
+</dd>
+<dt class="field-odd">NodeAttributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The default attributes for nodes in a call graph (default:
+<code class="docutils literal notranslate"><span class="pre">shape=record</span></code>).</p>
+</dd>
+<dt class="field-even">NodeId<span class="colon">:</span></dt>
+<dd class="field-even"><p>The format of the node IDs in a call graph (default: <code class="docutils literal notranslate"><span class="pre">{address}</span></code>).</p>
+</dd>
+<dt class="field-odd">NodeLabel<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The format of the node labels in a call graph (default:
+<code class="docutils literal notranslate"><span class="pre">&quot;{address}</span> <span class="pre">{address:04X}\n{label}&quot;</span></code>).</p>
+</dd>
+<dt class="field-even">Peek<span class="colon">:</span></dt>
+<dd class="field-even"><p>the format of each line of the output produced by the <code class="docutils literal notranslate"><span class="pre">--peek</span></code>
+option (default: <code class="docutils literal notranslate"><span class="pre">{address:&gt;5}</span> <span class="pre">{address:04X}:</span> <span class="pre">{value:&gt;3}</span>&#160; <span class="pre">{value:02X}</span>&#160; <span class="pre">{value:08b}</span>&#160; <span class="pre">{char}</span></code>)</p>
+</dd>
+<dt class="field-odd">Word<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the format of each line of the output produced by the <code class="docutils literal notranslate"><span class="pre">--word</span></code>
+option (default: <code class="docutils literal notranslate"><span class="pre">{address:&gt;5}</span> <span class="pre">{address:04X}:</span> <span class="pre">{value:&gt;5}</span>&#160; <span class="pre">{value:04X}</span></code>)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">NodeId</span></code> and <code class="docutils literal notranslate"><span class="pre">NodeLabel</span></code> are standard Python format strings that recognise
+the replacement fields <code class="docutils literal notranslate"><span class="pre">address</span></code> and <code class="docutils literal notranslate"><span class="pre">label</span></code> (the address and label of the
+first instruction in the routine represented by the node).</p>
+<p>Configuration parameters must appear in a <code class="docutils literal notranslate"><span class="pre">[snapinfo]</span></code> section. For example,
+to make <code class="docutils literal notranslate"><span class="pre">snapinfo.py</span></code> use open arrowheads and a cyan background colour in
+call graphs by default, add the following section to <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[snapinfo]
+EdgeAttributes=arrowhead=open
+GraphAttributes=bgcolor=cyan
+</pre></div>
+</div>
+<p>Configuration parameters may also be set on the command line by using the
+<code class="docutils literal notranslate"><span class="pre">--ini</span></code> option. Parameter values set this way will override any found in
+<code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>.</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Display the contents of the registers in <code class="docutils literal notranslate"><span class="pre">game.z80</span></code>:</p></li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">snapinfo.py</span> <span class="pre">game.z80</span></code></div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Search for the graphic data of the tile currently at (2,3) on screen in
+<code class="docutils literal notranslate"><span class="pre">game.z80</span></code>, with a distance of 1 or 2 between bytes:</p></li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">snapinfo.py</span> <span class="pre">-T</span> <span class="pre">2,3-1-2</span> <span class="pre">game.z80</span></code></div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">snapinfo.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#configuration">CONFIGURATION</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/snapinfo.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">snapinfo.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

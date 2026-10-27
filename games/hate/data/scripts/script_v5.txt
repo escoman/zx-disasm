@@ -1,0 +1,29 @@
+# script_v5 — варианты реального старта: 5=D EMO-запуск, 6+SPACE, удержания
+CHECKPOINT 600
+CHECKPOINT 900
+CHECKPOINT 1300
+CHECKPOINT 1700
+30 NONE
+3 SPACE              # титул -> attract
+150 NONE
+3 SPACE              # -> SELECT
+60 NONE
+3 1                  # KEYBOARD
+60 NONE
+3 5                  # DEMO (ставит $F0DB=$FF)
+400 NONE             # смотрим демо с оверлеем
+3 SPACE              # возможно, сброс/старт
+400 NONE
+3 6                  # START GAME
+3 SPACE
+400 NONE
+3 6
+3 SPACE
+3 5
+400 NONE
+# --- активные клавиши во время пролёта ---
+200 q
+200 5
+200 SPACE
+200 j 5
+- NONE

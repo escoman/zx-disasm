@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>rzxplay.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">rzxplay.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="rzxplay-py">
+<h1>rzxplay.py<a class="headerlink" href="#rzxplay-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> [options] FILE [OUTFILE]</p>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> plays an RZX file. If ‘OUTFILE’ is given, an SZX or Z80 snapshot
+or an RZX file is written after playback has completed.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="option-list">
+<dt><kbd><span class="option">-c</span>, <span class="option">--cmio</span></kbd></dt>
+<dd><p>Simulate memory and I/O contention delays and the MEMPTR register.</p>
+</dd>
+<dt><kbd><span class="option">--flags <var>FLAGS</var></span></kbd></dt>
+<dd><p>Set playback flags. Do <code class="docutils literal notranslate"><span class="pre">--flags</span> <span class="pre">help</span></code> for more information, or see the
+section on <code class="docutils literal notranslate"><span class="pre">FLAGS</span></code> below.</p>
+</dd>
+<dt><kbd><span class="option">--force</span></kbd></dt>
+<dd><p>Force playback when an unsupported machine is detected.</p>
+</dd>
+<dt><kbd><span class="option">--fps <var>FPS</var></span></kbd></dt>
+<dd><p>Run at this many frames per second (default: 50). 0 means maximum speed.</p>
+</dd>
+<dt><kbd><span class="option">--map <var>FILE</var></span></kbd></dt>
+<dd><p>Log addresses of executed instructions to a file.</p>
+</dd>
+<dt><kbd><span class="option">--no-screen</span></kbd></dt>
+<dd><p>Run without a screen.</p>
+</dd>
+<dt><kbd><span class="option">--python</span></kbd></dt>
+<dd><p>Use the pure Python Z80 simulator even if the C version is available.</p>
+</dd>
+<dt><kbd><span class="option">--quiet</span></kbd></dt>
+<dd><p>Don’t print progress percentage during playback.</p>
+</dd>
+<dt><kbd><span class="option">--scale <var>SCALE</var></span></kbd></dt>
+<dd><p>Scale the display up by this factor (1-4; default: 2).</p>
+</dd>
+<dt><kbd><span class="option">--snapshot <var>FILE</var></span></kbd></dt>
+<dd><p>Specify an external snapshot file to start with.</p>
+</dd>
+<dt><kbd><span class="option">--stop <var>FRAMES</var></span></kbd></dt>
+<dd><p>Stop after playing this many frames.</p>
+</dd>
+<dt><kbd><span class="option">--trace <var>FILE</var></span></kbd></dt>
+<dd><p>Log executed instructions to a file.</p>
+</dd>
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+</dl>
+</section>
+<section id="supported-machines">
+<h2>SUPPORTED MACHINES<a class="headerlink" href="#supported-machines" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> can play RZX files that were recorded in 48K, 128K or +2 mode
+with no peripherals (e.g. Interface 1) attached. If any peripherals are
+attached, playback may fail. The <code class="docutils literal notranslate"><span class="pre">--force</span></code> option can be used to make
+<code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> attempt playback of a file that was recorded on an unsupported
+machine, but it is unlikely to play to the end.</p>
+</section>
+<section id="screen">
+<h2>SCREEN<a class="headerlink" href="#screen" title="Link to this heading">¶</a></h2>
+<p>If pygame is installed, <code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> will use it to render the Spectrum’s
+screen contents at 50 frames per second by default. Use the <code class="docutils literal notranslate"><span class="pre">--fps</span></code> option
+to change the frame rate. Specifying <code class="docutils literal notranslate"><span class="pre">--fps</span> <span class="pre">0</span></code> makes <code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> run at
+maximum speed. To disable the screen and make <code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> run even faster,
+use the <code class="docutils literal notranslate"><span class="pre">--no-screen</span></code> option.</p>
+</section>
+<section id="code-execution-map">
+<h2>CODE EXECUTION MAP<a class="headerlink" href="#code-execution-map" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--map</span></code> option can be used to log the addresses of instructions executed
+during playback to a file. This file can then be used by <code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span></code> to
+produce a control file. If the file specified by the <code class="docutils literal notranslate"><span class="pre">--map</span></code> option already
+exists, any addresses it contains will be merged with those of the instructions
+executed.</p>
+</section>
+<section id="flags">
+<h2>FLAGS<a class="headerlink" href="#flags" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--flags</span></code> option sets flags that control the playback of RZX frames when
+interrupts are enabled. If an RZX file fails to play to completion, setting one
+or more of these flags may help. <code class="docutils literal notranslate"><span class="pre">FLAGS</span></code> is the sum of the following values,
+chosen according to the desired outcome:</p>
+<ul class="simple">
+<li><p>1 - When the last instruction in a frame is either ‘LD A,I’ or ‘LD A,R’,
+reset bit 2 of the flags register. This is the expected behaviour of a real
+Z80, but some RZX files fail when this flag is set.</p></li>
+<li><p>2 - When the last instruction in a frame is ‘EI’, and the next frame is a
+short one (i.e. has a fetch count of 1 or 2), block the interrupt in the next
+frame. By default, and according to RZX convention, <code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> accepts an
+interrupt at the start of every frame except the first, regardless of whether
+the instruction just executed would normally block it. However, some RZX
+files contain a short frame immediately after an ‘EI’ to indicate that the
+interrupt should in fact be blocked, and therefore require this flag to be
+set to play back correctly.</p></li>
+<li><p>4 - Ignore any snapshots after the first one. By default, <code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> will
+use a snapshot embedded in an RZX file to update its internal state (i.e.
+memory and registers) before continuing to process the next input recording
+block. However, some RZX files created by the Fuse emulator do not play
+correctly under that scheme, and require this flag to be set.</p></li>
+</ul>
+</section>
+<section id="output-file">
+<h2>OUTPUT FILE<a class="headerlink" href="#output-file" title="Link to this heading">¶</a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">OUTFILE</span></code> is given, and ends with either ‘.z80’ or ‘.szx’, then a snapshot
+in the corresponding format is written when playback ends. Similarly, if
+<code class="docutils literal notranslate"><span class="pre">OUTFILE</span></code> ends with ‘.rzx’, then an RZX file is written when playback ends.
+However, this makes sense only if <code class="docutils literal notranslate"><span class="pre">--stop</span></code> is used to end playback somewhere
+in the middle of the input RZX file, otherwise the output RZX file will be
+empty (i.e. contain no frames).</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Play <code class="docutils literal notranslate"><span class="pre">game.rzx</span></code>:</p></li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">rzxplay.py</span> <span class="pre">game.rzx</span></code></div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Log the instructions executed while playing <code class="docutils literal notranslate"><span class="pre">game.rzx</span></code>:</p></li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">rzxplay.py</span> <span class="pre">--trace</span> <span class="pre">game.log</span> <span class="pre">game.rzx</span></code></div>
+</div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Play only 100 frames of <code class="docutils literal notranslate"><span class="pre">game.rzx</span></code> and then write <code class="docutils literal notranslate"><span class="pre">game-100.rzx</span></code>:</p></li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">rzxplay.py</span> <span class="pre">--stop</span> <span class="pre">100</span> <span class="pre">game.rzx</span> <span class="pre">game-100.rzx</span></code></div>
+</div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">rzxplay.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#supported-machines">SUPPORTED MACHINES</a></li>
+<li><a class="reference internal" href="#screen">SCREEN</a></li>
+<li><a class="reference internal" href="#code-execution-map">CODE EXECUTION MAP</a></li>
+<li><a class="reference internal" href="#flags">FLAGS</a></li>
+<li><a class="reference internal" href="#output-file">OUTPUT FILE</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/rzxplay.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">rzxplay.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

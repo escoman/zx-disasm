@@ -1,0 +1,192 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "SNA2CTL.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+sna2ctl.py \- generate a control file for a binary file or a snapshot
+.SH SYNOPSIS
+.sp
+\fBsna2ctl.py\fP [options] FILE
+.SH DESCRIPTION
+.sp
+\fBsna2ctl.py\fP generates a control file for a binary (raw memory) file or a
+SNA, SZX or Z80 snapshot. The control file is written to standard output. When
+FILE is \(aq\-\(aq, \fBsna2ctl.py\fP reads standard input as a binary file.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B  \-C\fP,\fB  \-\-comments
+Generate instruction comments.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-e, \-\-end \fIADDR\fP
+Stop at this address. The default end address is 65536. \fIADDR\fP must be a
+decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-h\fP,\fB  \-\-hex
+Write upper case hexadecimal addresses.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-I, \-\-ini \fIparam=value\fP
+Set the value of a configuration parameter (see \fBCONFIGURATION\fP),
+overriding any value found in \fBskoolkit.ini\fP\&. This option may be used
+multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-l\fP,\fB  \-\-hex\-lower
+Write lower case hexadecimal addresses.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-m, \-\-map \fIFILE\fP
+Specify a code execution map to use. Code execution maps produced by
+\fBrzxplay.py\fP and \fBtrace.py\fP, and by the Fuse, SpecEmu, Spud, Zero and Z80
+Spectrum emulators are supported.
+.TP
+.B \-o, \-\-org \fIADDR\fP
+Specify the origin address of a binary file. The default origin address is
+65536 minus the length of the file. \fIADDR\fP must be a decimal number, or a
+hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-p, \-\-page \fIPAGE\fP
+Specify the page (0\-7) of a 128K snapshot to map to 49152\-65535.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-r\fP,\fB  \-\-handle\-rst
+Handle RST instruction arguments.
+.TP
+.B  \-\-show\-config
+Show configuration parameter values.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-s, \-\-start \fIADDR\fP
+Start at this address. The default start address is 16384 for a snapshot, or
+the origin address for a raw memory file. \fIADDR\fP must be a decimal number, or
+a hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.SH CONFIGURATION
+.sp
+\fBsna2ctl.py\fP will read configuration from a file named \fBskoolkit.ini\fP in
+the current working directory or in \fB~/.skoolkit\fP, if present. The recognised
+configuration parameters are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B Comments
+Generate instruction comments (\fB1\fP), or don\(aqt (\fB0\fP, the
+default).
+.TP
+.B Dictionary
+The name of a file containing a list of allowed words, one per
+line. If specified, a string of characters will be marked as text only if
+it contains at least one of the words in this file.
+.TP
+.B HandleRST
+Handle RST instruction arguments (\fB1\fP), or don\(aqt (\fB0\fP, the
+default).
+.TP
+.B Hex
+Write addresses in decimal (\fB0\fP, the default), lower case hexadecimal
+(\fB1\fP),  or upper case hexadecimal (\fB2\fP).
+.TP
+.B TextChars
+Characters eligible for being marked as text (default: letters,
+digits, space, and the following non\-alphanumeric characters:
+\fB!\(dq$%&\e\(aq()*+,\-./:;<=>?[]\fP).
+.TP
+.B TextMinLengthCode
+The minimum length of a string of characters eligible for
+being marked as text in a block identified as code (default: \fB12\fP).
+.TP
+.B TextMinLengthData
+The minimum length of a string of characters eligible for
+being marked as text in a block identified as data (default: \fB3\fP).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters must appear in a \fB[sna2ctl]\fP section. For example,
+to make \fBsna2ctl.py\fP write upper case hexadecimal addresses by default
+(without having to use the \fB\-h\fP option on the command line), add the
+following section to \fBskoolkit.ini\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+[sna2ctl]
+Hex=2
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters may also be set on the command line by using the
+\fB\-\-ini\fP option. Parameter values set this way will override any found in
+\fBskoolkit.ini\fP\&.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Generate a control file (using rudimentary static code analysis) for
+\fBgame.z80\fP named \fBgame.ctl\fP:
+.nf
+
+.in +2
+\fBsna2ctl.py game.z80 > game.ctl\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Generate a control file (using a profile produced by the Fuse emulator) for
+\fBgame.sna\fP named \fBgame.ctl\fP:
+.nf
+
+.in +2
+\fBsna2ctl.py \-m game.profile game.sna > game.ctl\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

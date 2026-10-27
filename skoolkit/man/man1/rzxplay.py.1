@@ -1,0 +1,178 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "RZXPLAY.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+rzxplay.py \- play an RZX file
+.SH SYNOPSIS
+.sp
+\fBrzxplay.py\fP [options] FILE [OUTFILE]
+.SH DESCRIPTION
+.sp
+\fBrzxplay.py\fP plays an RZX file. If \(aqOUTFILE\(aq is given, an SZX or Z80 snapshot
+or an RZX file is written after playback has completed.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B  \-c\fP,\fB  \-\-cmio
+Simulate memory and I/O contention delays and the MEMPTR register.
+.TP
+.BI \-\-flags \ FLAGS
+Set playback flags. Do \fB\-\-flags help\fP for more information, or see the
+section on \fBFLAGS\fP below.
+.TP
+.B  \-\-force
+Force playback when an unsupported machine is detected.
+.TP
+.BI \-\-fps \ FPS
+Run at this many frames per second (default: 50). 0 means maximum speed.
+.TP
+.BI \-\-map \ FILE
+Log addresses of executed instructions to a file.
+.TP
+.B  \-\-no\-screen
+Run without a screen.
+.TP
+.B  \-\-python
+Use the pure Python Z80 simulator even if the C version is available.
+.TP
+.B  \-\-quiet
+Don\(aqt print progress percentage during playback.
+.TP
+.BI \-\-scale \ SCALE
+Scale the display up by this factor (1\-4; default: 2).
+.TP
+.BI \-\-snapshot \ FILE
+Specify an external snapshot file to start with.
+.TP
+.BI \-\-stop \ FRAMES
+Stop after playing this many frames.
+.TP
+.BI \-\-trace \ FILE
+Log executed instructions to a file.
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.SH SUPPORTED MACHINES
+.sp
+\fBrzxplay.py\fP can play RZX files that were recorded in 48K, 128K or +2 mode
+with no peripherals (e.g. Interface 1) attached. If any peripherals are
+attached, playback may fail. The \fB\-\-force\fP option can be used to make
+\fBrzxplay.py\fP attempt playback of a file that was recorded on an unsupported
+machine, but it is unlikely to play to the end.
+.SH SCREEN
+.sp
+If pygame is installed, \fBrzxplay.py\fP will use it to render the Spectrum\(aqs
+screen contents at 50 frames per second by default. Use the \fB\-\-fps\fP option
+to change the frame rate. Specifying \fB\-\-fps 0\fP makes \fBrzxplay.py\fP run at
+maximum speed. To disable the screen and make \fBrzxplay.py\fP run even faster,
+use the \fB\-\-no\-screen\fP option.
+.SH CODE EXECUTION MAP
+.sp
+The \fB\-\-map\fP option can be used to log the addresses of instructions executed
+during playback to a file. This file can then be used by \fBsna2ctl.py\fP to
+produce a control file. If the file specified by the \fB\-\-map\fP option already
+exists, any addresses it contains will be merged with those of the instructions
+executed.
+.SH FLAGS
+.sp
+The \fB\-\-flags\fP option sets flags that control the playback of RZX frames when
+interrupts are enabled. If an RZX file fails to play to completion, setting one
+or more of these flags may help. \fBFLAGS\fP is the sum of the following values,
+chosen according to the desired outcome:
+.INDENT 0.0
+.IP \(bu 2
+1 \- When the last instruction in a frame is either \(aqLD A,I\(aq or \(aqLD A,R\(aq,
+reset bit 2 of the flags register. This is the expected behaviour of a real
+Z80, but some RZX files fail when this flag is set.
+.IP \(bu 2
+2 \- When the last instruction in a frame is \(aqEI\(aq, and the next frame is a
+short one (i.e. has a fetch count of 1 or 2), block the interrupt in the next
+frame. By default, and according to RZX convention, \fBrzxplay.py\fP accepts an
+interrupt at the start of every frame except the first, regardless of whether
+the instruction just executed would normally block it. However, some RZX
+files contain a short frame immediately after an \(aqEI\(aq to indicate that the
+interrupt should in fact be blocked, and therefore require this flag to be
+set to play back correctly.
+.IP \(bu 2
+4 \- Ignore any snapshots after the first one. By default, \fBrzxplay.py\fP will
+use a snapshot embedded in an RZX file to update its internal state (i.e.
+memory and registers) before continuing to process the next input recording
+block. However, some RZX files created by the Fuse emulator do not play
+correctly under that scheme, and require this flag to be set.
+.UNINDENT
+.SH OUTPUT FILE
+.sp
+If \fBOUTFILE\fP is given, and ends with either \(aq.z80\(aq or \(aq.szx\(aq, then a snapshot
+in the corresponding format is written when playback ends. Similarly, if
+\fBOUTFILE\fP ends with \(aq.rzx\(aq, then an RZX file is written when playback ends.
+However, this makes sense only if \fB\-\-stop\fP is used to end playback somewhere
+in the middle of the input RZX file, otherwise the output RZX file will be
+empty (i.e. contain no frames).
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Play \fBgame.rzx\fP:
+.UNINDENT
+.nf
+
+.in +2
+\fBrzxplay.py game.rzx\fP
+.in -2
+.fi
+.sp
+.INDENT 0.0
+.IP 2. 3
+Log the instructions executed while playing \fBgame.rzx\fP:
+.UNINDENT
+.nf
+
+.in +2
+\fBrzxplay.py \-\-trace game.log game.rzx\fP
+.in -2
+.fi
+.sp
+.INDENT 0.0
+.IP 3. 3
+Play only 100 frames of \fBgame.rzx\fP and then write \fBgame\-100.rzx\fP:
+.UNINDENT
+.nf
+
+.in +2
+\fBrzxplay.py \-\-stop 100 game.rzx game\-100.rzx\fP
+.in -2
+.fi
+.sp
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

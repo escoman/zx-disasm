@@ -1,0 +1,27 @@
+# Отладочные артефакты разборов (снапшоты-базы, чекпоинты прогонов, PNG, exec-карты)
+games/*/tmp/
+
+# Python: кэш байткода и рантайм-файлы
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Python: артефакты сборки и окружения
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+
+# Логи и временные файлы
+*.log
+*.err
+*.tmp
+.DS_Store
+Thumbs.db

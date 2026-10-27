@@ -1,0 +1,76 @@
+# br1_mission — выживание и прохождение миссии: манёвры + огонь циклами, паузы на восстановление
+CHECKPOINT 2000
+CHECKPOINT 5000
+CHECKPOINT 8000
+CHECKPOINT 11000
+CHECKPOINT 14000
+CHECKPOINT 17000
+CHECKPOINT 20000
+CHECKPOINT 23000
+CHECKPOINT 26000
+CHECKPOINT 29000
+CHECKPOINT 32000
+CHECKPOINT 35000
+CHECKPOINT 38000
+CHECKPOINT 41000
+CHECKPOINT 44000
+CHECKPOINT 47000
+30 NONE
+3 SPACE
+150 NONE
+3 SPACE
+60 NONE
+3 1
+60 NONE
+3 6
+3 SPACE
+# --- цикл 1 ---
+300 q 5
+300 a 5
+300 j 5
+300 k 5
+200 q j 5
+200 a k 5
+120 NONE
+# --- цикл 2 (инвертированный) ---
+300 k 5
+300 j 5
+300 a 5
+300 q 5
+200 q k 5
+200 a j 5
+120 NONE
+# --- цикл 3 ---
+400 q 5
+400 k 5
+400 a 5
+400 j 5
+250 NONE
+# --- цикл 4 ---
+350 q j 5
+350 a k 5
+300 q 5
+300 k 5
+200 NONE
+# --- цикл 5 ---
+400 a 5
+400 j 5
+300 q k 5
+300 NONE
+# --- цикл 6 ---
+500 q 5
+500 k 5
+400 a j 5
+300 NONE
+# --- цикл 7 ---
+400 q k 5
+400 a j 5
+300 j 5
+300 q 5
+250 NONE
+# --- цикл 8 ---
+500 a 5
+500 q 5
+400 k 5
+400 j 5
+- NONE

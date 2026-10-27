@@ -1,0 +1,23 @@
+# br3_gameover — смерть от бездействия, GAME OVER, затем клавиши в аттракте/меню
+CHECKPOINT 1500
+CHECKPOINT 3000
+CHECKPOINT 4500
+CHECKPOINT 6000
+CHECKPOINT 7500
+CHECKPOINT 9000
+CHECKPOINT 11000
+CHECKPOINT 13000
+CHECKPOINT 15000
+30 NONE
+3 SPACE
+150 NONE
+3 SPACE
+60 NONE
+3 1
+60 NONE
+3 6
+3 SPACE
+# --- немного действия, затем стойние (смерть) ---
+300 q 5
+300 k 5
+- NONE                 # ждём смерть и GAME OVER, меню/аттракт сами

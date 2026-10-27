@@ -1,0 +1,323 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "SNA2SKOOL.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+sna2skool.py \- convert a binary file or a snapshot into a skool file
+.SH SYNOPSIS
+.sp
+\fBsna2skool.py\fP [options] FILE
+.SH DESCRIPTION
+.sp
+\fBsna2skool.py\fP converts a binary (raw memory) file or a SNA, SZX or Z80
+snapshot into a skool file. The skool file is written to standard output. When
+FILE is \(aq\-\(aq, \fBsna2skool.py\fP reads from standard input.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B \-c, \-\-ctl \fIPATH\fP
+Specify a control file to use, or a directory from which to read control
+files. By default, any files whose names start with the input snapshot name
+(minus the .bin, .sna, .szx or .z80 suffix, if any) and end with .ctl are
+used, if present. If \fIPATH\fP is \(aq\-\(aq, standard input is used. If \fIPATH\fP is \(aq0\(aq,
+no control file is used. This option may be used multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-C\fP,\fB  \-\-comments
+Generate instruction comments.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-d, \-\-defb \fISIZE\fP
+Disassemble as DEFB statements of this size (instead of as code).
+.TP
+.B \-e, \-\-end \fIADDR\fP
+Stop disassembling at this address; the default end address is 65536. \fIADDR\fP
+must be a decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-H\fP,\fB  \-\-hex
+Write hexadecimal addresses and operands in the disassembly.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-I, \-\-ini \fIparam=value\fP
+Set the value of a configuration parameter (see \fBCONFIGURATION\fP),
+overriding any value found in \fBskoolkit.ini\fP\&. This option may be used
+multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-l\fP,\fB  \-\-lower
+Write the disassembly in lower case.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-o, \-\-org \fIADDR\fP
+Specify the origin address of a binary (.bin) file; the default origin
+address is 65536 minus the length of the file. \fIADDR\fP must be a decimal
+number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-p, \-\-page \fIPAGE\fP
+Specify the page (0\-7) of a 128K snapshot to map to 49152\-65535.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-r\fP,\fB  \-\-handle\-rst
+Handle RST instruction arguments.
+.TP
+.B  \-\-show\-config
+Show configuration parameter values.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-s, \-\-start \fIADDR\fP
+Start disassembling at this address; the default start address is 16384 for a
+snapshot, or the origin address for a raw memory file. \fIADDR\fP must be a
+decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-w, \-\-line\-width \fIWIDTH\fP
+Set the maximum line width of the skool file (79 by default).
+.UNINDENT
+.SH CONFIGURATION
+.sp
+\fBsna2skool.py\fP will read configuration from a file named \fBskoolkit.ini\fP in
+the current working directory or in \fB~/.skoolkit\fP, if present. The recognised
+configuration parameters are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B Base
+Write addresses and instruction operands in hexadecimal (\fB16\fP) or
+decimal (\fB10\fP, the default).
+.TP
+.B Case
+Write the disassembly in lower case (\fB1\fP) or upper case (\fB2\fP, the
+default).
+.TP
+.B Comments
+Generate instruction comments (\fB1\fP), or don\(aqt (\fB0\fP, the
+default).
+.TP
+.B CommentWidthMin
+Minimum width of the instruction comment field in the skool
+file (default: \fB10\fP).
+.TP
+.B DefbSize
+Maximum number of bytes in a DEFB statement (default: \fB8\fP).
+.TP
+.B DefmSize
+Maximum number of characters in a DEFM statement (default:
+\fB65\fP).
+.TP
+.B DefwSize
+Maximum number of words in a DEFW statement (default: \fB1\fP).
+.TP
+.B EntryPointRef
+Template used to format the comment for an entry point with
+exactly one referrer (default: \fBThis entry point is used by the routine at
+{ref}.\fP).
+.TP
+.B EntryPointRefs
+Template used to format the comment for an entry point with
+two or more referrers (default: \fBThis entry point is used by the routines
+at {refs} and {ref}.\fP).
+.TP
+.B HandleRST
+Handle RST instruction arguments (\fB1\fP), or don\(aqt (\fB0\fP, the
+default).
+.TP
+.B InstructionWidth
+Minimum width of the instruction field in the skool file
+(default: \fB13\fP).
+.TP
+.B LineWidth
+Maximum line width of the skool file (default: \fB79\fP).
+.TP
+.B ListRefs
+When to add a comment that lists routine or entry point referrers:
+never (\fB0\fP), if no other comment is defined at the entry point (\fB1\fP,
+the default), or always (\fB2\fP).
+.TP
+.B Opcodes
+Comma\-separated list of values specifying additional opcode
+sequences to disassemble (see below).
+.TP
+.B Ref
+Template used to format the comment for a routine with exactly one
+referrer (default: \fBUsed by the routine at {ref}.\fP).
+.TP
+.B RefFormat
+Template used to format referrers in the \fB{ref}\fP and \fB{refs}\fP
+fields of the \fBRef\fP and \fBRefs\fP templates (default: \fB#R{address}\fP).
+The replacement field \fBaddress\fP is the address of the referrer formatted
+as a decimal or hexadecimal number in accordance with the \fBBase\fP and
+\fBCase\fP configuration parameters.
+.TP
+.B Refs
+Template used to format the comment for a routine with two or more
+referrers (default: \fBUsed by the routines at {refs} and {ref}.\fP).
+.TP
+.B Semicolons
+Block types (\fBb\fP, \fBc\fP, \fBg\fP, \fBi\fP, \fBs\fP, \fBt\fP, \fBu\fP,
+\fBw\fP) in which comment semicolons are written for instructions that have
+no comment (default: \fBc\fP).
+.TP
+.B Text
+Show ASCII text in the comment fields (\fB1\fP), or don\(aqt (\fB0\fP, the
+default).
+.TP
+.B Timings
+Show instruction timings in the comment fields (\fB1\fP), or don\(aqt
+(\fB0\fP, the default).
+.TP
+.B Title\-b
+Template used to format the title for an untitled \(aqb\(aq block
+(default: \fBData block at {address}\fP).
+.TP
+.B Title\-c
+Template used to format the title for an untitled \(aqc\(aq block
+(default: \fBRoutine at {address}\fP).
+.TP
+.B Title\-g
+Template used to format the title for an untitled \(aqg\(aq block
+(default: \fBGame status buffer entry at {address}\fP).
+.TP
+.B Title\-i
+Template used to format the title for an untitled \(aqi\(aq block
+(default: \fBIgnored\fP).
+.TP
+.B Title\-s
+Template used to format the title for an untitled \(aqs\(aq block
+(default: \fBUnused\fP).
+.TP
+.B Title\-t
+Template used to format the title for an untitled \(aqt\(aq block
+(default: \fBMessage at {address}\fP).
+.TP
+.B Title\-u
+Template used to format the title for an untitled \(aqu\(aq block
+(default: \fBUnused\fP).
+.TP
+.B Title\-w
+Template used to format the title for an untitled \(aqw\(aq block
+(default: \fBData block at {address}\fP).
+.TP
+.B Wrap
+Disassemble an instruction that wraps around the 64K boundary (\fB1\fP),
+or don\(aqt (\fB0\fP, the default).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+The \fBOpcodes\fP list is empty by default, but may contain any of the following
+values:
+.INDENT 0.0
+.INDENT 3.5
+.nf
+
+\fBED63\fP \- LD (nn),HL (4\-byte variant)
+\fBED6B\fP \- LD HL,(nn) (4\-byte variant)
+\fBED70\fP \- IN F,(C)
+\fBED71\fP \- OUT (C),0
+\fBIM\fP \- IM 0/1/2 variants (ED followed by 4E/66/6E/76/7E)
+\fBNEG\fP \- NEG variants (ED followed by 4C/54/5C/64/6C/74/7C)
+\fBRETN\fP \- RETN variants (ED followed by 55/5D/65/6D/75/7D)
+\fBXYCB\fP \- undocumented instructions with DDCB or FDCB opcode prefixes
+\fBALL\fP \- all of the above
+.fi
+.sp
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters must appear in a \fB[sna2skool]\fP section. For example,
+to make \fBsna2skool.py\fP generate hexadecimal skool files with a line width of
+120 characters by default (without having to use the \fB\-H\fP and \fB\-w\fP options
+on the command line), add the following section to \fBskoolkit.ini\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+[sna2skool]
+Base=16
+LineWidth=120
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters may also be set on the command line by using the
+\fB\-\-ini\fP option. Parameter values set this way will override any found in
+\fBskoolkit.ini\fP\&.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Convert \fBgame.z80\fP into a skool file named \fBgame.skool\fP:
+.nf
+
+.in +2
+\fBsna2skool.py game.z80 > game.skool\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Convert \fBgame.sna\fP into a skool file, beginning the disassembly at 24576:
+.nf
+
+.in +2
+\fBsna2skool.py \-s 24576 game.sna > game.skool\fP
+.in -2
+.fi
+.sp
+.IP 3. 3
+Convert \fBgame.z80\fP into a skool file, using the control file
+\fBblocks.ctl\fP to identify code and data blocks:
+.nf
+
+.in +2
+\fBsna2skool.py \-c blocks.ctl game.z80 > game.skool\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

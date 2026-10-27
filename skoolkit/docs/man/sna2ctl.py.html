@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>sna2ctl.py &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=fe13c473" />
+    
+    <script src="../_static/documentation_options.js?v=2236d03e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">sna2ctl.py</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sna2ctl-py">
+<h1>sna2ctl.py<a class="headerlink" href="#sna2ctl-py" title="Link to this heading">¶</a></h1>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span></code> [options] FILE</p>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span></code> generates a control file for a binary (raw memory) file or a
+SNA, SZX or Z80 snapshot. The control file is written to standard output. When
+FILE is ‘-’, <code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span></code> reads standard input as a binary file.</p>
+</section>
+<section id="options">
+<h2>OPTIONS<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
+<dl class="option-list">
+<dt><kbd><span class="option">-C</span>, <span class="option">--comments</span></kbd></dt>
+<dd><p>Generate instruction comments.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-e, –end <cite>ADDR</cite></dt><dd><p>Stop at this address. The default end address is 65536. <cite>ADDR</cite> must be a
+decimal number, or a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--hex</span></kbd></dt>
+<dd><p>Write upper case hexadecimal addresses.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-I, –ini <cite>param=value</cite></dt><dd><p>Set the value of a configuration parameter (see <code class="docutils literal notranslate"><span class="pre">CONFIGURATION</span></code>),
+overriding any value found in <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>. This option may be used
+multiple times.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-l</span>, <span class="option">--hex-lower</span></kbd></dt>
+<dd><p>Write lower case hexadecimal addresses.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-m, –map <cite>FILE</cite></dt><dd><p>Specify a code execution map to use. Code execution maps produced by
+<code class="docutils literal notranslate"><span class="pre">rzxplay.py</span></code> and <code class="docutils literal notranslate"><span class="pre">trace.py</span></code>, and by the Fuse, SpecEmu, Spud, Zero and Z80
+Spectrum emulators are supported.</p>
+</dd>
+<dt>-o, –org <cite>ADDR</cite></dt><dd><p>Specify the origin address of a binary file. The default origin address is
+65536 minus the length of the file. <cite>ADDR</cite> must be a decimal number, or a
+hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+<dt>-p, –page <cite>PAGE</cite></dt><dd><p>Specify the page (0-7) of a 128K snapshot to map to 49152-65535.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-r</span>, <span class="option">--handle-rst</span></kbd></dt>
+<dd><p>Handle RST instruction arguments.</p>
+</dd>
+<dt><kbd><span class="option">--show-config</span></kbd></dt>
+<dd><p>Show configuration parameter values.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-s, –start <cite>ADDR</cite></dt><dd><p>Start at this address. The default start address is 16384 for a snapshot, or
+the origin address for a raw memory file. <cite>ADDR</cite> must be a decimal number, or
+a hexadecimal number prefixed by ‘0x’.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></dt>
+<dd><p>Show the SkoolKit version number and exit.</p>
+</dd>
+</dl>
+</section>
+<section id="configuration">
+<h2>CONFIGURATION<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span></code> will read configuration from a file named <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code> in
+the current working directory or in <code class="docutils literal notranslate"><span class="pre">~/.skoolkit</span></code>, if present. The recognised
+configuration parameters are:</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Comments<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate instruction comments (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the
+default).</p>
+</dd>
+<dt class="field-even">Dictionary<span class="colon">:</span></dt>
+<dd class="field-even"><p>The name of a file containing a list of allowed words, one per
+line. If specified, a string of characters will be marked as text only if
+it contains at least one of the words in this file.</p>
+</dd>
+<dt class="field-odd">HandleRST<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Handle RST instruction arguments (<code class="docutils literal notranslate"><span class="pre">1</span></code>), or don’t (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the
+default).</p>
+</dd>
+<dt class="field-even">Hex<span class="colon">:</span></dt>
+<dd class="field-even"><p>Write addresses in decimal (<code class="docutils literal notranslate"><span class="pre">0</span></code>, the default), lower case hexadecimal
+(<code class="docutils literal notranslate"><span class="pre">1</span></code>),  or upper case hexadecimal (<code class="docutils literal notranslate"><span class="pre">2</span></code>).</p>
+</dd>
+<dt class="field-odd">TextChars<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Characters eligible for being marked as text (default: letters,
+digits, space, and the following non-alphanumeric characters:
+<code class="docutils literal notranslate"><span class="pre">!&quot;$%&amp;\'()*+,-./:;&lt;=&gt;?[]</span></code>).</p>
+</dd>
+<dt class="field-even">TextMinLengthCode<span class="colon">:</span></dt>
+<dd class="field-even"><p>The minimum length of a string of characters eligible for
+being marked as text in a block identified as code (default: <code class="docutils literal notranslate"><span class="pre">12</span></code>).</p>
+</dd>
+<dt class="field-odd">TextMinLengthData<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum length of a string of characters eligible for
+being marked as text in a block identified as data (default: <code class="docutils literal notranslate"><span class="pre">3</span></code>).</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Configuration parameters must appear in a <code class="docutils literal notranslate"><span class="pre">[sna2ctl]</span></code> section. For example,
+to make <code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span></code> write upper case hexadecimal addresses by default
+(without having to use the <code class="docutils literal notranslate"><span class="pre">-h</span></code> option on the command line), add the
+following section to <code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[sna2ctl]
+Hex=2
+</pre></div>
+</div>
+<p>Configuration parameters may also be set on the command line by using the
+<code class="docutils literal notranslate"><span class="pre">--ini</span></code> option. Parameter values set this way will override any found in
+<code class="docutils literal notranslate"><span class="pre">skoolkit.ini</span></code>.</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p>Generate a control file (using rudimentary static code analysis) for
+<code class="docutils literal notranslate"><span class="pre">game.z80</span></code> named <code class="docutils literal notranslate"><span class="pre">game.ctl</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span> <span class="pre">game.z80</span> <span class="pre">&gt;</span> <span class="pre">game.ctl</span></code></div>
+</div>
+</div>
+</li>
+<li><p>Generate a control file (using a profile produced by the Fuse emulator) for
+<code class="docutils literal notranslate"><span class="pre">game.sna</span></code> named <code class="docutils literal notranslate"><span class="pre">game.ctl</span></code>:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">sna2ctl.py</span> <span class="pre">-m</span> <span class="pre">game.profile</span> <span class="pre">game.sna</span> <span class="pre">&gt;</span> <span class="pre">game.ctl</span></code></div>
+</div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">sna2ctl.py</a><ul>
+<li><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li><a class="reference internal" href="#options">OPTIONS</a></li>
+<li><a class="reference internal" href="#configuration">CONFIGURATION</a></li>
+<li><a class="reference internal" href="#examples">EXAMPLES</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/man/sna2ctl.py.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">sna2ctl.py</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

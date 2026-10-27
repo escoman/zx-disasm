@@ -1,0 +1,70 @@
+# script_v9 — длинная игровая сессия: старт через 6+SPACE, активное управление
+CHECKPOINT 500
+CHECKPOINT 2000
+CHECKPOINT 4000
+CHECKPOINT 6000
+CHECKPOINT 8000
+CHECKPOINT 10000
+CHECKPOINT 13000
+CHECKPOINT 16000
+CHECKPOINT 20000
+CHECKPOINT 24000
+CHECKPOINT 28000
+CHECKPOINT 32000
+30 NONE
+3 SPACE              # титул -> attract
+150 NONE
+3 SPACE              # -> SELECT
+60 NONE
+3 1                  # KEYBOARD
+60 NONE
+3 6                  # START GAME
+3 SPACE              # подтверждение -> миссия
+# --- цикл активного геймплея ---
+400 q
+400 a
+400 j
+400 k
+400 5
+400 q 5
+400 a 5
+400 j 5
+400 k 5
+400 q j
+400 a k
+400 NONE
+300 1
+300 2
+300 3
+300 4
+400 q
+400 k 5
+600 NONE
+# --- перезапуск после game over: меню само возвращается ---
+3 6
+3 SPACE
+400 a
+400 j
+400 q 5
+400 k 5
+800 NONE
+3 6
+3 SPACE
+600 q
+600 a
+600 j
+600 k
+1000 NONE
+3 6
+3 SPACE
+1500 q 5
+1500 a j
+1500 k 5
+2000 NONE
+3 6
+3 SPACE
+2000 q
+2000 a
+2000 j
+2000 k
+- NONE

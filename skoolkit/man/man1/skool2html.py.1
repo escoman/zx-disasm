@@ -1,0 +1,394 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "SKOOL2HTML.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+skool2html.py \- convert a skool file and ref files to HTML
+.SH SYNOPSIS
+.sp
+\fBskool2html.py\fP [options] SKOOLFILE [REFFILE...]
+.SH DESCRIPTION
+.sp
+\fBskool2html.py\fP converts a skool file and ref files to HTML. When SKOOLFILE
+is \(aq\-\(aq, \fBskool2html.py\fP reads from standard input.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B  \-1\fP,\fB  \-\-asm\-one\-page
+Write all routines and data blocks to a single page. This option is shorthand
+for \fB\-c Game/AsmSinglePage=1\fP\&.
+.TP
+.B  \-a\fP,\fB  \-\-asm\-labels
+Use ASM labels (defined by \fB@label\fP directives).
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-c, \-\-config \fIS/L\fP
+Add the line \fIL\fP to the ref file section \fIS\fP; this option may be used
+multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-C\fP,\fB  \-\-create\-labels
+Create default labels for unlabelled instructions. This option is intended
+for use alongside the \fB\-a\fP option.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-d, \-\-output\-dir \fIDIR\fP
+Specify the directory in which to write files; the default output directory
+is the current working directory.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-D\fP,\fB  \-\-decimal
+Write the disassembly in decimal.
+.TP
+.B  \-H\fP,\fB  \-\-hex
+Write the disassembly in hexadecimal.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-I, \-\-ini \fIparam=value\fP
+Set the value of a configuration parameter (see \fBCONFIGURATION\fP),
+overriding any value found in \fBskoolkit.ini\fP\&. This option may be used
+multiple times.
+.TP
+.B \-j, \-\-join\-css \fINAME\fP
+Concatenate CSS files into a single file with this name.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-l\fP,\fB  \-\-lower
+Write the disassembly in lower case.
+.TP
+.B  \-o\fP,\fB  \-\-rebuild\-images
+Overwrite existing image files.
+.TP
+.B  \-O\fP,\fB  \-\-rebuild\-audio
+Overwrite existing audio files.
+.TP
+.B  \-p\fP,\fB  \-\-package\-dir
+Show the path to the skoolkit package directory and exit.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-P, \-\-pages \fIPAGES\fP
+Write only these pages (when using \fB\-\-write P\fP); \fIPAGES\fP is a
+comma\-separated list of page IDs.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-q\fP,\fB  \-\-quiet
+Be quiet.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-r, \-\-ref\-sections \fIPREFIX\fP
+Show the default ref file sections whose names start with \fIPREFIX\fP and exit.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-R\fP,\fB  \-\-ref\-file
+Show the entire default ref file and exit.
+.TP
+.B  \-s\fP,\fB  \-\-search\-dirs
+Show the locations that \fBskool2html.py\fP searches for resources.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-S, \-\-search \fIDIR\fP
+Add this directory to the resource search path; this option may be used
+multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-show\-config
+Show configuration parameter values.
+.TP
+.B  \-t\fP,\fB  \-\-time
+Show timings.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-T, \-\-theme \fITHEME\fP
+Specify the CSS theme to use; this option may be used multiple times. See the
+section on \fBTHEMES\fP below.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-u\fP,\fB  \-\-upper
+Write the disassembly in upper case.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-var \fIname=value\fP
+Define a variable that can be used by the \fB@if\fP directive and the
+\fB#EVAL\fP, \fB#IF\fP and \fB#MAP\fP macros. This option may be used multiple
+times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-w, \-\-write \fIX\fP
+Write only these files, where \fIX\fP is one or more of:
+.nf
+
+.in +2
+\fBd\fP = Disassembly files   \fBo\fP = Other code
+\fBi\fP = Disassembly index   \fBP\fP = Other pages
+\fBm\fP = Memory maps
+.in -2
+.fi
+.sp
+.TP
+.B \-W, \-\-writer \fICLASS\fP
+Specify the HTML writer class to use; this option is shorthand for
+\fB\-\-config Config/HtmlWriterClass=CLASS\fP\&.
+.UNINDENT
+.SH FILES
+.sp
+\fBskool2html.py\fP searches the following directories for ref files, CSS files,
+JavaScript files, font files, and files listed in the [Resources] section of
+the ref file:
+.nf
+
+\- The directory containing the skool file named on the command line
+\- The current working directory
+\- ./resources
+\- ~/.skoolkit
+\- $PACKAGE_DIR/resources
+\- Any other directories specified by the \fB\-S\fP/\fB\-\-search\fP option
+.fi
+.sp
+.sp
+where $PACKAGE_DIR is the directory in which the skoolkit package is installed
+(as shown by \fBskool2html.py \-p\fP). When you need a reminder of these
+locations, run \fBskool2html.py \-s\fP\&.
+.SH THEMES
+.sp
+The \fB\-T\fP option sets the CSS theme. For example, if \fBgame.ref\fP specifies
+the CSS files to use thus:
+.nf
+
+.in +2
+[Game]
+StyleSheet=skoolkit.css;game.css
+.in -2
+.fi
+.sp
+.sp
+then:
+.nf
+
+.in +2
+\fBskool2html.py \-T dark \-T wide game.skool\fP
+.in -2
+.fi
+.sp
+.sp
+will use the following CSS files, if they exist, in the order listed:
+.nf
+
+.in +2
+skoolkit.css
+skoolkit\-dark.css
+skoolkit\-wide.css
+game.css
+game\-dark.css
+game\-wide.css
+dark.css
+wide.css
+.in -2
+.fi
+.sp
+.SH CONFIGURATION
+.sp
+\fBskool2html.py\fP will read configuration from a file named \fBskoolkit.ini\fP in
+the current working directory or in \fB~/.skoolkit\fP, if present. The recognised
+configuration parameters are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B AsmLabels
+Use ASM labels (\fB1\fP), or don\(aqt (\fB0\fP, the default).
+.TP
+.B AsmOnePage
+Write all routines and data blocks to a single page (\fB1\fP), or
+to multiple pages (\fB0\fP, the default).
+.TP
+.B Base
+Convert addresses and instruction operands to hexadecimal (\fB16\fP) or
+decimal (\fB10\fP), or leave them as they are (\fB0\fP, the default).
+.TP
+.B Case
+Write the disassembly in lower case (\fB1\fP) or upper case (\fB2\fP), or
+leave it as it is (\fB0\fP, the default).
+.TP
+.B CreateLabels
+Create default labels for unlabelled instructions (\fB1\fP), or
+don\(aqt (\fB0\fP, the default).
+.TP
+.B EntryLabel
+The format of the default label for the first instruction in a
+routine or data block (default: \fBL{address}\fP).
+.TP
+.B EntryPointLabel
+The format of the default label for an instruction other
+than the first in a routine or data block (default: \fB{main}_{index}\fP).
+.TP
+.B JoinCss
+If specified, concatenate CSS files into a single file with this
+name.
+.TP
+.B OutputDir
+Write files in this directory (default: \fB\&.\fP).
+.TP
+.B Quiet
+Be quiet (\fB1\fP) or verbose (\fB0\fP, the default).
+.TP
+.B RebuildAudio
+Overwrite existing audio files (\fB1\fP), or leave them alone
+(\fB0\fP, the default).
+.TP
+.B RebuildImages
+Overwrite existing image files (\fB1\fP), or leave them alone
+(\fB0\fP, the default).
+.TP
+.B Search
+Directory to add to the resource search path. To specify two or more
+directories, separate them with commas.
+.TP
+.B Theme
+CSS theme to use. To specify two or more themes, separate them with
+commas.
+.TP
+.B Time
+Show timings (\fB1\fP), or don\(aqt (\fB0\fP, the default).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBEntryLabel\fP and \fBEntryPointLabel\fP are standard Python format strings.
+\fBEntryLabel\fP recognises the following replacement fields:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B address
+The address of the routine or data block as it appears in the skool
+file.
+.TP
+.B location
+The address of the routine or data block as an integer.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBEntryPointLabel\fP recognises the following replacement fields:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B address
+The address of the instruction as it appears in the skool file.
+.TP
+.B index
+0 for the first unlabelled instruction in the routine or data block,
+1 for the second, etc.
+.TP
+.B location
+The address of the instruction as an integer.
+.TP
+.B main
+The label of the first instruction in the routine or data block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters must appear in a \fB[skool2html]\fP section. For
+example, to make \fBskool2html.py\fP use ASM labels and write the disassembly in
+hexadecimal by default (without having to use the \fB\-H\fP and \fB\-a\fP options on
+the command line), add the following section to \fBskoolkit.ini\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+[skool2html]
+AsmLabels=1
+Base=16
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters may also be set on the command line by using the
+\fB\-\-ini\fP option. Parameter values set this way will override any found in
+\fBskoolkit.ini\fP\&.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Build the entire HTML disassembly for \(aqgame\(aq:
+.nf
+
+.in +2
+\fBskool2html.py game.skool\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Build the entire HTML disassembly for \(aqgame\(aq in lower case, using
+hexadecimal notation, in the \fBhtml\fP directory:
+.nf
+
+.in +2
+\fBskool2html.py \-d html \-l \-H game.skool\fP
+.in -2
+.fi
+.sp
+.IP 3. 3
+Write only the \(aqBugs\(aq and \(aqPokes\(aq pages for \(aqgame\(aq:
+.nf
+
+.in +2
+\fBskool2html.py \-w P \-P Bugs,Pokes game.skool\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

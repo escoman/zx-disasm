@@ -1,0 +1,48 @@
+# coverage script v1 — разведка: старт с титула, перебор типичных игровых клавиш
+# формат: <длительность в кадрах> <клавиши...> ; NONE = без нажатий
+CHECKPOINT 700
+CHECKPOINT 1400
+CHECKPOINT 2000
+
+20 NONE              # дать игре дойти до титула
+3 SPACE              # "press any key" (ROM SCAN-K1: биты 0-4 любого ряда)
+60 NONE              # что там после старта?
+3 ENTER
+60 NONE
+3 0                  # стандартный джойстик 67890
+7 NONE
+3 9
+7 NONE
+3 8
+7 NONE
+3 7
+7 NONE
+3 6
+60 NONE              # подвигались?
+3 CS+5               # курсорные
+5 NONE
+3 CS+6
+5 NONE
+3 CS+7
+5 NONE
+3 CS+8
+60 NONE
+3 z                  # zxcv/asdfgh variants
+5 NONE
+3 x
+5 NONE
+3 c
+5 NONE
+3 q                  # Q=fire-ish
+5 NONE
+3 a
+5 NONE
+3 p                  # HOVER controls guess
+5 NONE
+3 o
+5 NONE
+3 i
+5 NONE
+3 5                  # 5 = fire on kempston-like
+5 NONE
+- NONE               # дожить остаток бюджета

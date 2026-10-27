@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>What is SkoolKit? &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fe13c473" />
+    
+    <script src="_static/documentation_options.js?v=2236d03e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installing and using SkoolKit" href="usage.html" />
+    <link rel="prev" title="SkoolKit manual" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Installing and using SkoolKit"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="SkoolKit manual"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What is SkoolKit?</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="what-is-skoolkit">
+<h1>What is SkoolKit?<a class="headerlink" href="#what-is-skoolkit" title="Link to this heading">¶</a></h1>
+<p>SkoolKit is a collection of utilities that can be used to disassemble a
+<a class="reference external" href="https://en.wikipedia.org/wiki/ZX_Spectrum">Spectrum</a> game (or indeed any piece of Spectrum software written in machine
+code) into a format known as a skool file. Then, from this skool file, you can
+use SkoolKit to create a browsable disassembly in HTML format, or a
+re-assemblable disassembly in assembly language. So the skool file is - from
+start to finish as you develop it by organising and annotating the code - the
+common ‘source’ for both the reader-friendly HTML version of the disassembly,
+and the developer- and assembler-friendly version of the disassembly.</p>
+<p>The latest stable release of SkoolKit can always be obtained from
+<a class="reference external" href="https://skoolkit.ca">skoolkit.ca</a>; the latest development version can be found on <a class="reference external" href="https://github.com/skoolkid/">GitHub</a>.</p>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
+<p>With SkoolKit you can:</p>
+<ul class="simple">
+<li><p>use <a class="reference internal" href="commands.html#sna2ctl-py"><span class="std std-ref">sna2ctl.py</span></a> to generate a <a class="reference internal" href="control-files.html#controlfiles"><span class="std std-ref">control file</span></a> (an
+attempt to identify routines and data blocks by static analysis) from a
+snapshot (SNA, SZX or Z80) or raw memory file</p></li>
+<li><p>enable <a class="reference internal" href="commands.html#sna2ctl-py"><span class="std std-ref">sna2ctl.py</span></a> to generate a much better control file that more
+reliably distinguishes code from data by using a code execution map produced
+by an emulator, <a class="reference internal" href="commands.html#rzxplay-py"><span class="std std-ref">rzxplay.py</span></a> or <a class="reference internal" href="commands.html#trace-py"><span class="std std-ref">trace.py</span></a></p></li>
+<li><p>use <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> along with this control file to produce a disassembly
+of a snapshot or raw memory file</p></li>
+<li><p>add annotations to this disassembly (or the control file) as you discover the
+purpose of each routine and data block</p></li>
+<li><p>use <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> to convert a disassembly into a bunch of HTML files
+(with annotations in place, and the operands of CALL and JP instructions
+converted into hyperlinks)</p></li>
+<li><p>use <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> to convert a disassembly into an assembler source
+file (also with annotations in place)</p></li>
+<li><p>use <a class="reference internal" href="commands.html#skool2ctl-py"><span class="std std-ref">skool2ctl.py</span></a> to convert a disassembly back into a control file
+(with annotations retained)</p></li>
+<li><p>use <a class="reference internal" href="commands.html#skool2bin-py"><span class="std std-ref">skool2bin.py</span></a> to convert a disassembly into a raw memory file</p></li>
+<li><p>use <a class="reference internal" href="commands.html#tap2sna-py"><span class="std std-ref">tap2sna.py</span></a> to convert a PZX, TAP or TZX file into a ‘pristine’ Z80
+or SZX snapshot</p></li>
+<li><p>use <a class="reference internal" href="commands.html#snapinfo-py"><span class="std std-ref">snapinfo.py</span></a> to analyse a snapshot or raw memory file and list the
+BASIC program it contains, show register values, produce a call graph, find
+tile graphic data, find text, or find sequences of arbitrary byte values</p></li>
+<li><p>use <a class="reference internal" href="commands.html#trace-py"><span class="std std-ref">trace.py</span></a> to trace the execution of machine code in a snapshot or
+raw memory file</p></li>
+<li><p>use <a class="reference internal" href="commands.html#rzxplay-py"><span class="std std-ref">rzxplay.py</span></a> to trace the execution of machine code in an RZX file,
+and produce a code execution map for <a class="reference internal" href="commands.html#sna2ctl-py"><span class="std std-ref">sna2ctl.py</span></a></p></li>
+<li><p>use <a class="reference internal" href="commands.html#tapinfo-py"><span class="std std-ref">tapinfo.py</span></a> to analyse the blocks in a PZX, TAP or TZX file, and
+list the BASIC program it contains</p></li>
+<li><p>use <a class="reference internal" href="commands.html#rzxinfo-py"><span class="std std-ref">rzxinfo.py</span></a> to analyse the blocks in an RZX file, and extract
+snapshots from it</p></li>
+<li><p>use <a class="reference internal" href="commands.html#bin2tap-py"><span class="std std-ref">bin2tap.py</span></a> to convert a snapshot or raw memory file into a PZX or
+TAP file</p></li>
+<li><p>use <a class="reference internal" href="commands.html#bin2sna-py"><span class="std std-ref">bin2sna.py</span></a> to convert a raw memory file into a Z80 or SZX snapshot</p></li>
+<li><p>use <a class="reference internal" href="commands.html#snapmod-py"><span class="std std-ref">snapmod.py</span></a> to modify the register values or memory contents in a
+Z80 or SZX snapshot</p></li>
+<li><p>use <a class="reference internal" href="commands.html#sna2img-py"><span class="std std-ref">sna2img.py</span></a> to convert graphic data in a disassembly, SCR file,
+snapshot or raw memory file into a PNG image</p></li>
+</ul>
+<p>In an HTML disassembly produced by <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> you can also:</p>
+<ul class="simple">
+<li><p>use the <a class="reference internal" href="skool-macros.html#imagemacros"><span class="std std-ref">image macros</span></a> to build still and animated PNG
+images from graphic data</p></li>
+<li><p>use the <a class="reference internal" href="skool-macros.html#audio"><span class="std std-ref">#AUDIO</span></a> macro to build WAV files for sound effects and tunes</p></li>
+<li><p>use the <a class="reference internal" href="skool-macros.html#r"><span class="std std-ref">#R</span></a> macro in annotations to create hyperlinks between routines
+and data blocks that refer to each other</p></li>
+<li><p>use <a class="reference internal" href="ref-files.html#boxpages"><span class="std std-ref">[Bug:*]</span></a>, <a class="reference internal" href="ref-files.html#boxpages"><span class="std std-ref">[Fact:*]</span></a> and
+<a class="reference internal" href="ref-files.html#boxpages"><span class="std std-ref">[Poke:*]</span></a> sections in a ref file to neatly render lists of
+bugs, trivia and POKEs on separate pages</p></li>
+</ul>
+<p>For a demonstration of SkoolKit’s capabilities, take a look at the complete
+disassemblies of <a class="reference external" href="https://skoolkit.ca/disassemblies/skool_daze/">Skool Daze</a>, <a class="reference external" href="https://skoolkit.ca/disassemblies/back_to_skool/">Back to Skool</a>, <a class="reference external" href="https://skoolkit.ca/disassemblies/contact_sam_cruise/">Contact Sam Cruise</a>,
+<a class="reference external" href="https://skoolkit.ca/disassemblies/manic_miner/">Manic Miner</a>, <a class="reference external" href="https://skoolkit.ca/disassemblies/jet_set_willy/">Jet Set Willy</a> and <a class="reference external" href="https://skoolkit.ca/disassemblies/hungry_horace/">Hungry Horace</a>. The latest stable
+releases of the source skool files for these disassemblies can always be
+obtained from <a class="reference external" href="https://skoolkit.ca">skoolkit.ca</a>; the latest development versions can be found on
+<a class="reference external" href="https://github.com/skoolkid/">GitHub</a>.</p>
+</section>
+<section id="authors">
+<h2>Authors<a class="headerlink" href="#authors" title="Link to this heading">¶</a></h2>
+<p>SkoolKit is developed and maintained by Richard Dymond, and contains
+contributions from Philip M Anderson.</p>
+</section>
+<section id="licence">
+<h2>Licence<a class="headerlink" href="#licence" title="Link to this heading">¶</a></h2>
+<p>SkoolKit is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.</p>
+<p>See the file ‘COPYING’ (distributed with SkoolKit) for the full text of the
+licence.</p>
+</section>
+<section id="zx-spectrum-roms">
+<h2>ZX Spectrum ROMs<a class="headerlink" href="#zx-spectrum-roms" title="Link to this heading">¶</a></h2>
+<p>Copies of the 48K, 128K and +2 ROMs are included with SkoolKit (in the
+<cite>skoolkit/resources</cite> directory). The copyright in these ROMs is held by
+Amstrad, who have kindly <a class="reference external" href="https://groups.google.com/g/comp.sys.amstrad.8bit/c/HtpBU2Bzv_U/m/HhNDSU3MksAJ">given permission</a> for them to be redistributed.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">What is SkoolKit?</a><ul>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#authors">Authors</a></li>
+<li><a class="reference internal" href="#licence">Licence</a></li>
+<li><a class="reference internal" href="#zx-spectrum-roms">ZX Spectrum ROMs</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">SkoolKit manual</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="usage.html"
+                          title="next chapter">Installing and using SkoolKit</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/whatis.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Installing and using SkoolKit"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="SkoolKit manual"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What is SkoolKit?</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

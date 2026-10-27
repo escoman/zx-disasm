@@ -1,0 +1,865 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "TAP2SNA.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+tap2sna.py \- convert one or two tape files into a snapshot file
+.SH SYNOPSIS
+.nf
+\fBtap2sna.py\fP [options] INPUT [INPUT] [OUTFILE]
+\fBtap2sna.py\fP @FILE [args]
+.fi
+.sp
+.SH DESCRIPTION
+.sp
+\fBtap2sna.py\fP converts one or two PZX, TAP or TZX files (which may be inside a
+zip archive) into an SZX or Z80 snapshot. INPUT may be the full URL to a remote
+zip archive or tape file, or the path to a local file. If two INPUTs are given,
+they must both be (local or remote) tape files. Arguments may be read from
+FILE instead of (or as well as) being given on the command line.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B \-c, \-\-sim\-load\-config \fIname=value\fP
+Set the value of a simulated LOAD configuration parameter. Do \fB\-c help\fP for
+more information, or \fB\-c help\-name\fP for help on a specific parameter. Also
+see the section on \fBSIMULATED LOAD\fP below. This option may be used multiple
+times.
+.TP
+.B \-d, \-\-output\-dir \fIDIR\fP
+Write the snapshot file in this directory.
+.TP
+.B \-I, \-\-ini \fIparam=value\fP
+Set the value of a configuration parameter (see \fBCONFIGURATION\fP),
+overriding any value found in \fBskoolkit.ini\fP\&. This option may be used
+multiple times.
+.TP
+.B \-\-press \fIN:KEYS\fP
+Pause the tape at block number N and press KEYS before resuming. KEYS must be
+a space\-separated list of key identifiers (see \fBUSER INPUT\fP). This option
+may be used multiple times.
+.TP
+.B \-p, \-\-stack \fISTACK\fP
+Set the stack pointer. This option is equivalent to \fB\-\-reg sp=STACK\fP\&.
+\fISTACK\fP must be a decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.BI \-\-ram \ OPERATION
+Perform a load operation or otherwise modify the memory snapshot being built.
+Do \fB\-\-ram help\fP for more information, or see the sections on the \fBCALL\fP,
+\fBLOAD\fP, \fBMOVE\fP, \fBPATCH\fP, \fBPOKE\fP and \fBSYSVARS\fP operations below.
+This option may be used multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-reg \fIname=value\fP
+Set the value of a register. Do \fB\-\-reg help\fP for more information, or see
+the section on \fBREGISTERS\fP below. This option may be used multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-screen
+Display screen contents while running (requires pygame).
+.TP
+.B  \-\-show\-config
+Show configuration parameter values.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-s, \-\-start \fISTART\fP
+Set the start address to JP to. This option is equivalent to
+\fB\-\-reg pc=START\fP\&. \fISTART\fP must be a decimal number, or a hexadecimal number
+prefixed by \(aq0x\(aq.
+.TP
+.B \-\-state \fIname=value\fP
+Set a hardware state attribute. Do \fB\-\-state help\fP for more information, or
+see the section on \fBHARDWARE STATE\fP below. This option may be used multiple
+times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-\-tape\-analysis
+Show an analysis of the tape\(aqs tones, pulse sequences and data blocks.
+.TP
+.BI \-\-tape\-name \ NAME
+Specify the name of a tape file in a zip archive. By default, the first tape
+file found in the zip archive is selected. Use this option twice when loading
+two tape files.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-tape\-skip \fIA[\-B]\fP
+Skip block numbers A\-B on the tape.
+.UNINDENT
+.INDENT 0.0
+.TP
+.BI \-\-tape\-start \ BLOCK
+Start the tape at this block number. In a tape file, the first block is
+number 1, the second is 2, etc.
+.TP
+.BI \-\-tape\-stop \ BLOCK
+Stop the tape at this block number. In a tape file, the first block is number
+1, the second is 2, etc.
+.TP
+.BI \-\-tape\-sum \ MD5SUM
+Specify the MD5 checksum of the tape file. \fBtap2sna.py\fP will abort if there
+is a checksum mismatch. This option may be used twice if loading two tape
+files.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-u, \-\-user\-agent \fIAGENT\fP
+Set the User\-Agent header used in an HTTP(S) request.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.SH TZX SUPPORT
+.sp
+\fBtap2sna.py\fP cannot read data from TZX block types 0x18 (CSW recording) or
+0x19 (generalized data block).
+.SH SIMULATED LOAD
+.sp
+By default, \fBtap2sna.py\fP simulates a freshly booted 48K ZX Spectrum running
+LOAD \(dq\(dq (or LOAD \(dq\(dqCODE, if the first block on the tape is a \(aqBytes\(aq header).
+Whenever the Spectrum ROM\(aqs load routine at $0556 is called, a shortcut is
+taken by \(dqfast loading\(dq the next block on the tape. All other code (including
+any custom loader) is fully simulated. Simulation continues until the program
+counter hits the start address given by the \fB\-\-start\fP option, or 15 minutes
+of simulated Z80 CPU time has elapsed, or the end of the tape is reached and
+one of the following conditions is satisfied:
+.INDENT 0.0
+.IP \(bu 2
+a custom loader was detected
+.IP \(bu 2
+the program counter hits an address outside the ROM
+.IP \(bu 2
+more than one second of simulated Z80 CPU time has elapsed since the end of
+the tape was reached
+.UNINDENT
+.sp
+A simulated LOAD can also be aborted by pressing Ctrl\-C. When a simulated LOAD
+has completed or been aborted, the values of the registers (including the
+program counter) in the simulator are used to populate the snapshot.
+.sp
+A simulated LOAD can be configured via parameters that are set by the
+\fB\-\-sim\-load\-config\fP (or \fB\-c\fP) option. The recognised configuration
+parameters are:
+.INDENT 0.0
+.IP \(bu 2
+\fBaccelerate\-dec\-a\fP \- enable acceleration of \(aqDEC A: JR NZ,$\-1\(aq delay loops
+only (\fB1\fP), or \(aqDEC A: JP NZ,$\-1\(aq delay loops only (\fB2\fP), or both (\fB3\fP,
+the default) or neither (\fB0\fP)
+.IP \(bu 2
+\fBaccelerator\fP \- a comma\-separated list of tape\-sampling loop accelerators
+to use (see the \fBACCELERATORS\fP section below)
+.IP \(bu 2
+\fBcmio\fP \- enable simulation of memory and I/O contention delays and the
+MEMPTR register (\fB1\fP), or disable it (\fB0\fP); this is disabled by default
+to improve performance, but some loaders may require it; when this is
+enabled, all acceleration is disabled
+.IP \(bu 2
+\fBfast\-load\fP \- enable fast loading whenever the ROM loader is called (\fB1\fP,
+the default), or disable it (\fB0\fP); fast loading (also known as \(dqflash
+loading\(dq) significantly reduces the load time for many tapes, but can also
+cause some loaders to fail
+.IP \(bu 2
+\fBfinish\-tape\fP \- run the tape to the end before stopping the simulation at
+the address specified by the \fB\-\-start\fP option (\fB1\fP), or stop the
+simulation as soon as that address is reached, regardless of whether the tape
+has finished (\fB0\fP, the default)
+.IP \(bu 2
+\fBfirst\-edge\fP \- the time (in T\-states) from the start of the tape at which
+to place the leading edge of the first pulse (default: \fB0\fP)
+.IP \(bu 2
+\fBin\-flags\fP \- various flags specifying how to handle \(aqIN\(aq instructions (see
+below)
+.IP \(bu 2
+\fBload\fP \- a space\-separated list of keys to press to build an alternative
+command line to load the tape (see the \fBLOAD COMMAND\fP section below)
+.IP \(bu 2
+\fBmachine\fP \- the type of machine to simulate: a 48K Spectrum (\fB48\fP, the
+default), or a 128K Spectrum (\fB128\fP)
+.IP \(bu 2
+\fBpause\fP \- pause the tape between blocks and resume playback when port 254
+is read (\fB1\fP, the default), or run the tape continuously (\fB0\fP); pausing
+can help with tapes that require (but do not actually contain) long pauses
+between blocks, but can cause some loaders to fail
+.IP \(bu 2
+\fBpolarity\fP \- the EAR bit reading produced by the first pulse on the tape:
+\fB0\fP (the default) or \fB1\fP; subsequent pulses give readings that alternate
+between 0 and 1
+.IP \(bu 2
+\fBpython\fP \- whether to use the pure Python Z80 simulator (\fB1\fP), or the
+much faster C version if available (\fB0\fP, the default)
+.IP \(bu 2
+\fBtimeout\fP \- the number of seconds of Z80 CPU time after which to abort the
+simulated LOAD if it\(aqs still in progress (default: 900)
+.IP \(bu 2
+\fBtrace\fP \- the file to which to log all instructions executed during the
+simulated LOAD (default: none)
+.UNINDENT
+.sp
+The \fBin\-flags\fP parameter is the sum of the following values, chosen according
+to the desired behaviour:
+.INDENT 0.0
+.IP \(bu 2
+1 \- interpret \(aqIN A,($FE)\(aq instructions in the address range $4000\-$7FFF as
+reading the tape (by default they are ignored)
+.IP \(bu 2
+2 \- ignore \(aqIN\(aq instructions in the address range $4000\-$FFFF (i.e. in RAM)
+that read port $FE
+.IP \(bu 2
+4 \- yield a simulated port reading when executing an \(aqIN r,(C)\(aq instruction
+(by default such an instruction always yields the value $FF)
+.UNINDENT
+.sp
+By default, the EAR bit reading produced by a pulse is 0 if the 0\-based index
+of the pulse is even (i.e. first, third, fifth pulses etc.), or 1 otherwise.
+This can be reversed by setting \fBpolarity=1\fP\&. Run \fBtap2sna.py\fP with the
+\fB\-\-tape\-analysis\fP option to see the timings and EAR bit readings of the
+pulses on a tape.
+.sp
+If the \fB\-\-screen\fP option is given and pygame is installed, \fBtap2sna.py\fP
+will use it to render the Spectrum\(aqs screen contents at 50 frames per second
+with a scale factor of 2 while the simulated LOAD is running. The frame rate
+and scale factor can be changed by setting the \fBScreenFps\fP and
+\fBScreenScale\fP configuration parameters.
+.SH ACCELERATORS
+.sp
+The \fBaccelerator\fP simulated LOAD configuration parameter must be either a
+comma\-separated list of specific accelerator names or one of the following
+special values:
+.INDENT 0.0
+.IP \(bu 2
+\fBauto\fP \- select accelerators automatically (this is the default)
+.IP \(bu 2
+\fBlist\fP \- list the accelerators used during a simulated LOAD, along with the
+hit/miss counts generated by the tape\-sampling loop detector
+.IP \(bu 2
+\fBnone\fP \- disable acceleration; the loading time for a game with a custom
+loader that uses an unrecognised tape\-sampling loop may be reduced by
+specifying this value
+.UNINDENT
+.sp
+A tape\-sampling loop accelerator works by effectively fast\-forwarding the tape
+(and the state of the loop itself) to the next edge whenever the loop is
+entered. This technique is known as \(dqedge loading\(dq.
+.sp
+The output produced by \fBaccelerator=list\fP looks something like this:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+Accelerators: microsphere: 5500; rom: 793036; misses: 0; dec\-a: 800708/0/23
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+This means that:
+.INDENT 0.0
+.IP \(bu 2
+the \fBmicrosphere\fP and \fBrom\fP tape\-sampling loops were detected, 5500 times
+and 793036 times respectively
+.IP \(bu 2
+no instances of an \(aqIN A,($FE)\(aq instruction outside a recognised
+tape\-sampling loop were executed (0 misses)
+.IP \(bu 2
+800708 \(aqDEC A: JR NZ,$\-1\(aq delay loops were entered, no \(aqDEC A: JP NZ,$\-1\(aq
+delay loops were entered, and 23 instances of \(aqDEC A\(aq outside such delay
+loops were executed
+.UNINDENT
+.sp
+To show the names of the available tape\-sampling loop accelerators:
+.nf
+
+.in +2
+\fBtap2sna.py \-c help\-accelerator\fP
+.in -2
+.fi
+.sp
+.SH LOAD COMMAND
+.sp
+The \fBload\fP simulated LOAD configuration parameter may be used to specify an
+alternative command line to load the tape in cases where neither \(aqLOAD \(dq\(dq\(aq nor
+\(aqLOAD \(dq\(dqCODE\(aq works. Its value is a space\-separated list of \(aqwords\(aq (a \(aqword\(aq
+being a sequence of any characters other than space), each of which is broken
+down into a sequence of one or more keypresses. If a word contains the \(aq+\(aq
+symbol, the tokens it separates are converted into keypresses made
+simultaneously. If a word matches a BASIC token, the corresponding sequence of
+keypresses to produce that token are substituted. Otherwise, each character in
+the word is converted individually into the appropriate keypresses.
+.sp
+The following special tokens are also recognised:
+.nf
+
+.in +2
+\fBCS\fP \- CAPS SHIFT
+\fBSS\fP \- SYMBOL SHIFT
+\fBSPACE\fP \- SPACE
+\fBENTER\fP \- ENTER
+\fBDOWN\fP \- Cursor down (\(aqCS+6\(aq)
+\fBGOTO\fP \- GO TO (\(aqg\(aq)
+\fBGOSUB\fP \- GO SUB (\(aqh\(aq)
+\fBDEFFN\fP \- DEF FN (\(aqCS+SS SS+1\(aq)
+\fBOPEN#\fP \- OPEN # (\(aqCS+SS SS+4\(aq)
+\fBCLOSE#\fP \- CLOSE # (\(aqCS+SS SS+5\(aq)
+\fBPC=address\fP \- Stop the keyboard input simulation at this address
+.in -2
+.fi
+.sp
+.sp
+The \fBPC=address\fP token, if present, must appear last. The default address is
+either 0x0605 (when a 48K Spectrum is being simulated) or 0x13BE (on a 128K
+Spectrum). The simulated LOAD begins at this address.
+.sp
+\fBENTER\fP is automatically appended to the command line if not already present.
+.sp
+For example, the \fBload\fP parameter may be set to:
+.nf
+
+.in +2
+CLEAR 34999: LOAD \(dq\(dq CODE : RANDOMIZE USR 35000
+.in -2
+.fi
+.sp
+.sp
+Note that the spaces around \fBCLEAR\fP, \fBLOAD\fP, \fBCODE\fP, \fBRANDOMIZE\fP and
+\fBUSR\fP are required in order for them to be recognised as BASIC tokens.
+.SH USER INPUT
+.sp
+Some tapes require the user to pause the tape before loading has finished,
+press one or more keys, and then start the tape again to resume loading. Such
+tapes can be handled by using the \fB\-\-press\fP option. Its single argument takes
+the form:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+N:KEYS
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+where:
+.INDENT 0.0
+.IP \(bu 2
+\fBN\fP is the block number at which to pause the tape
+.IP \(bu 2
+\fBKEYS\fP is a space\-separated list of key identifiers
+.UNINDENT
+.sp
+For example:
+.nf
+
+.in +2
+\fBtap2sna.py \-\-press 5:ENTER game.tzx\fP
+.in -2
+.fi
+.sp
+.sp
+This will load blocks 1\-4 of game.tzx, pause the tape, simulate pressing the
+ENTER key until the appropriate key row has been read, and then start the tape
+(whereupon block 5 and any other remaining blocks will be loaded).
+.sp
+The \fBKEYS\fP list recognises the digits 0\-9 and lower case letters a\-z as valid
+key identifiers, along with the following special tokens:
+.nf
+
+.in +2
+\fBCS\fP \- CAPS SHIFT
+\fBSS\fP \- SYMBOL SHIFT
+\fBSPACE\fP \- SPACE
+\fBENTER\fP \- ENTER
+\fBNONE\fP \- no key
+.in -2
+.fi
+.sp
+.sp
+Sometimes a single keypress may need to be read more than once before the
+game\(aqs loader responds to it. In such cases the \fB*\fP notation is useful:
+.nf
+
+.in +2
+\fBtap2sna.py \-\-press 6:s*3 game.tzx\fP
+.in -2
+.fi
+.sp
+.sp
+Equivalent to \fB6:s s s\fP, this will wait until the \(aqs\(aq keypress has been read
+three times before resuming the tape at block number 6.
+.SH CALL OPERATIONS
+.sp
+The \fB\-\-ram\fP option can be used to call a Python function to perform arbitrary
+modification of the memory snapshot.
+.nf
+
+.in +2
+\fB\-\-ram call=[/path/to/moduledir:]module.function\fP
+.in -2
+.fi
+.sp
+.sp
+The function is called with the memory snapshot (a list of 65536 byte values)
+as the sole positional argument. The function must modify the snapshot in
+place. The path to the module\(aqs location may be omitted if the module is
+already in the module search path.
+.sp
+For example:
+.nf
+
+.in +2
+\fB\-\-ram call=:ram.modify\fP # Call modify(snapshot) in ./ram.py
+.in -2
+.fi
+.sp
+.SH LOAD OPERATIONS
+.sp
+By default, \fBtap2sna.py\fP attempts to load a tape exactly as a 48K Spectrum
+would (see the section on \fBSIMULATED LOAD\fP above). If that doesn\(aqt work, the
+\fB\-\-ram\fP option can be used to load bytes from specific tape blocks at the
+appropriate addresses. The syntax is:
+.nf
+
+.in +2
+\fB\-\-ram load=[+]block[+],start[,length,step,offset,inc]\fP
+.in -2
+.fi
+.sp
+.sp
+where the parameters have the following meanings:
+.INDENT 0.0
+.TP
+.B \fBblock\fP
+The tape block number; the first block is 1, the next is 2, etc. Attach a \(aq+\(aq
+prefix to load the first byte of the block (which is usually the flag byte),
+and a \(aq+\(aq suffix to load the last byte (which is usually the parity byte).
+.TP
+.B \fBstart\fP
+The destination address at which to start loading.
+.TP
+.B \fBlength\fP
+The number of bytes to load (optional; defaults to the number of bytes
+remaining in the block).
+.TP
+.B \fBstep\fP
+This number is added to the destination address after each byte is loaded
+(optional; default=1).
+.TP
+.B \fBoffset\fP
+This number is added to the destination address before a byte is loaded, and
+subtracted after the byte is loaded (optional; default=0). It is analogous to
+the offset \fBd\fP in the \fBLD (IX+d),L\fP operation that is commonly used in
+load routines to copy the byte just loaded from tape (\fBL\fP) into memory.
+.TP
+.B \fBinc\fP
+After \fBstep\fP is added to the destination address, this number is added too
+if the result overflowed past 65535 (optional; default=0).
+.UNINDENT
+.sp
+A single tape block can be loaded in two or more stages; for example:
+.nf
+
+.in +2
+\fB\-\-ram load=2,32768,2048\fP # Load the first 2K at 32768
+\fB\-\-ram load=2,0xC000\fP     # Load the remainder at 49152
+.in -2
+.fi
+.sp
+.SH MOVE OPERATIONS
+.sp
+The \fB\-\-ram\fP option can be used to copy a block of bytes from one location to
+another before saving the snapshot.
+.nf
+
+.in +2
+\fB\-\-ram move=[s:]src,N,[d:]dest\fP
+.in -2
+.fi
+.sp
+.sp
+This copies a block of \fBN\fP bytes from \fBsrc\fP in RAM bank \fBs\fP to \fBdest\fP
+in RAM bank \fBd\fP\&. For example:
+.nf
+
+.in +2
+\fB\-\-ram move=32512,256,32768\fP # Copy 32512\-32767 to 32768\-33023
+\fB\-\-ram move=3:0,8,4:0\fP       # Copy the first 8 bytes of bank 3 to bank 4
+.in -2
+.fi
+.sp
+.SH PATCH OPERATIONS
+.sp
+The \fB\-\-ram\fP option can be used to apply a binary patch file to the snapshot
+before saving it.
+.nf
+
+.in +2
+\fB\-\-ram patch=[p:]a,file\fP
+.in -2
+.fi
+.sp
+.sp
+This applies the named binary patch file at address \fBa\fP in RAM bank \fBp\fP\&.
+For example:
+.nf
+
+.in +2
+\fB\-\-ram patch=32768,patch.bin\fP # Apply patch.bin at 32768
+\fB\-\-ram patch=1:256,patch.bin\fP # Apply patch.bin at 256 in RAM bank 1
+.in -2
+.fi
+.sp
+.SH POKE OPERATIONS
+.sp
+The \fB\-\-ram\fP option can be used to POKE values into the snapshot before saving
+it.
+.nf
+
+.in +2
+\fB\-\-ram poke=[P:]A[\-B[\-C]],[^+]V\fP
+.in -2
+.fi
+.sp
+.sp
+This does \fBPOKE N,V\fP in RAM bank \fBP\fP for \fBN\fP in \fB{A, A+C, A+2C..., B}\fP,
+where:
+.sp
+\fBP\fP is the RAM bank to POKE (0\-7; 128K only)
+.sp
+\fBA\fP is the first address to POKE
+.sp
+\fBB\fP is the last address to POKE (optional; default is \fBA\fP)
+.sp
+\fBC\fP is the step (optional; default=1)
+.sp
+\fBV\fP is the value to POKE; prefix the value with \(aq^\(aq to perform an XOR
+operation, or \(aq+\(aq to perform an ADD operation
+.sp
+For example:
+.nf
+
+.in +2
+\fB\-\-ram poke=0x6000,0x10\fP     # POKE 24576,16
+\fB\-\-ram poke=30000\-30002,^85\fP # Perform \(aqXOR 85\(aq on addresses 30000\-30002
+\fB\-\-ram poke=40000\-40004\-2,1\fP # POKE 40000,1: POKE 40002,1: POKE 40004,1
+.in -2
+.fi
+.sp
+.SH SYSVARS OPERATION
+.sp
+The \fB\-\-ram\fP option can be used to initialise the system variables at
+23552\-23754 (5C00\-5CCA) with values suitable for a 48K ZX Spectrum.
+.nf
+
+.in +2
+\fB\-\-ram sysvars\fP
+.in -2
+.fi
+.sp
+.SH REGISTERS
+.sp
+The \fB\-\-reg\fP option sets the value of a register in the snapshot.
+.nf
+
+.in +2
+\fB\-\-reg name=value\fP
+.in -2
+.fi
+.sp
+.sp
+For example:
+.nf
+
+.in +2
+\fB\-\-reg hl=32768\fP
+\fB\-\-reg b=0x1f\fP
+.in -2
+.fi
+.sp
+.sp
+To set the value of an alternate (shadow) register, use the \(aq^\(aq prefix:
+.nf
+
+.in +2
+\fB\-\-reg ^hl=10072\fP
+.in -2
+.fi
+.sp
+.sp
+Recognised register names are:
+.nf
+
+.in +2
+\fB^a\fP, \fB^b\fP, \fB^bc\fP, \fB^c\fP, \fB^d\fP, \fB^de\fP, \fB^e\fP, \fB^f\fP, \fB^h\fP, \fB^hl\fP, \fB^l\fP,
+\fBa\fP, \fBb\fP, \fBbc\fP, \fBc\fP, \fBd\fP, \fBde\fP, \fBe\fP, \fBf\fP, \fBh\fP, \fBhl\fP, \fBl\fP,
+\fBi\fP, \fBix\fP, \fBiy\fP, \fBmemptr\fP, \fBpc\fP, \fBr\fP, \fBsp\fP
+.in -2
+.fi
+.sp
+.sp
+The default value for each register is 0, with the following exceptions:
+.nf
+
+.in +2
+\fBi=63\fP
+\fBiy=23610\fP
+.in -2
+.fi
+.sp
+.SH HARDWARE STATE
+.sp
+The \fB\-\-state\fP option sets a hardware state attribute.
+.nf
+
+.in +2
+\fB\-\-state name=value\fP
+.in -2
+.fi
+.sp
+.sp
+Recognised attribute names and their default values are:
+.nf
+
+.in +2
+\fB7ffd\fP    \- last OUT to port 0x7ffd (128K only)
+\fBay[N]\fP   \- contents of AY register N (N=0\-15; 128K only)
+\fBborder\fP  \- border colour (default=0)
+\fBfe\fP      \- last OUT to port 0xfe (SZX only)
+\fBfffd\fP    \- last OUT to port 0xfffd (128K only)
+\fBiff\fP     \- interrupt flip\-flop: 0=disabled, 1=enabled (default=1)
+\fBim\fP      \- interrupt mode (default=1)
+\fBissue2\fP  \- issue 2 emulation: 0=disabled, 1=enabled (default=0)
+\fBtstates\fP \- T\-states elapsed since start of frame (default=34943)
+.in -2
+.fi
+.sp
+.SH READING ARGUMENTS FROM A FILE
+.sp
+For complex snapshots that require many options to build, it may be more
+convenient to store the arguments to \fBtap2sna.py\fP in a file. For example, if
+the file \fBgame.t2s\fP has the following contents:
+.nf
+
+.in +2
+;
+; tap2sna.py file for GAME
+;
+http://example.com/pub/games/GAME.zip
+\-c fast\-load=0      # Disable fast loading
+\-c accelerator=none # Disable tape\-sampling loop acceleration
+\-\-state issue2=1    # Enable issue 2 keyboard emulation
+\-\-start 34816       # Start at 34816
+.in -2
+.fi
+.sp
+.sp
+then:
+.nf
+
+.in +2
+\fBtap2sna.py @game.t2s\fP
+.in -2
+.fi
+.sp
+.sp
+will create \fBgame.z80\fP as if the arguments specified in \fBgame.t2s\fP had been
+given on the command line. When \fBtap2sna.py\fP reads arguments from a file
+whose name ends with \(aq.t2s\(aq, the output snapshot filename defaults to the name
+of that arguments file with \(aq.t2s\(aq replaced by either \(aq.z80\(aq or \(aq.szx\(aq
+(depending on the value of the \fBDefaultSnapshotFormat\fP configuration
+parameter).
+.SH CONFIGURATION
+.sp
+\fBtap2sna.py\fP will read configuration from a file named \fBskoolkit.ini\fP in
+the current working directory or in \fB~/.skoolkit\fP, if present. The recognised
+configuration parameters are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B DefaultSnapshotFormat
+The format of the snapshot written when no output
+snapshot argument is specified. Valid values are \fBz80\fP (the default) and
+\fBszx\fP\&.
+.TP
+.B ScreenFps
+Screen refresh rate in frames per second (default:\fB50\fP). If set
+to 0, \fBtap2sna.py\fP runs at maximum speed.
+.TP
+.B ScreenScale
+Screen scale factor (default: \fB2\fP).
+.TP
+.B TraceLine
+The format of each line in the trace log file for a simulated
+LOAD (default: \fB${pc:04X} {i}\fP).
+.TP
+.B TraceOperand
+The prefix, byte format, and word format for the numeric
+operands of instructions in the trace log file for a simulated LOAD,
+separated by commas (default: \fB$,02X,04X\fP). The byte and word formats are
+standard Python format specifiers for numeric values, and default to empty
+strings if not supplied.
+.TP
+.B UserAgent
+The value of the User\-Agent header in HTTP/HTTPS requests
+(default: empty string).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBTraceLine\fP is a standard Python format string that recognises the following
+replacement fields:
+.nf
+
+.in +2
+\fBi\fP \- the current instruction
+\fBm[address]\fP \- the contents of a memory address
+\fBpc\fP \- the address of the current instruction (program counter)
+\fBr[X]\fP \- the X register (see below)
+\fBt\fP \- the current timestamp
+.in -2
+.fi
+.sp
+.sp
+When using the \fBm\fP (memory) replacement field, \fBaddress\fP must be either a
+decimal number, or a hexadecimal number prefixed by \(aq$\(aq or \(aq0x\(aq.
+.sp
+The register name \fBX\fP in \fBr[X]\fP must be one of the following:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+a b c d e f h l bc de hl
+^a ^b ^c ^d ^e ^f ^h ^l ^bc ^de ^hl
+ix ixh ixl iy iyh iyl
+i r sp memptr
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+The names that begin with \fB^\fP denote the shadow registers.
+.sp
+The current timestamp (\fBt\fP) is the number of T\-states that have elapsed since
+the start of the simulation, according to the simulator\(aqs internal clock. In
+order to maintain synchronisation with the tape being loaded, the simulator\(aqs
+clock is adjusted to match the timestamp of the first pulse in each block (as
+shown by the \fB\-\-tape\-analysis\fP option) when that block is reached. (The
+simulator\(aqs clock may at times become desynchronised with the tape because, by
+default, the tape is paused between blocks, and resumed when port 254 is read.)
+.sp
+Configuration parameters must appear in a \fB[tap2sna]\fP section. For example,
+to make \fBtap2sna.py\fP write instruction addresses and operands in a trace log
+file in decimal format by default, add the following section to
+\fBskoolkit.ini\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+[tap2sna]
+TraceLine={pc:05} {i}
+TraceOperand=
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters may also be set on the command line by using the
+\fB\-\-ini\fP option. Parameter values set this way will override any found in
+\fBskoolkit.ini\fP\&.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Extract the tape file from a remote zip archive and convert it into a Z80
+snapshot:
+.nf
+
+.in +2
+\fBtap2sna.py ftp://example.com/game.zip game.z80\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Extract the tape file from a zip archive, and convert it into an SZX
+snapshot with the program counter set to 32768:
+.nf
+
+.in +2
+\fBtap2sna.py \-\-start 32768 game.zip game.szx\fP
+.in -2
+.fi
+.sp
+.IP 3. 3
+Convert a TZX file into a Z80 snapshot by loading the third block on the
+tape at 25000:
+.nf
+
+.in +2
+\fBtap2sna.py \-\-ram load=3,25000 game.tzx game.z80\fP
+.in -2
+.fi
+.sp
+.IP 4. 3
+Convert a TZX file into an SZX snapshot using options read from the file
+\fBgame.t2s\fP:
+.nf
+
+.in +2
+\fBtap2sna.py @game.t2s game.tzx game.szx\fP
+.in -2
+.fi
+.sp
+.IP 5. 3
+Extract two tape files from a zip archive and convert them into a Z80
+snapshot:
+.nf
+
+.in +2
+\fBtap2sna.py \-\-tape\-name side1.tzx \-\-tape\-name side2.tzx game.zip\fP
+.in -2
+.fi
+.sp
+.IP 6. 3
+Convert two tape files into an SZX snapshot:
+.nf
+
+.in +2
+\fBtap2sna.py side1.tzx side2.tzx game.szx\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

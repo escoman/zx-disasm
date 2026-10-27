@@ -1,0 +1,166 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "BIN2TAP.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+bin2tap.py \- convert a binary file or snapshot into a PZX or TAP file
+.SH SYNOPSIS
+.sp
+\fBbin2tap.py\fP [options] FILE [OUTFILE]
+.SH DESCRIPTION
+.sp
+\fBbin2tap.py\fP converts a binary (raw memory) file or a SNA, SZX or Z80
+snapshot into a PZX or TAP file. FILE may be a regular file, or \(aq\-\(aq to read a
+binary file from standard input. If OUTFILE is not given, a TAP file is
+created.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B \-\-7ffd \fIN\fP
+Add 128K RAM banks to the tape file and write \fIN\fP to port 0x7ffd after
+they\(aqve loaded.
+.TP
+.B \-\-banks \fIN[,N...]\fP
+Add only these 128K RAM banks to the tape file (default: 0,1,3,4,6,7).
+.TP
+.B \-b, \-\-begin \fIBEGIN\fP
+Begin conversion at this address. The default begin address is the origin
+address (\fIORG\fP) for a binary file, or 16384 for a snapshot. \fIBEGIN\fP must be a
+decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-c, \-\-clear \fIN\fP
+Use a \fBCLEAR N\fP command in the BASIC loader, and leave the stack pointer
+alone. This option overrides the \fB\-\-stack\fP option. \fIN\fP must be a decimal
+number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-e, \-\-end \fIEND\fP
+End conversion at this address. \fIEND\fP must be a decimal number, or a
+hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-\-loader \fIADDR\fP
+Place the 128K RAM bank loader at this address (default: CLEAR address + 1).
+\fIADDR\fP must be a decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-o, \-\-org \fIORG\fP
+Set the origin address for a binary file. The default origin address is 65536
+minus the length of FILE. \fIORG\fP must be a decimal number, or a hexadecimal
+number prefixed by \(aq0x\(aq.
+.TP
+.B \-p, \-\-stack \fISTACK\fP
+Set the stack pointer. The default value is \fIBEGIN\fP\&. \fISTACK\fP must be a
+decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-s, \-\-start \fISTART\fP
+Set the start address to JP to. The default start address is \fIBEGIN\fP\&. \fISTART\fP
+must be a decimal number, or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-S, \-\-screen \fIFILE\fP
+Add a loading screen to the tape file. \fIFILE\fP may be a snapshot or a
+6912\-byte SCR file.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.SH STACK POINTER
+.sp
+The ROM tape loading routine at 1366 (0x0556) and the load routine used by
+\fBbin2tap.py\fP together require 14 bytes for stack operations, and so \fISTACK\fP
+must be at least 16384+14=16398 (0x400E). This means that if \fIORG\fP is less than
+16398, you should use the \fB\-\-stack\fP option to set the stack pointer to
+something appropriate. If the data block overlaps any of the last four bytes of
+the stack, \fBbin2tap.py\fP will replace those bytes with the values required by
+the tape loading routine for correct operation upon returning. Stack operations
+will overwrite the bytes in the address range \fISTACK\fP\-14 to \fISTACK\fP\-1
+inclusive, so those addresses should not be used to store essential code or
+data.
+.sp
+If the input file contains a program that returns to BASIC, you should use the
+\fB\-\-clear\fP option to add a CLEAR command to the BASIC loader. This option
+leaves the stack pointer alone, enabling the program to return to BASIC without
+crashing. The lowest usable address with the \fB\-\-clear\fP option on a bare 48K
+Spectrum is 23952 (0x5D90).
+.SH 128K TAPES
+.sp
+To create a tape file that loads a 128K game, use the \fB\-\-7ffd\fP, \fB\-\-begin\fP
+and \fB\-\-clear\fP options along with a 128K snapshot or a 128K binary file as
+input, where:
+.INDENT 0.0
+.IP \(bu 2
+\fB\-\-7ffd\fP specifies the value to write to port 0x7FFD after all the RAM
+banks have loaded and before starting the game
+.IP \(bu 2
+\fB\-\-begin\fP specifies the start address of the code/data below 49152 (0xC000)
+to include on the tape
+.IP \(bu 2
+\fB\-\-clear\fP specifies the address of the CLEAR command in the BASIC loader
+.UNINDENT
+.sp
+By default, the 128K RAM bank loader (which is 39\-45 bytes long, depending on
+the number of RAM banks to load) is placed one above the CLEAR address. Use the
+\fB\-\-loader\fP option to place it at an alternative address. The lowest usable
+address with the \fB\-\-clear\fP option on a bare 128K Spectrum is 23977 (0x5DA9)
+if a loading screen is used, or 23957 (0x5D95) otherwise.
+.sp
+By default, 128K RAM banks 0, 1, 3, 4, 6 and 7 are added to the tape file. If
+one or more of these RAM banks are not required, use the \fB\-\-banks\fP option to
+specify a smaller set of RAM banks to add. If none of these RAM banks are
+required, use \fB,\fP (a single comma) as the argument to the \fB\-\-banks\fP option.
+The contents of RAM banks 5 and 2 \- from the \fB\-\-begin\fP address and up to but
+not including the \fB\-\-end\fP address (if given) \- are included in the main code
+block on the tape.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Convert \fBgame.bin\fP into a TAP file named \fBgame.tap\fP:
+.nf
+
+.in +2
+\fBbin2tap.py game.bin\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Convert \fBgame.bin\fP into a PZX file that starts execution at 32768 when
+loaded:
+.nf
+
+.in +2
+\fBbin2tap.py \-s 32768 game.bin game.pzx\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

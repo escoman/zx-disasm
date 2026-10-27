@@ -1,0 +1,176 @@
+ 
+VORTEX EMULATION PACKAGE
+Compiled by
+Mark Haigh-Hutchinson
+Version 1.0 March 1995
+
+Introduction
+
+Hello, and welcome to the VORTEX SOFTWARE emulation package. This is the first 
+version of a freely available collection of emulated games, information, and other good 
+stuff relating to VORTEX SOFTWARE. For a more detailed account of who we were 
+(are) please see the appropriate included file ‘History.doc’. Newer versions of this 
+package will appear on the ‘net from time to time, as work pressure allows!
+
+Legal Stuff
+
+Although we are releasing all our 8-bit titles as FREEWARE, the following caveats 
+apply:-
+
+1) All software can be freely distributed as long as this file accompanies the software.
+2) VORTEX SOFTWARE retains the copyrights as to the use of all characters, names, 
+graphics, source code, and other related materials found in this package or otherwise 
+distributed.
+3) VORTEX SOFTWARE reserves the right to remove the titles from the public 
+domain at any time without warning.
+4) No allowance has been made or even implied for use of any of the properties on any 
+other computing system. See point 2) above.
+
+
+
+
+Contents
+
+This package will be growing as time goes on, and may even split into different packages 
+for different platforms. However, this version contains all formats combined.
+
+Documents
+
+All these files are saved in Microsoft WORD for Windows format (v6.0a). Plain text 
+versions can also be found in VTX_TXT.ZIP.
+
+VTX_DOCS.ZIP
+
+	VORTEX.DOC	Description of the package contents - you’re reading it!
+	HISTORY.DOC	A potted history of the company. Who was involved, and 	
+				where they are now.
+	TITLES.DOC		A comprehensive list of all titles produced by VORTEX, 	
+				including titles published by other companies.
+
+Emulator files
+
+Each file is ZIPped using PKZIP v2.04g and contains programs for one format only.
+Files must ALWAYS be distributed in this form containing a copy of VORTEX.TXT.
+
+VTX_ZX81.ZIP
+
+	VORTEX.TXT	Description of the package contents - you’re reading it!
+
+	.P format files of the following ZX-81 games:-
+
+	ASTRAL.P		Astral Convoy
+
+VTX_SPEC.ZIP
+	
+	VORTEX.TXT	Description of the package contents - you’re reading it!
+
+	.SNA format files of the following ZX-Spectrum games:-
+
+	AND1INTR.SNA	Android One introduction
+	ANDROID1.SNA	Android One
+	ANDROID2.SNA	Android Two
+	TLL.SNA		Tornado Low Level
+	CYCLONE.SNA	Cyclone
+	HIGHWAY.SNA	Highway Encounter
+	ALIENH.SNA		Alien Highway
+	REV.SNA		Revolution
+	DEFLEKT.SNA	Deflektor
+	HATE.SNA		Hostile Alien Terrain Encounter
+
+VTX_CPC.ZIP
+
+	VORTEX.TXT	Description of the package contents - you’re reading it!
+
+	.SNA format files of the following Amstrad CPC games:-
+
+	ANDROID1.SNA	Android One
+	TLL.SNA		Tornado Low Level
+	HIGHWAY.SNA	Highway Encounter
+	ALIENH.SNA		Alien Highway
+	REV.SNA		Revolution
+	DEFLEKT.SNA	Deflektor
+	HATE.SNA		Hostile Alien Terrain Encounter
+
+VTX_C64.ZIP
+
+	VORTEX.TXT	Description of the package contents - you’re reading it!
+
+	D64 format files of the following Commodore C-64 games:-
+
+	HIGHWAY.D64	Highway Encounter
+
+Missing files
+
+Unfortunately, this package is not quite complete. If you can help, I need the following 
+games:-
+
+ZX81		Cosmos, Serpent’s Tomb
+ZX Spectrum	Cosmos, Gun Law
+Amstrad CPC	Android Two
+MSX 		Highway Encounter
+C64		Deflektor
+Atari ST	Deflektor
+Amiga		Deflektor
+
+
+
+The future
+
+As time allows, future versions of this package will include:-
+
+Loading screens for games, where appropriate.
+More complete collection of games - you can help! (see above).
+Early programs by Costa and Mark.
+Scanned cassette inlays.
+Scanned magazine reviews.
+Source code!
+All suggestions are welcomed!
+
+Please send email to:-
+
+mhh@linex.com, or
+mhh@kerner.com (until August 1995), or
+75112,1545@compuserve.com
+
+Alternatively, you may send snailmail to:-
+
+VORTEX SOFTWARE
+Mark Haigh-Hutchinson
+1725 Marion Avenue, K-10
+Novato
+CA 94945
+U.S.A.
+
+
+
+Thanks!
+
+There are many people to thank for this package...
+
+First of all, thanks to Costa and Luke -- who gave me the best possible start in the 
+computer games industry as well as being very good friends. It was a honour to work 
+with you!
+
+Thanks to all the 8-bit emulator writers -- yours is really a labour of love! You all have 
+done a great job in keeping the old games alive. Without you none of this would have 
+been possible.
+
+Thanks to all the internetters who are keeping these 8-bit systems alive and kicking!
+
+Special thanks (in no particular order) to:-
+
+Arnt Gulbrandsen
+Marco Vieth
+Gerton Lunter
+Carlo Delhez
+Emmanuel Roussin
+Kevin Thacker
+Martijn van der Heide
+
+If I’ve missed anyone it’s purely my trying to get this thing out to ‘net! Remind me and 
+I’ll definitely put you in the next compilation.
+
+Be seeing you!
+
+Note: special permission has been granted to The World of Spectrum archive to
+carry the games on individual basis rather than this (in)complete package.

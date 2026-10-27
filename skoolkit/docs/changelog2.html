@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SkoolKit 2.x changelog &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fe13c473" />
+    
+    <script src="_static/documentation_options.js?v=2236d03e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SkoolKit 1.x changelog" href="changelog1.html" />
+    <link rel="prev" title="SkoolKit 3.x changelog" href="changelog3.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="changelog1.html" title="SkoolKit 1.x changelog"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="changelog3.html" title="SkoolKit 3.x changelog"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="changelog.html" accesskey="U">Changelog</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SkoolKit 2.x changelog</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="skoolkit-2-x-changelog">
+<span id="skoolkit2x"></span><h1>SkoolKit 2.x changelog<a class="headerlink" href="#skoolkit-2-x-changelog" title="Link to this heading">¶</a></h1>
+<section id="id1">
+<h2>2.5 (2012-02-22)<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added support for <a class="reference internal" href="ref-files.html#memorymap"><span class="std std-ref">[MemoryMap:*]</span></a> sections in ref files (for defining the
+properties of memory map pages); removed support for the <code class="docutils literal notranslate"><span class="pre">[MapDetails]</span></code>
+section accordingly</p></li>
+<li><p>Added support for multiple style sheets per HTML disassembly (by separating
+file names with a semicolon in the <code class="docutils literal notranslate"><span class="pre">StyleSheet</span></code> parameter in the
+<a class="reference internal" href="ref-files.html#paths"><span class="std std-ref">[Paths]</span></a> section of the ref file)</p></li>
+<li><p>Added support for multiple JavaScript files per HTML disassembly (by
+separating file names with a semicolon in the <code class="docutils literal notranslate"><span class="pre">JavaScript</span></code> parameter in the
+<a class="reference internal" href="ref-files.html#paths"><span class="std std-ref">[Paths]</span></a> section of the ref file)</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>2.4.1 (2012-01-30)<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>The <a class="reference internal" href="asm.html#ignoreua"><span class="std std-ref">&#64;ignoreua</span></a> directive can now be used on entry titles, entry
+descriptions, mid-block comments and block end comments in addition to
+instruction-level comments; the <cite>&#64;ignoredua</cite> and <cite>&#64;ignoremrcua</cite> directives
+are correspondingly deprecated</p></li>
+<li><p>The <a class="reference internal" href="skool-macros.html#space"><span class="std std-ref">#SPACE</span></a> macro now supports the syntax <code class="docutils literal notranslate"><span class="pre">#SPACE([num])</span></code>, which can
+be useful to distinguish it from adjacent text where necessary</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>2.4 (2012-01-10)<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added the <cite>skool2sft.py</cite> command (for creating skool file templates)</p></li>
+<li><p>Added support to <a class="reference internal" href="commands.html#skool2ctl-py"><span class="std std-ref">skool2ctl.py</span></a> for preserving some ASM directives in
+control files</p></li>
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#udg"><span class="std std-ref">#UDG</span></a> and <a class="reference internal" href="skool-macros.html#udgarray"><span class="std std-ref">#UDGARRAY</span></a> macros so that images can be
+rotated</p></li>
+<li><p>Added the ability to separate paragraphs in a skool file by using a dot
+(<code class="docutils literal notranslate"><span class="pre">.</span></code>) on a line of its own; removed support for the redundant <code class="docutils literal notranslate"><span class="pre">#P</span></code> macro
+accordingly</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>2.3.1 (2011-11-15)<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added support to <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> for multiple ref files per disassembly</p></li>
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#udg"><span class="std std-ref">#UDG</span></a> and <a class="reference internal" href="skool-macros.html#udgarray"><span class="std std-ref">#UDGARRAY</span></a> macros so that images can be
+flipped horizontally and vertically</p></li>
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#pokes"><span class="std std-ref">#POKES</span></a> macro so that multiple pokes may be specified</p></li>
+<li><p>Added support for the <code class="docutils literal notranslate"><span class="pre">#FACT</span></code> and <code class="docutils literal notranslate"><span class="pre">#POKE</span></code> macros in ASM mode</p></li>
+<li><p>When the link text of a <code class="docutils literal notranslate"><span class="pre">#BUG</span></code>, <code class="docutils literal notranslate"><span class="pre">#FACT</span></code> or <code class="docutils literal notranslate"><span class="pre">#POKE</span></code> macro is left blank,
+the title of the corresponding bug, trivia or poke entry is substituted</p></li>
+<li><p>Fixed the parsing of link text in skool macros in ASM mode so that nested
+parentheses are handled correctly</p></li>
+<li><p>Fixed the rendering of table borders in ASM mode where cells with rowspan &gt; 1
+in columns other than the first extend to the bottom row</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2>2.3 (2011-10-31)<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Fixed the bug where the operands in substitute instructions defined by
+<code class="docutils literal notranslate"><span class="pre">&#64;bfix</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;ofix</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;isub</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;ssub</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;rsub</span></code> directives are not
+converted to decimal or hexadecimal when using the <code class="docutils literal notranslate"><span class="pre">-D</span></code> or <code class="docutils literal notranslate"><span class="pre">-H</span></code> option of
+<a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> or <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a></p></li>
+<li><p>Removed the source files for the Skool Daze, Back to Skool and Contact Sam
+Cruise disassemblies from the SkoolKit distribution; they are now available
+as <a class="reference external" href="http://skoolkit.ca/?page_id=113">separate downloads</a></p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>2.2.5 (2011-10-17)<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#udgarray"><span class="std std-ref">#UDGARRAY</span></a> macro so that masks can be specified</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-p</span></code> option to <a class="reference internal" href="commands.html#bin2tap-py"><span class="std std-ref">bin2tap.py</span></a> (to set the stack pointer)</p></li>
+<li><p>Fixed the parsing of link text in <code class="docutils literal notranslate"><span class="pre">#BUG</span></code>, <code class="docutils literal notranslate"><span class="pre">#FACT</span></code>, <code class="docutils literal notranslate"><span class="pre">#POKE</span></code> and other
+skool macros so that nested parentheses are handled correctly</p></li>
+<li><p>Fixed the handling of version 1 Z80 snapshots by <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a></p></li>
+<li><p>Added support for the <code class="docutils literal notranslate"><span class="pre">IndexPageId</span></code> and <code class="docutils literal notranslate"><span class="pre">Link</span></code> parameters in
+<code class="docutils literal notranslate"><span class="pre">[OtherCode:*]</span></code> sections of the ref file</p></li>
+<li><p>Reintroduced support for <code class="docutils literal notranslate"><span class="pre">[Changelog:*]</span></code> sections in ref files</p></li>
+<li><p>Added ‘Changelog’ pages to the Skool Daze, Back to Skool and Contact Sam
+Cruise disassemblies</p></li>
+<li><p>Updated the Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id7">
+<h2>2.2.4 (2011-08-10)<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added support for the <cite>&#64;ignoredua</cite> ASM directive</p></li>
+<li><p><a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> automatically decreases the width of the
+comment field for a ‘wide’ instruction instead of printing a warning</p></li>
+<li><p><a class="reference internal" href="commands.html#bin2tap-py"><span class="std std-ref">bin2tap.py</span></a> can handle binary snapshot files with ORG
+addresses as low as 16398</p></li>
+<li><p>Fixed the bug in <a class="reference internal" href="commands.html#bin2tap-py"><span class="std std-ref">bin2tap.py</span></a> that prevents the START
+address from defaulting to the ORG address when the ORG address is specified
+with the <code class="docutils literal notranslate"><span class="pre">-o</span></code> option</p></li>
+<li><p>Added ASM directives to <cite>csc.skool</cite> so that it works with
+<a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a></p></li>
+<li><p>Updated the Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id8">
+<h2>2.2.3 (2011-07-15)<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<p>Updated the Contact Sam Cruise disassembly; it is now ‘complete’.</p>
+</section>
+<section id="id9">
+<h2>2.2.2 (2011-06-02)<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added support for the <a class="reference internal" href="asm.html#end"><span class="std std-ref">&#64;end</span></a> ASM directive</p></li>
+<li><p>Added ASM directives to <cite>{bts,csc,sd}-{load,save,start}.skool</cite> to make them
+work with <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a></p></li>
+<li><p><a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a>, <a class="reference internal" href="commands.html#skool2ctl-py"><span class="std std-ref">skool2ctl.py</span></a> and
+<a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> can read from standard input</p></li>
+<li><p>Fixed the bug that made <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> generate a control
+file with a code block at 65535 for a snapshot that ends with a sequence of
+zeroes</p></li>
+<li><p>Unit test <cite>test_skool2html.py:Skool2HtmlTest.test_html</cite> now works without an
+internet connection</p></li>
+</ul>
+</section>
+<section id="id10">
+<h2>2.2.1 (2011-05-24)<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>SkoolKit can now be installed as a Python package using <code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">install</span></code></p></li>
+<li><p>Unit tests are included in the <cite>tests</cite> directory</p></li>
+<li><p>Man pages for SkoolKit’s <a class="reference internal" href="commands.html#commands"><span class="std std-ref">command scripts</span></a> are included in
+the <cite>man</cite> directory</p></li>
+<li><p>Added ‘Developer reference’ documentation</p></li>
+<li><p>Fixed the bugs that made <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> produce invalid
+XHTML</p></li>
+</ul>
+</section>
+<section id="id11">
+<h2>2.2 (2011-05-10)<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Changed the syntax of the <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> command (it no
+longer writes the Skool Daze and Back to Skool disassemblies by default)</p></li>
+<li><p>Fixed the bug that prevented <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> from working
+with a zero-argument skool macro (such as <code class="docutils literal notranslate"><span class="pre">#C</span></code>) at the end of a sentence</p></li>
+<li><p>Fixed the <code class="docutils literal notranslate"><span class="pre">-w</span></code> option of <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> (it really does
+suppress all warnings now)</p></li>
+<li><p>Fixed how <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> handles <code class="docutils literal notranslate"><span class="pre">#P</span></code> macros (it now
+writes a newline before and after each one)</p></li>
+<li><p>Fixed the bug that made <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> omit the ‘*’
+control directive from routine entry points when the <code class="docutils literal notranslate"><span class="pre">-L</span></code> option was used</p></li>
+<li><p>ASM labels are now unaffected by the <code class="docutils literal notranslate"><span class="pre">-l</span></code> (lower case) and <code class="docutils literal notranslate"><span class="pre">-u</span></code> (upper
+case) options of <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a></p></li>
+<li><p>Added support for the ‘*’ notation in statement length lists in sub-block
+control directives (e.g. <code class="docutils literal notranslate"><span class="pre">B</span> <span class="pre">32768,239,16*14,15</span></code>)</p></li>
+<li><p>Updated the Skool Daze disassembly</p></li>
+<li><p>Updated the Back to Skool disassembly</p></li>
+</ul>
+</section>
+<section id="id12">
+<h2>2.1.2 (2011-04-28)<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-L</span></code> option to <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> (to write the
+disassembly in lower case)</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-i</span></code> option to <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> (to specify
+the image library to use)</p></li>
+<li><p>In control files, DEFM, DEFW and DEFS statement lengths in <code class="docutils literal notranslate"><span class="pre">T</span></code>, <code class="docutils literal notranslate"><span class="pre">W</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Z</span></code> sub-blocks may be declared</p></li>
+<li><p>Fixed the bug in <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a>’s handling of the
+<code class="docutils literal notranslate"><span class="pre">#SPACE</span></code> macro that prevented it from working with <cite>csc.skool</cite></p></li>
+<li><p>Fixed the bug that made <a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> produce invalid
+output when run on <cite>sd.skool</cite> with the <code class="docutils literal notranslate"><span class="pre">-H</span></code> and <code class="docutils literal notranslate"><span class="pre">-f3</span></code> options</p></li>
+</ul>
+</section>
+<section id="id13">
+<h2>2.1.1 (2011-04-16)<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-l</span></code>, <code class="docutils literal notranslate"><span class="pre">-u</span></code>, <code class="docutils literal notranslate"><span class="pre">-D</span></code> and <code class="docutils literal notranslate"><span class="pre">-H</span></code> options to
+<a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> (to write the disassembly in lower case,
+upper case, decimal or hexadecimal)</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-u</span></code>, <code class="docutils literal notranslate"><span class="pre">-D</span></code> and <code class="docutils literal notranslate"><span class="pre">-H</span></code> options to
+<a class="reference internal" href="commands.html#skool2asm-py"><span class="std std-ref">skool2asm.py</span></a> (to write the disassembly in upper case,
+decimal or hexadecimal)</p></li>
+<li><p>In control files, an instruction-level comment that spans a group of two or
+more sub-blocks of different types may be declared with an <code class="docutils literal notranslate"><span class="pre">M</span></code> directive</p></li>
+<li><p>Updated the incomplete Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id14">
+<h2>2.1 (2011-04-03)<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added support for hexadecimal disassemblies</p></li>
+<li><p>Added the <a class="reference internal" href="skool-macros.html#link"><span class="std std-ref">#LINK</span></a> macro (for creating hyperlinks to other pages in an
+HTML disassembly)</p></li>
+<li><p>Added the ability to define custom pages in an HTML disassembly using
+<code class="docutils literal notranslate"><span class="pre">[Page:*]</span></code> and <code class="docutils literal notranslate"><span class="pre">[PageContent:*]</span></code> sections in the ref file</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-o</span></code> option to <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> (to overwrite
+existing image files)</p></li>
+<li><p>Optional parameters in any position in a skool macro may be left blank</p></li>
+<li><p>In control files, DEFB statement lengths in multi-line <code class="docutils literal notranslate"><span class="pre">B</span></code> sub-blocks may
+be declared</p></li>
+<li><p>Updated the Skool Daze disassembly</p></li>
+<li><p>Updated the Back to Skool disassembly</p></li>
+<li><p>Updated the incomplete Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id15">
+<h2>2.0.6 (2011-03-09)<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> can read and write hexadecimal numbers in
+a control file</p></li>
+<li><p><a class="reference internal" href="commands.html#skool2ctl-py"><span class="std std-ref">skool2ctl.py</span></a> can write hexadecimal numbers in a control
+file</p></li>
+<li><p><a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> no longer chokes on blank lines in a
+control file</p></li>
+<li><p>Updated the incomplete Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id16">
+<h2>2.0.5 (2011-02-09)<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added the <a class="reference internal" href="skool-macros.html#udgarray"><span class="std std-ref">#UDGARRAY</span></a> macro (for creating images of blocks of UDGs)</p></li>
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#font"><span class="std std-ref">#FONT</span></a> macro so that it works with regular 8x8 fonts as
+well as the Skool game fonts</p></li>
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#scr"><span class="std std-ref">#SCR</span></a> macro so that it can take screenshots of rectangular
+portions of the screen</p></li>
+<li><p>The contents of the ‘Other graphics’ page of a disassembly are now defined in
+the <code class="docutils literal notranslate"><span class="pre">[Graphics]</span></code> section of the ref file</p></li>
+<li><p>Added the ability to define the layout of the disassembly index page in the
+<code class="docutils literal notranslate"><span class="pre">[Index]</span></code> and <code class="docutils literal notranslate"><span class="pre">[Index:*:*]</span></code> sections of the ref file</p></li>
+<li><p>Added the ability to define page titles in the <code class="docutils literal notranslate"><span class="pre">[Titles]</span></code> section of the
+ref file</p></li>
+<li><p>Added the ability to define page link text in the <code class="docutils literal notranslate"><span class="pre">[Links]</span></code> section of the
+ref file</p></li>
+<li><p>Added the ability to define the image colour palette in the <code class="docutils literal notranslate"><span class="pre">[Colours]</span></code>
+section of the ref file</p></li>
+<li><p>Fixed the bug in <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> that prevented it from
+generating a control file for a snapshot with the final byte of a ‘RET’,
+‘JR d’, or ‘JP nn’ instruction at 65535</p></li>
+<li><p>Updated the incomplete Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id17">
+<h2>2.0.4 (2010-12-16)<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h2>
+<p>Updated the incomplete Contact Sam Cruise disassembly.</p>
+</section>
+<section id="id18">
+<h2>2.0.3 (2010-12-08)<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h2>
+<p>Updated the incomplete Contact Sam Cruise disassembly.</p>
+</section>
+<section id="id19">
+<h2>2.0.2 (2010-12-01)<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Fixed the <code class="docutils literal notranslate"><span class="pre">#EREFS</span></code>, <code class="docutils literal notranslate"><span class="pre">#REFS</span></code> and <code class="docutils literal notranslate"><span class="pre">#TAPS</span></code> macros</p></li>
+<li><p>Fixed the bug where the end comment for the last entry in a skool file is not
+parsed</p></li>
+<li><p>Updated the incomplete Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id20">
+<h2>2.0.1 (2010-11-28)<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-r</span></code> option to <a class="reference internal" href="commands.html#skool2html-py"><span class="std std-ref">skool2html.py</span></a> (for
+specifying a ref file)</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">-o</span></code>, <code class="docutils literal notranslate"><span class="pre">-r</span></code>, and <code class="docutils literal notranslate"><span class="pre">-l</span></code> options to
+<a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a>, along with the ability to read binary
+(raw memory) files</p></li>
+<li><p>Fixed <a class="reference internal" href="commands.html#skool2ctl-py"><span class="std std-ref">skool2ctl.py</span></a> so that it correctly creates
+sub-blocks for commentless DEF{B,M,S,W} statements, and writes the length of
+a sub-block that is followed by a mid-routine comment</p></li>
+<li><p>Updated the incomplete Contact Sam Cruise disassembly</p></li>
+</ul>
+</section>
+<section id="id21">
+<h2>2.0 (2010-11-23)<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Updated the Back to Skool disassembly</p></li>
+<li><p>Enhanced the <a class="reference internal" href="skool-macros.html#r"><span class="std std-ref">#R</span></a> macro to support ‘other code’ disassemblies, thus
+making the <code class="docutils literal notranslate"><span class="pre">#ASM</span></code>, <code class="docutils literal notranslate"><span class="pre">#LOAD</span></code>, <code class="docutils literal notranslate"><span class="pre">#SAVE</span></code> and <code class="docutils literal notranslate"><span class="pre">#START</span></code> macros obsolete</p></li>
+<li><p>Split <cite>load.skool</cite>, <cite>save.skool</cite> and <cite>start.skool</cite> into separate files for
+each Skool game</p></li>
+<li><p>Added documentation on the <a class="reference internal" href="ref-files.html#reffiles"><span class="std std-ref">ref file sections</span></a></p></li>
+<li><p>Simplified SkoolKit by removing all instances of and support for ref file
+macros and skool directives</p></li>
+<li><p>Added files that were missing from SkoolKit 1.4: <cite>csc-load.skool</cite>,
+<cite>csc-save.skool</cite> and <cite>csc-start.skool</cite></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">SkoolKit 2.x changelog</a><ul>
+<li><a class="reference internal" href="#id1">2.5 (2012-02-22)</a></li>
+<li><a class="reference internal" href="#id2">2.4.1 (2012-01-30)</a></li>
+<li><a class="reference internal" href="#id3">2.4 (2012-01-10)</a></li>
+<li><a class="reference internal" href="#id4">2.3.1 (2011-11-15)</a></li>
+<li><a class="reference internal" href="#id5">2.3 (2011-10-31)</a></li>
+<li><a class="reference internal" href="#id6">2.2.5 (2011-10-17)</a></li>
+<li><a class="reference internal" href="#id7">2.2.4 (2011-08-10)</a></li>
+<li><a class="reference internal" href="#id8">2.2.3 (2011-07-15)</a></li>
+<li><a class="reference internal" href="#id9">2.2.2 (2011-06-02)</a></li>
+<li><a class="reference internal" href="#id10">2.2.1 (2011-05-24)</a></li>
+<li><a class="reference internal" href="#id11">2.2 (2011-05-10)</a></li>
+<li><a class="reference internal" href="#id12">2.1.2 (2011-04-28)</a></li>
+<li><a class="reference internal" href="#id13">2.1.1 (2011-04-16)</a></li>
+<li><a class="reference internal" href="#id14">2.1 (2011-04-03)</a></li>
+<li><a class="reference internal" href="#id15">2.0.6 (2011-03-09)</a></li>
+<li><a class="reference internal" href="#id16">2.0.5 (2011-02-09)</a></li>
+<li><a class="reference internal" href="#id17">2.0.4 (2010-12-16)</a></li>
+<li><a class="reference internal" href="#id18">2.0.3 (2010-12-08)</a></li>
+<li><a class="reference internal" href="#id19">2.0.2 (2010-12-01)</a></li>
+<li><a class="reference internal" href="#id20">2.0.1 (2010-11-28)</a></li>
+<li><a class="reference internal" href="#id21">2.0 (2010-11-23)</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="changelog3.html"
+                          title="previous chapter">SkoolKit 3.x changelog</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="changelog1.html"
+                          title="next chapter">SkoolKit 1.x changelog</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog2.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="changelog1.html" title="SkoolKit 1.x changelog"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="changelog3.html" title="SkoolKit 3.x changelog"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="changelog.html" >Changelog</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SkoolKit 2.x changelog</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

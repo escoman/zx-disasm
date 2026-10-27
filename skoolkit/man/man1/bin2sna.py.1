@@ -1,0 +1,204 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "BIN2SNA.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+bin2sna.py \- convert a binary file into an SZX or Z80 snapshot
+.SH SYNOPSIS
+.sp
+\fBbin2sna.py\fP [options] file.bin [OUTFILE]
+.SH DESCRIPTION
+.sp
+\fBbin2sna.py\fP converts a binary (raw memory) file into an SZX or Z80 snapshot.
+\(aqfile.bin\(aq may be a regular file, or \(aq\-\(aq for standard input. If \(aqOUTFILE\(aq is
+not given, it defaults to the name of the input file with \(aq.bin\(aq replaced by
+\(aq.z80\(aq, or \(aqprogram.z80\(aq if reading from standard input.
+.sp
+If the input file is 128K in length, it is assumed to hold the contents of RAM
+banks 0\-7 in order, and \fBbin2sna.py\fP will write a corresponding 128K
+snapshot. Otherwise, the \fB\-\-page\fP option is required to write a 128K
+snapshot, and the contents of individual RAM banks may be specified by
+\fB\-\-bank\fP options. If the input file is less than 128K in length and no
+\fB\-\-page\fP option is given, a 48K snapshot is written.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B \-\-bank \fIN,file\fP
+Load RAM bank N (0\-7) from the named file. This option may be used multiple
+times.
+.TP
+.B \-b, \-\-border \fIBORDER\fP
+Set the border colour. This option is equivalent to
+\fB\-\-state border=BORDER\fP\&. The default border colour is 7 (white).
+.TP
+.B \-o, \-\-org \fIORG\fP
+Set the origin address. The default origin address is 65536 minus the length
+of file.bin. \fIORG\fP must be a decimal number, or a hexadecimal number prefixed
+by \(aq0x\(aq.
+.TP
+.B \-\-page \fIN\fP
+Specify the RAM bank (N=0\-7) mapped to 49152 (0xC000) in the main input file.
+This option creates a 128K snapshot.
+.TP
+.B \-p, \-\-stack \fISTACK\fP
+Set the stack pointer. This option is equivalent to \fB\-\-reg sp=STACK\fP\&. The
+default value is \fIORG\fP\&. \fISTACK\fP must be a decimal number, or a hexadecimal
+number prefixed by \(aq0x\(aq.
+.TP
+.B \-P, \-\-poke \fI[p:]a[\-b[\-c]],[^+]v\fP
+POKE N,v in RAM bank p for N in {a, a+c, a+2c..., b}. Prefix \(aqv\(aq with \(aq^\(aq to
+perform an XOR operation, or \(aq+\(aq to perform an ADD operation. This option may
+be used multiple times. \(aqa\(aq, \(aqb\(aq, \(aqc\(aq and \(aqv\(aq must each be a decimal number,
+or a hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-r, \-\-reg \fIname=value\fP
+Set the value of a register. Do \fB\-\-reg help\fP for more information, or see
+the section on \fBREGISTERS\fP below. This option may be used multiple times.
+.TP
+.B \-s, \-\-start \fISTART\fP
+Set the address at which to start execution when the snapshot is loaded. This
+option is equivalent to \fB\-\-reg pc=START\fP\&. The default start address is
+\fIORG\fP\&. \fISTART\fP must be a decimal number, or a hexadecimal number prefixed by
+\(aq0x\(aq.
+.TP
+.B \-S, \-\-state \fIname=value\fP
+Set a hardware state attribute. Do \fB\-\-state help\fP for more information, or
+see the section on \fBHARDWARE STATE\fP below. This option may be used multiple
+times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.UNINDENT
+.SH REGISTERS
+.sp
+The \fB\-\-reg\fP option sets the value of a register in the snapshot.
+.nf
+
+.in +2
+\fB\-\-reg name=value\fP
+.in -2
+.fi
+.sp
+.sp
+For example:
+.nf
+
+.in +2
+\fB\-\-reg hl=32768\fP
+\fB\-\-reg b=0x1f\fP
+.in -2
+.fi
+.sp
+.sp
+To set the value of an alternate (shadow) register, use the \(aq^\(aq prefix:
+.nf
+
+.in +2
+\fB\-\-reg ^hl=10072\fP
+.in -2
+.fi
+.sp
+.sp
+Recognised register names are:
+.nf
+
+.in +2
+\fB^a\fP, \fB^b\fP, \fB^bc\fP, \fB^c\fP, \fB^d\fP, \fB^de\fP, \fB^e\fP, \fB^f\fP, \fB^h\fP, \fB^hl\fP, \fB^l\fP,
+\fBa\fP, \fBb\fP, \fBbc\fP, \fBc\fP, \fBd\fP, \fBde\fP, \fBe\fP, \fBf\fP, \fBh\fP, \fBhl\fP, \fBl\fP,
+\fBi\fP, \fBix\fP, \fBiy\fP, \fBmemptr\fP, \fBpc\fP, \fBr\fP, \fBsp\fP
+.in -2
+.fi
+.sp
+.SH HARDWARE STATE
+.sp
+The \fB\-\-state\fP option sets a hardware state attribute.
+.nf
+
+.in +2
+\fB\-\-state name=value\fP
+.in -2
+.fi
+.sp
+.sp
+Recognised attribute names and their default values are:
+.nf
+
+.in +2
+\fB7ffd\fP    \- last OUT to port 0x7ffd (128K only)
+\fBay[N]\fP   \- contents of AY register N (N=0\-15; 128K only)
+\fBborder\fP  \- border colour (default=0)
+\fBfe\fP      \- last OUT to port 0xfe (SZX only)
+\fBfffd\fP    \- last OUT to port 0xfffd (128K only)
+\fBiff\fP     \- interrupt flip\-flop: 0=disabled, 1=enabled (default=1)
+\fBim\fP      \- interrupt mode (default=1)
+\fBissue2\fP  \- issue 2 emulation: 0=disabled, 1=enabled (default=0)
+\fBtstates\fP \- T\-states elapsed since start of frame (default=34943)
+.in -2
+.fi
+.sp
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Convert \fBgame.bin\fP into a Z80 snapshot named \fBgame.z80\fP:
+.nf
+
+.in +2
+\fBbin2sna.py game.bin\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Convert \fBram.bin\fP into a Z80 snapshot named \fBgame.z80\fP that starts
+execution at 32768:
+.nf
+
+.in +2
+\fBbin2sna.py \-s 32768 ram.bin game.z80\fP
+.in -2
+.fi
+.sp
+.IP 3. 3
+Convert \fBgame.bin\fP into a 128K SZX snapshot with RAM bank 3 mapped to
+49152\-65535, and RAM bank 6 read from \fBbank6.bin\fP:
+.nf
+
+.in +2
+\fBbin2sna.py \-\-page 3 \-\-bank 6,bank6.bin game.bin game.szx\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

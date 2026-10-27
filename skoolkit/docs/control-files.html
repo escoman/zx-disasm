@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Control files &#8212; SkoolKit 10.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=fe13c473" />
+    
+    <script src="_static/documentation_options.js?v=2236d03e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Skool files" href="skool-files.html" />
+    <link rel="prev" title="Parsing, rendering, and modes" href="parsing.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="skool-files.html" title="Skool files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="parsing.html" title="Parsing, rendering, and modes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Control files</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="control-files">
+<span id="controlfiles"></span><h1>Control files<a class="headerlink" href="#control-files" title="Link to this heading">¶</a></h1>
+<p>A control file contains a list of start addresses of code and data blocks. This
+information can be used by <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a> to organise a
+skool file into corresponding code and data blocks.</p>
+<p>Each block address in a control file is marked with a ‘control directive’,
+which is a single letter that indicates what the block contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code> indicates a data block</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code> indicates a code block</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g</span></code> indicates a game status buffer entry</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> indicates a block that will be ignored</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code> indicates a block containing bytes that are all the same value
+(typically unused zeroes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> indicates a block containing text</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u</span></code> indicates an unused block of memory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">w</span></code> indicates a block containing words (two-byte values)</p></li>
+</ul>
+<p>(If these letters remind you of the valid characters that may appear in the
+first column of each line of a <a class="reference internal" href="skool-files.html#skoolfileformat"><span class="std std-ref">skool file</span></a>, that is no
+coincidence.)</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 24576 Do stuff
+b 24832 Important data
+t 25088 Interesting messages
+u 25344 Unused
+</pre></div>
+</div>
+<p>This control file declares that:</p>
+<ul class="simple">
+<li><p>Everything before 24576 will be ignored</p></li>
+<li><p>There is a routine at 24576-24831 titled ‘Do stuff’</p></li>
+<li><p>There is data at 24832-25087</p></li>
+<li><p>There is text at 25088-25343</p></li>
+<li><p>Everything from 25344 onwards is unused (but will still be disassembled as
+data)</p></li>
+</ul>
+<p>Addresses may be written as hexadecimal numbers, too; the equivalent example
+control file using hexadecimal notation would be:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c $6000 Do stuff
+b $6100 Important data
+t $6200 Interesting messages
+u $6300 Unused
+</pre></div>
+</div>
+<p>Besides the declaration of block types, addresses and titles, the control file
+syntax also supports the declaration of the following things:</p>
+<ul class="simple">
+<li><p>Block descriptions</p></li>
+<li><p>Register values</p></li>
+<li><p>Block start comments</p></li>
+<li><p>Mid-block comments</p></li>
+<li><p>Block end comments</p></li>
+<li><p>Sub-block types and comments</p></li>
+<li><p>DEFB/DEFM/DEFW/DEFS statement lengths in data, text and unused sub-blocks</p></li>
+<li><p>ASM directives (except block directives)</p></li>
+</ul>
+<p>The syntax for declaring these things is described in the following sections.</p>
+<section id="block-descriptions">
+<span id="blockdescriptions"></span><h2>Block descriptions<a class="headerlink" href="#block-descriptions" title="Link to this heading">¶</a></h2>
+<p>To provide a description for a code block at 24576 (for example), use the <code class="docutils literal notranslate"><span class="pre">D</span></code>
+directive thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 24576 This is the title of the routine at 24576
+D 24576 This is the description of the routine at 24576.
+</pre></div>
+</div>
+<p>If the description consists of two or more paragraphs, declare each one with a
+separate <code class="docutils literal notranslate"><span class="pre">D</span></code> directive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D 24576 This is the first paragraph of the description of the routine at 24576.
+D 24576 This is the second paragraph of the description of the routine at 24576.
+</pre></div>
+</div>
+</section>
+<section id="register-values">
+<span id="registervalues"></span><h2>Register values<a class="headerlink" href="#register-values" title="Link to this heading">¶</a></h2>
+<p>To declare the values of the registers upon entry to or exit from the routine
+at 24576, add one line per register with the <code class="docutils literal notranslate"><span class="pre">R</span></code> directive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>R 24576 A An important value in the accumulator
+R 24576 O:DE Display file address
+</pre></div>
+</div>
+<p>See the documentation on <a class="reference internal" href="skool-files.html#entryheaderformat"><span class="std std-ref">entry headers</span></a> for more
+details on how to format a register description line.</p>
+</section>
+<section id="block-start-comments">
+<span id="blockstartcomments"></span><h2>Block start comments<a class="headerlink" href="#block-start-comments" title="Link to this heading">¶</a></h2>
+<p>To declare a block start comment that will appear above the instruction at
+24576, use the <code class="docutils literal notranslate"><span class="pre">N</span></code> directive thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N 24576 And so this routine begins.
+</pre></div>
+</div>
+<p>If the start comment consists of two or more paragraphs, declare each one with
+a separate <code class="docutils literal notranslate"><span class="pre">N</span></code> directive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N 24576 This is the first paragraph of the start comment.
+N 24576 This is the second paragraph of the start comment.
+</pre></div>
+</div>
+</section>
+<section id="mid-block-comments">
+<span id="midblockcomments"></span><h2>Mid-block comments<a class="headerlink" href="#mid-block-comments" title="Link to this heading">¶</a></h2>
+<p>To declare a mid-block comment that will appear above the instruction at 24592,
+use the <code class="docutils literal notranslate"><span class="pre">N</span></code> directive thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N 24592 The next section of code does something really important.
+</pre></div>
+</div>
+<p>If the mid-block comment consists of two or more paragraphs, declare each one
+with a separate <code class="docutils literal notranslate"><span class="pre">N</span></code> directive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N 24592 This is the first paragraph of the mid-block comment.
+N 24592 This is the second paragraph of the mid-block comment.
+</pre></div>
+</div>
+</section>
+<section id="block-end-comments">
+<span id="blockendcomments"></span><h2>Block end comments<a class="headerlink" href="#block-end-comments" title="Link to this heading">¶</a></h2>
+<p>To declare a comment that will appear at the end of the routine at 24576, use
+the <code class="docutils literal notranslate"><span class="pre">E</span></code> directive thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>E 24576 And so the work of this routine is done.
+</pre></div>
+</div>
+<p>If the block end comment consists of two or more paragraphs, declare each one
+with a separate <code class="docutils literal notranslate"><span class="pre">E</span></code> directive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>E 24576 This is the first paragraph of the end comment for the routine at 24576.
+E 24576 This is the second paragraph of the end comment for the routine at 24576.
+</pre></div>
+</div>
+</section>
+<section id="sub-block-syntax">
+<span id="subblocksyntax"></span><h2>Sub-block syntax<a class="headerlink" href="#sub-block-syntax" title="Link to this heading">¶</a></h2>
+<p>Sometimes a block marked as one type (code, data, text, or whatever) may
+contain instructions or statements of another type. For example, a word (<code class="docutils literal notranslate"><span class="pre">w</span></code>)
+block may contain the odd non-word here and there. To declare such sub-blocks
+whose type does not match that of the containing block, use the following
+syntax:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>w 32768 A block containing mostly words
+B 32800,3 But here&#39;s a sub-block of 3 bytes at 32800
+T 32809,8 And an 8-byte text string at 32809
+C 32821,10 And 10 bytes of code at 32821
+S 32831,17 Followed by 17 zeroes at 32831
+</pre></div>
+</div>
+<p>The directives (<code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">T</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">S</span></code>) used here to mark the sub-blocks
+are the upper case equivalents of the directives used to mark top-level blocks
+(<code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code> and <code class="docutils literal notranslate"><span class="pre">s</span></code>). The comments at the end of these sub-block
+declarations are taken as instruction-level comments and will appear as such in
+the resultant skool file.</p>
+<p>If an instruction-level comment spans a group of two or more sub-blocks, it
+must be declared with an <code class="docutils literal notranslate"><span class="pre">M</span></code> directive:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>M 40000,21 This comment covers the following 3 sub-blocks
+B 40000,3
+W 40003,10
+T 40013,8
+</pre></div>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">M</span></code> directive with no length parameter covers all sub-blocks from the
+given start address to either the next mid-block comment or the end of the
+containing block (whichever is closer).</p>
+<p>To apply the same instruction-level comment to each instruction in a sub-block
+or group of sub-blocks, use the <code class="docutils literal notranslate"><span class="pre">M</span></code> directive with a third parameter set to
+1:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 32768 A routine with careful timing
+M 32768,,1 This instruction at #PC takes #TSTATES(#PC) T-states
+</pre></div>
+</div>
+<p>If a sub-block directive is left blank, then it is assumed to be of the same
+type as the containing block. So in:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 24576 A great routine
+  24580,8 A great section of code at 24580
+</pre></div>
+</div>
+<p>the sub-block at 24580 is assumed to be of type <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p>
+<p>If the length parameter is omitted from a sub-block directive, then it is
+assumed to end where the next sub-block starts. So in:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 24576 A great routine
+  24580 A great section of code at 24580
+  24588,10 Another great section of code at 24588
+</pre></div>
+</div>
+<p>the sub-block at 24580 has length 8, because it is implicitly terminated by the
+following sub-block at 24588.</p>
+</section>
+<section id="sub-block-lengths">
+<span id="subblocklengths"></span><h2>Sub-block lengths<a class="headerlink" href="#sub-block-lengths" title="Link to this heading">¶</a></h2>
+<p>Normally, a <code class="docutils literal notranslate"><span class="pre">B</span></code> sub-block declared thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 24580,12 Interesting data
+</pre></div>
+</div>
+<p>would result in something like this in the corresponding skool file:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>24580 DEFB 1,2,3,4,5,6,7,8 ; {Interesting data
+24588 DEFB 9,10,11,12      ; }
+</pre></div>
+</div>
+<p>But what if you wanted to split the data in this sub-block into groups of 3
+bytes each? That can be achieved with:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 24580,12,3 Interesting data
+</pre></div>
+</div>
+<p>which would give:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>24580 DEFB 1,2,3    ; {Interesting data
+24583 DEFB 4,5,6
+24586 DEFB 7,8,9
+24589 DEFB 10,11,12 ; }
+</pre></div>
+</div>
+<p>That is, in a <code class="docutils literal notranslate"><span class="pre">B</span></code> directive, the desired DEFB statement lengths may be given
+as a comma-separated list of “sublengths” following the main length parameter,
+and the final sublength in the list is used for all remaining data in the
+block. So, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 24580,12,1,2,3 Interesting data
+</pre></div>
+</div>
+<p>would give:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>24580 DEFB 1        ; {Interesting data
+24581 DEFB 2,3
+24583 DEFB 4,5,6
+24586 DEFB 7,8,9
+24589 DEFB 10,11,12 ; }
+</pre></div>
+</div>
+<p>Note that even if sublengths are specified, the main length parameter can be
+omitted (by leaving it blank) if the sub-block is implicitly terminated by the
+next sub-block. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 24580,,1,2,3 No need to specify the main length parameter here...
+B 24592,10 ...because this sub-block implies that it must be 12
+</pre></div>
+</div>
+<p>If the sublength list contains sequences of two or more identical lengths, as
+in:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 24580,21,2,2,2,2,2,2,1,1,1,3
+</pre></div>
+</div>
+<p>then it may be abbreviated thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 24580,21,2*6,1*3,3
+</pre></div>
+</div>
+<p>Sublengths can be used on <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">S</span></code>, <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">W</span></code> directives too (though
+on <code class="docutils literal notranslate"><span class="pre">C</span></code> directives they are really only useful for specifying
+<a class="reference internal" href="#numberbases"><span class="std std-ref">number bases</span></a>). For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>S 32768,100,25 Four 25-byte chunks of zeroes
+</pre></div>
+</div>
+<p>would give:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>32768 DEFS 25 ; {Four 25-byte chunks of zeroes
+32793 DEFS 25
+32818 DEFS 25
+32843 DEFS 25 ; }
+</pre></div>
+</div>
+</section>
+<section id="the-dot-and-colon-directives">
+<span id="dotdirective"></span><h2>The dot and colon directives<a class="headerlink" href="#the-dot-and-colon-directives" title="Link to this heading">¶</a></h2>
+<p>The dot (<code class="docutils literal notranslate"><span class="pre">.</span></code>) directive provides an alternative method of specifying a
+comment for a top-level or sub-block directive. For example, instead of:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 30000 This is the title of the entry
+</pre></div>
+</div>
+<p>you could write:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 30000
+. This is the title of the entry
+</pre></div>
+</div>
+<p>At first glance this does not appear to be an improvement. But one advantage of
+the dot directive is that a comment can be split over multiple lines, and the
+line breaks are preserved when restored. This makes it much easier to read and
+write a long comment, especially if it contains a <code class="docutils literal notranslate"><span class="pre">#LIST</span></code> or <code class="docutils literal notranslate"><span class="pre">#TABLE</span></code>
+macro. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D 30000 #TABLE(default) { =h Header 1 | =h Header 2 } { Cell 1      | Cell 2 } TABLE#
+</pre></div>
+</div>
+<p>can be recast like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D 30000
+. #TABLE(default)
+. { =h Header 1 | =h Header 2 }
+. { Cell 1      | Cell 2 }
+. TABLE#
+</pre></div>
+</div>
+<p>In addition, a sequence of <code class="docutils literal notranslate"><span class="pre">D</span></code>, <code class="docutils literal notranslate"><span class="pre">N</span></code>, <code class="docutils literal notranslate"><span class="pre">E</span></code> or <code class="docutils literal notranslate"><span class="pre">R</span></code> directives at the same
+address (one for each paragraph or register description) can be reduced to just
+one of those directives followed by a sequence of dot directives:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N 30000
+. Paragraph 1.
+. .
+. Paragraph 2.
+</pre></div>
+</div>
+<p>In fact, the dot directive can be used instead of <code class="docutils literal notranslate"><span class="pre">D</span></code>, <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">N</span></code>
+directives when specifying an entry header. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c 30000
+. This is the title of the entry.
+.
+. This is the description.
+.
+.   A Input
+. O:B Output
+.
+. This is the start comment.
+</pre></div>
+</div>
+<p>Note, however, that this works only if the entry header contains no ASM
+directives.</p>
+<p>The dot directive also makes it simpler to preserve <code class="docutils literal notranslate"><span class="pre">&#64;*sub</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;*fix</span></code>
+directives that replace part of an instruction-level comment. For example,
+consider the following skool file snippet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 49155 LD A,(HL)     ; {Increase the sprite&#39;s x-coordinate by
+@bfix=ADD A,3        ; three}
+ 49156 ADD A,2       ; two (which is a bug)}
+</pre></div>
+</div>
+<p>When preserved without dot directives, this becomes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ 49156 bfix=ADD A,3        ; three}
+C 49155,3 Increase the sprite&#39;s x-coordinate by two (which is a bug)
+</pre></div>
+</div>
+<p>which is restored incorrectly by <cite>sna2skool.py</cite> (using the default line width
+of 79 characters) as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 49155 LD A,(HL)     ; {Increase the sprite&#39;s x-coordinate by two (which is a
+@bfix=ADD A,3        ; three}
+ 49156 ADD A,2       ; bug)}
+</pre></div>
+</div>
+<p>This problem could be addressed by recasting the comment lines in the skool
+file and adding a <code class="docutils literal notranslate"><span class="pre">&#64;bfix</span></code> directive for ‘LD A,(HL)’:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@bfix=               ; {Increase the sprite&#39;s x-coordinate by three
+ 49155 LD A,(HL)     ; {Increase the sprite&#39;s x-coordinate by two (which is a
+@bfix=ADD A,3        ; }
+ 49156 ADD A,2       ; bug)}
+</pre></div>
+</div>
+<p>which would be preserved without dot directives as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ 49155 bfix=               ; {Increase the sprite&#39;s x-coordinate by three
+@ 49156 bfix=ADD A,3        ; }
+C 49155,3 Increase the sprite&#39;s x-coordinate by two (which is a bug)
+</pre></div>
+</div>
+<p>But this solution requires two <code class="docutils literal notranslate"><span class="pre">&#64;bfix</span></code> directives instead of one, repeats the
+part of the comment that doesn’t change, and could still be restored
+incorrectly if <cite>sna2skool.py</cite> is used with a line width other than the default.</p>
+<p>It is much easier and more robust to use dot directives to preserve the
+original form in a way that will always be restored correctly:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ 49156 bfix=ADD A,3        ; three}
+C 49155,3
+. Increase the sprite&#39;s x-coordinate by
+. two (which is a bug)
+</pre></div>
+</div>
+<p>Finally, the colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) directive can be used alongside the dot directive to
+force an instruction comment continuation line where there would not otherwise
+be one. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 31995,2,1
+. The first two comment lines
+: belong to the first DEFB.
+. And this comment line belongs to the second DEFB.
+</pre></div>
+</div>
+<p>would be restored as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b31995 DEFB 0        ; {The first two comment lines
+                     ; belong to the first DEFB.
+ 31996 DEFB 0        ; And this comment line belongs to the second DEFB.}
+</pre></div>
+</div>
+<p>The colon directive is rarely needed, but it is useful in cases like the one
+above where an <code class="docutils literal notranslate"><span class="pre">&#64;*sub</span></code> or <code class="docutils literal notranslate"><span class="pre">&#64;*fix</span></code> directive is used to replace all or part
+of the comment of the second instruction only:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 49155 LD A,(HL)     ; {Having adjusted the sprite&#39;s y-coordinate, we now
+                     ; increase its x-coordinate by
+@bfix=ADD A,3        ; three}
+ 49156 ADD A,2       ; two (which is a bug)}
+</pre></div>
+</div>
+<p>This can be preserved as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ 49156 bfix=ADD A,3        ; three}
+C 49155,3
+. Having adjusted the sprite&#39;s y-coordinate, we now
+: increase its x-coordinate by
+. two (which is a bug)
+</pre></div>
+</div>
+<p>If a dot directive were used instead of the colon directive here, it would
+restore incorrectly as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 49155 LD A,(HL)     ; {Having adjusted the sprite&#39;s y-coordinate, we now
+@bfix=ADD A,3        ; three}
+ 49156 ADD A,2       ; increase its x-coordinate by
+                     ; two (which is a bug)}
+</pre></div>
+</div>
+</section>
+<section id="loops">
+<span id="ctlloops"></span><h2>Loops<a class="headerlink" href="#loops" title="Link to this heading">¶</a></h2>
+<p>Sometimes the instructions and statements in a code or data block follow a
+repeating pattern. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b 30000 Two bytes and one word, times ten
+B 30000,2
+W 30002
+B 30004,2
+W 30004
+...
+B 30036,2
+W 30038
+</pre></div>
+</div>
+<p>Repeating patterns like this can be expressed more succinctly as a loop by
+using the <code class="docutils literal notranslate"><span class="pre">L</span></code> directive, which has the following format:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>L start,length,count[,flags]
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code> is the loop start address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the loop (the size of the address range to
+repeat)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code> is the number of times to repeat the loop (only values of 2 or more
+make sense)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> controls which elements in the loop are repeated (see below)</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">flags</span></code> may have one of the following values:</p>
+<ul class="simple">
+<li><p>0 - repeat sub-block elements only (this is the default)</p></li>
+<li><p>1 - repeat block-level elements and sub-block elements</p></li>
+<li><p>2 - repeat sub-block elements only, except any mid-block comment at the loop
+start address</p></li>
+</ul>
+<p>So using the <code class="docutils literal notranslate"><span class="pre">L</span></code> directive, the body of the data block above can be expressed
+in three lines instead of 20:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b 30000 Two bytes and one word, times ten
+B 30000,2
+W 30002
+L 30000,4,10
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">L</span></code> directive can also be used to repeat entire blocks, by setting
+<code class="docutils literal notranslate"><span class="pre">flags</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b 40000 A block of five pairs of bytes
+B 40000,10,2
+L 40000,10,3,1
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b 40000 A block of five pairs of bytes
+B 40000,10,2
+b 40010 A block of five pairs of bytes
+B 40010,10,2
+b 40020 A block of five pairs of bytes
+B 40020,10,2
+</pre></div>
+</div>
+<p>By default, an <code class="docutils literal notranslate"><span class="pre">N</span></code> directive at the beginning of a loop is repeated. To avoid
+that, set <code class="docutils literal notranslate"><span class="pre">flags</span></code> to 2. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b 50000 Three groups of bytes and words
+N 50000 The three groups are as follows:
+B 50000 Byte
+W 50001 Word
+L 50000,3,3,2
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>b 50000 Three groups of bytes and words
+N 50000 The three groups are as follows:
+B 50000 Byte
+W 50001 Word
+B 50003 Byte
+W 50004 Word
+B 50006 Byte
+W 50007 Word
+</pre></div>
+</div>
+<p>Note that ASM directives in the address range of an <code class="docutils literal notranslate"><span class="pre">L</span></code> directive loop are
+<em>not</em> repeated.</p>
+</section>
+<section id="number-bases">
+<span id="numberbases"></span><h2>Number bases<a class="headerlink" href="#number-bases" title="Link to this heading">¶</a></h2>
+<p>Numeric values in instruction operands and DEFB, DEFM, DEFS and DEFW statements
+are normally rendered in either decimal or hexadecimal, depending on the
+options passed to <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a>. To render a numeric value in a specific
+base, as a negative number, or as a character, attach a <code class="docutils literal notranslate"><span class="pre">b</span></code> (binary), <code class="docutils literal notranslate"><span class="pre">c</span></code>
+(character), <code class="docutils literal notranslate"><span class="pre">d</span></code> (decimal), <code class="docutils literal notranslate"><span class="pre">h</span></code> (hexadecimal) or <code class="docutils literal notranslate"><span class="pre">m</span></code> (minus) prefix to
+the relevant length or sublength parameter on the <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">S</span></code>, <code class="docutils literal notranslate"><span class="pre">T</span></code>
+or <code class="docutils literal notranslate"><span class="pre">W</span></code> directive.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>C 30000,b
+C 30002,c
+</pre></div>
+</div>
+<p>will result in something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>30000 LD A,%10001111
+30002 LD B,&quot;?&quot;
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 40000,8,b1:d2:h1,m1,b1,h2
+S 40008,8,8:c
+</pre></div>
+</div>
+<p>will result in something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>40000 DEFB %10101010,23,43,$5F
+40004 DEFB -1
+40005 DEFB %11110000
+40006 DEFB $2B,$80
+40008 DEFS 8,&quot;!&quot;
+</pre></div>
+</div>
+<p>Note that attaching a prefix to the main length parameter sets the default base
+for any sublength parameters that follow. So:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 40000,b,1:d2,1
+B 40004,h4,1:b1:d1,1
+</pre></div>
+</div>
+<p>will result in something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>40000 DEFB %01010101,32,57
+40003 DEFB %00001111
+40004 DEFB $0F,%11110000,93
+40007 DEFB $A0
+</pre></div>
+</div>
+<p>Some instructions have two numeric operands. To specify a different base for
+each one, use two prefixes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>C 30000,hb4
+</pre></div>
+</div>
+<p>which will result in something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>30000 LD (IX+$0A),%10000001
+</pre></div>
+</div>
+<p>To use the default base for one operand, and a specific base for the other, use
+the <code class="docutils literal notranslate"><span class="pre">n</span></code> (none) prefix to denote the default base. So if the default base is
+decimal, then:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>C 30000,,nb4,hn4
+</pre></div>
+</div>
+<p>will result in something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>30000 LD (IX+10),%10000001
+30004 LD (IX+$0B),130
+</pre></div>
+</div>
+<p>DEFB and DEFM statements may contain both bytes and strings; for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>40000 DEFM &quot;Hi &quot;,5
+40004 DEFB 4,&quot;go&quot;
+</pre></div>
+</div>
+<p>Such statements can be encoded in a control file thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>T 40000,,3:n1
+B 40004,3,1:c2
+</pre></div>
+</div>
+<p>That is, the length of a string in a DEFB statement is prefixed by <code class="docutils literal notranslate"><span class="pre">c</span></code>, the
+length of a sequence of bytes in a DEFM statement is prefixed by <code class="docutils literal notranslate"><span class="pre">n</span></code>, and the
+lengths of all strings and byte sequences are separated by colons. This
+notation can also be combined with the ‘*’ notation; for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>T 50000,8,2:n2*2
+</pre></div>
+</div>
+<p>which is equivalent to:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>T 50000,8,2:n2,2:n2
+</pre></div>
+</div>
+<p>A character code may be ‘inverted’ (i.e. have bit 7 set), typically to indicate
+the end of a string:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>49152 DEFM &quot;Hell&quot;,&quot;o&quot;+128
+</pre></div>
+</div>
+<p>This can be encoded thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>T 49152,5,4:1
+</pre></div>
+</div>
+<p>and the terminal character will be restored in the same format.</p>
+</section>
+<section id="asm-directives">
+<span id="asmdirectives-ctl"></span><h2>ASM directives<a class="headerlink" href="#asm-directives" title="Link to this heading">¶</a></h2>
+<p>To declare an ASM directive for a block or an individual instruction, use the
+<code class="docutils literal notranslate"><span class="pre">&#64;</span></code> directive thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ address directive[=value]
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">directive</span></code> is the directive name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the block or instruction to which the directive
+applies</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code> is the value of the directive (if it requires one)</p></li>
+</ul>
+<p>For example, to declare a <a class="reference internal" href="asm.html#label"><span class="std std-ref">&#64;label</span></a> directive for the instruction at 32768:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ 32768 label=LOOP
+</pre></div>
+</div>
+<p>When declaring an <a class="reference internal" href="asm.html#ignoreua"><span class="std std-ref">&#64;ignoreua</span></a> directive for anything other than an
+instruction-level comment, a suffix must be appended to the directive to
+specify the type of comment it applies to:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ address ignoreua:X[=addr1[,addr2...]]
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">X</span></code> is one of:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code> - entry description</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span></code> - block end comment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> - instruction-level comment (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code> - block start comment or mid-block comment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r</span></code> - register description section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> - entry title</p></li>
+</ul>
+<p>For example, to declare an <a class="reference internal" href="asm.html#ignoreua"><span class="std std-ref">&#64;ignoreua</span></a> directive for the description of the
+routine at 49152:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ 49152 ignoreua:d
+D 49152 This is the description of the routine at 49152.
+</pre></div>
+</div>
+</section>
+<section id="instruction-level-comments">
+<h2>Instruction-level comments<a class="headerlink" href="#instruction-level-comments" title="Link to this heading">¶</a></h2>
+<p>One limitation of storing instruction-level comments as shown so far is that
+there is no way to distinguish between a blank comment that spans two or more
+instructions and no comment at all. For example, both:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>30000 DEFB 0 ; {
+30001 DEFB 0 ; }
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>30000 DEFB 0 ;
+30001 DEFB 0 ;
+</pre></div>
+</div>
+<p>would be preserved thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 30000,2,1
+</pre></div>
+</div>
+<p>To solve this problem, a special syntax is used to preserve blank
+multi-instruction comments:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 30000,2,1 .
+</pre></div>
+</div>
+<p>When restored, this comment is reduced to an empty string.</p>
+<p>But how then to preserve a multi-instruction comment consisting of a single dot
+(<code class="docutils literal notranslate"><span class="pre">.</span></code>), or a sequence of two or more dots? In that case, another dot is
+prefixed to the comment. So:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>30000 DEFB 0 ; {...
+30001 DEFB 0 ; }
+</pre></div>
+</div>
+<p>is preserved thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B 30000,2,1 ....
+</pre></div>
+</div>
+<p>Note that this scheme does not apply to multi-instruction comments that contain
+at least one character other than a dot; such comments are preserved verbatim
+(that is, without a dot prefix).</p>
+</section>
+<section id="non-entry-blocks">
+<span id="nonentryblocks-ctl"></span><h2>Non-entry blocks<a class="headerlink" href="#non-entry-blocks" title="Link to this heading">¶</a></h2>
+<p>In addition to regular entries (routines and data blocks), a skool file may
+also contain blocks of lines that do not match the format of an entry, such as
+a header comment that appears before the first entry and contains copyright
+information. Blocks like this can be preserved by the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> directive. For
+example, the copyright header in this skool file:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>; Copyright 2018 J Smith
+
+; Start
+c24576 JP 32768
+</pre></div>
+</div>
+<p>is preserved thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; 24576 ; Copyright 2018 J Smith
+</pre></div>
+</div>
+<p>Note that the address of the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> directive is the address of the next regular
+entry.</p>
+<p>A non-entry block may also appear at the end of the skool file, after the
+last regular entry:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>; The end
+c65535 RET
+
+; And that was the disassembly.
+</pre></div>
+</div>
+<p>In this case the block is preserved by the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> directive with the parameter
+<code class="docutils literal notranslate"><span class="pre">1</span></code> (indicating a ‘footer’) following the address of the last entry:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; 65535,1 ; And that was the disassembly.
+</pre></div>
+</div>
+</section>
+<section id="quick-reference">
+<h2>Quick reference<a class="headerlink" href="#quick-reference" title="Link to this heading">¶</a></h2>
+<section id="block-directives">
+<span id="blockdirectives"></span><h3>Block directives<a class="headerlink" href="#block-directives" title="Link to this heading">¶</a></h3>
+<p>Every block directive has the format:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>d address[ title]
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the block, and <code class="docutils literal notranslate"><span class="pre">title</span></code> (optional) is its
+title. The block directive <code class="docutils literal notranslate"><span class="pre">d</span></code> controls how the contents of the block are
+disassembled by default, and must be one of the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span></code> - data block (DEFB statements)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code> - code block (assembly language instructions)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g</span></code> - game status buffer entry (DEFB statements)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> - block that will be ignored</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code> - block containing bytes that are all the same value (DEFS statement)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> - block containing text (DEFM statements)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">u</span></code> - unused block of memory (DEFB statements)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">w</span></code> - block containing words (DEFW statements)</p></li>
+</ul>
+</section>
+<section id="b-directive">
+<span id="bdirective"></span><h3>B directive<a class="headerlink" href="#b-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">B</span></code> sub-block directive disassembles an address range as one or more DEFB
+statements:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>B address[,length[,sublengths]][ comment]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the start address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the address range; if not given, the range ends
+where the next declared sub-block starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sublengths</span></code> controls the DEFB statement lengths and byte value formats;
+see <a class="reference internal" href="#subblocklengths"><span class="std std-ref">Sub-block lengths</span></a> and <a class="reference internal" href="#numberbases"><span class="std std-ref">Number bases</span></a> for more details</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment applied to the sub-block</p></li>
+</ul>
+</section>
+<section id="c-directive">
+<h3>C directive<a class="headerlink" href="#c-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">C</span></code> sub-block directive disassembles an address range as code (assembly
+language instructions):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>C address[,length[,sublengths]][ comment]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the start address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the address range; if not given, the range ends
+where the next declared sub-block starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sublengths</span></code> controls the instruction operand value formats; see
+<a class="reference internal" href="#numberbases"><span class="std std-ref">Number bases</span></a> for more details</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment applied to the sub-block</p></li>
+</ul>
+</section>
+<section id="d-directive">
+<h3>D directive<a class="headerlink" href="#d-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">D</span></code> directive declares a description for a code or data block:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>D address description
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the block</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> is the description</p></li>
+</ul>
+<p>See <a class="reference internal" href="#blockdescriptions"><span class="std std-ref">Block descriptions</span></a> for more details.</p>
+</section>
+<section id="e-directive">
+<h3>E directive<a class="headerlink" href="#e-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">E</span></code> directive declares a block end comment:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>E address comment
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the block</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment</p></li>
+</ul>
+<p>See <a class="reference internal" href="#blockendcomments"><span class="std std-ref">Block end comments</span></a> for more details.</p>
+</section>
+<section id="l-directive">
+<h3>L directive<a class="headerlink" href="#l-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">L</span></code> directive defines a control file loop that repeats a sequence of
+other control directives:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>L start,length,count[,flags]
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="#ctlloops"><span class="std std-ref">Loops</span></a> for more details.</p>
+</section>
+<section id="m-directive">
+<span id="mdirective"></span><h3>M directive<a class="headerlink" href="#m-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">M</span></code> directive applies a comment to a contiguous group of sub-blocks:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>M address[,length[,repeat]] comment
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the start address of the group of sub-blocks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the group; if not given, the directive covers all
+sub-blocks up to either the next mid-block comment or the end of the
+containing block (whichever is closer)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">repeat</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> to apply the comment to each instruction line in the
+group, or <code class="docutils literal notranslate"><span class="pre">0</span></code> to apply it to the group as a whole (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment</p></li>
+</ul>
+<p>See <a class="reference internal" href="#subblocksyntax"><span class="std std-ref">Sub-block syntax</span></a> for more details.</p>
+</section>
+<section id="n-directive">
+<h3>N directive<a class="headerlink" href="#n-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">N</span></code> directive declares a block start comment or mid-block comment:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N address comment
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the instruction above which to place the
+comment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment</p></li>
+</ul>
+<p>See <a class="reference internal" href="#blockstartcomments"><span class="std std-ref">Block start comments</span></a> and <a class="reference internal" href="#midblockcomments"><span class="std std-ref">Mid-block comments</span></a> for more details.</p>
+</section>
+<section id="r-directive">
+<h3>R directive<a class="headerlink" href="#r-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">R</span></code> directive declares an input or output register value for a code
+block:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>R address register
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the address of the code block</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register</span></code> is a description of the register name and value</p></li>
+</ul>
+<p>See <a class="reference internal" href="#registervalues"><span class="std std-ref">Register values</span></a> for more details.</p>
+</section>
+<section id="s-directive">
+<h3>S directive<a class="headerlink" href="#s-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">S</span></code> sub-block directive disassembles an address range as one or more DEFS
+statements:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>S address[,length[,sublengths]][ comment]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the start address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the address range; if not given, the range ends
+where the next declared sub-block starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sublengths</span></code> controls the DEFS statement lengths and byte value formats;
+see <a class="reference internal" href="#subblocklengths"><span class="std std-ref">Sub-block lengths</span></a> and <a class="reference internal" href="#numberbases"><span class="std std-ref">Number bases</span></a> for more details</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment applied to the sub-block</p></li>
+</ul>
+</section>
+<section id="t-directive">
+<h3>T directive<a class="headerlink" href="#t-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">T</span></code> sub-block directive disassembles an address range as one or more DEFM
+statements:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>T address[,length[,sublengths]][ comment]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the start address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the address range; if not given, the range ends
+where the next declared sub-block starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sublengths</span></code> controls the DEFM statement lengths; see
+<a class="reference internal" href="#subblocklengths"><span class="std std-ref">Sub-block lengths</span></a> for more details</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment applied to the sub-block</p></li>
+</ul>
+</section>
+<section id="w-directive">
+<span id="wdirective"></span><h3>W directive<a class="headerlink" href="#w-directive" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">W</span></code> sub-block directive disassembles an address range as one or more DEFW
+statements:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>W address[,length[,sublengths]][ comment]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> is the start address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">length</span></code> is the length of the address range; if not given, the range ends
+where the next declared sub-block starts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sublengths</span></code> controls the DEFW statement lengths and word value formats;
+see <a class="reference internal" href="#subblocklengths"><span class="std std-ref">Sub-block lengths</span></a> and <a class="reference internal" href="#numberbases"><span class="std std-ref">Number bases</span></a> for more details</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> is the comment applied to the sub-block</p></li>
+</ul>
+</section>
+<section id="directive">
+<h3>‘ ‘ directive<a class="headerlink" href="#directive" title="Link to this heading">¶</a></h3>
+<p>The ‘ ‘ (space) sub-block directive is equivalent to a <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">S</span></code>,
+<code class="docutils literal notranslate"><span class="pre">T</span></code> or <code class="docutils literal notranslate"><span class="pre">W</span></code> directive, according to the default disassembly type of the
+containing block.</p>
+<p>See <a class="reference internal" href="#blockdirectives"><span class="std std-ref">Block directives</span></a> for more details.</p>
+</section>
+<section id="id1">
+<h3>&#64; directive<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> directive declares an ASM directive at a given address:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ address directive[=value]
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="#asmdirectives-ctl"><span class="std std-ref">ASM directives</span></a> for more details.</p>
+</section>
+<section id="and-directives">
+<h3>. and : directives<a class="headerlink" href="#and-directives" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">.</span></code> and <code class="docutils literal notranslate"><span class="pre">:</span></code> directives provide an alternative method of specifying
+comments for block and sub-block directives that can be used to preserve line
+breaks.</p>
+<p>See <a class="reference internal" href="#dotdirective"><span class="std std-ref">The dot and colon directives</span></a> for more details.</p>
+</section>
+<section id="id2">
+<h3>&gt; directive<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> directive declares a line of text that lies outside a regular entry
+(code or data block).</p>
+<p>See <a class="reference internal" href="#nonentryblocks-ctl"><span class="std std-ref">Non-entry blocks</span></a> for more details.</p>
+</section>
+</section>
+<section id="control-file-comments">
+<h2>Control file comments<a class="headerlink" href="#control-file-comments" title="Link to this heading">¶</a></h2>
+<p>A comment may be added to a control file by starting a line with a hash
+character (<code class="docutils literal notranslate"><span class="pre">#</span></code>), a per cent sign (<code class="docutils literal notranslate"><span class="pre">%</span></code>), or a semicolon (<code class="docutils literal notranslate"><span class="pre">;</span></code>). For
+example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># This is a comment
+% This is another comment
+; This is yet another comment
+</pre></div>
+</div>
+<p>Control file comments are ignored by <a class="reference internal" href="commands.html#sna2skool-py"><span class="std std-ref">sna2skool.py</span></a>, and will not show up
+in the skool file.</p>
+</section>
+<section id="limitations">
+<span id="id3"></span><h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">¶</a></h2>
+<p>Control files cannot preserve ASM block directives that occur inside a regular
+entry. If your skool file contains any such ASM block directives, they should
+be replaced before using <a class="reference internal" href="commands.html#skool2ctl-py"><span class="std std-ref">skool2ctl.py</span></a>.</p>
+<p>An ASM block directive that adds, removes or modifies a sequence of
+instructions and their associated comments can be replaced by one or more plain
+<a class="reference internal" href="asm.html#isub"><span class="std std-ref">&#64;isub</span></a>, <a class="reference internal" href="asm.html#ssub"><span class="std std-ref">&#64;ssub</span></a>, <a class="reference internal" href="asm.html#rsub"><span class="std std-ref">&#64;rsub</span></a>, <a class="reference internal" href="asm.html#ofix"><span class="std std-ref">&#64;ofix</span></a>, <a class="reference internal" href="asm.html#bfix"><span class="std std-ref">&#64;bfix</span></a> or <a class="reference internal" href="asm.html#rfix"><span class="std std-ref">&#64;rfix</span></a>
+directives.</p>
+<p>An ASM block directive that modifies part of an entry header, mid-block comment
+or block end comment can be replaced by an <a class="reference internal" href="skool-macros.html#if"><span class="std std-ref">#IF</span></a> macro that checks the
+relevant substitution mode (<code class="docutils literal notranslate"><span class="pre">asm</span></code>) or fix mode (<code class="docutils literal notranslate"><span class="pre">fix</span></code>). For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@bfix-begin
+; This is a bug.
+@bfix+else
+; This bug is fixed.
+@bfix+end
+</pre></div>
+</div>
+<p>could be replaced by:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>; This #IF({mode[fix]}&lt;2)(is a bug,bug is fixed).
+</pre></div>
+</div>
+</section>
+<section id="revision-history">
+<h2>Revision history<a class="headerlink" href="#revision-history" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Version</p></th>
+<th class="head"><p>Changes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>9.0</p></td>
+<td><p>Added support to the <code class="docutils literal notranslate"><span class="pre">L</span></code> directive for avoiding repetition of
+an <code class="docutils literal notranslate"><span class="pre">N</span></code> directive at the start of the loop</p></td>
+</tr>
+<tr class="row-odd"><td><p>8.7</p></td>
+<td><p>Added support to the <code class="docutils literal notranslate"><span class="pre">M</span></code> directive for applying its comment to
+each instruction in its range</p></td>
+</tr>
+<tr class="row-even"><td><p>7.2</p></td>
+<td><p>Added the dot (<code class="docutils literal notranslate"><span class="pre">.</span></code>) and colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) directives for specifying
+comments over multiple lines</p></td>
+</tr>
+<tr class="row-odd"><td><p>7.1</p></td>
+<td><p>Added support for specifying that numeric values in instruction
+operands and DEFB, DEFM, DEFS and DEFW statements be rendered as
+negative numbers</p></td>
+</tr>
+<tr class="row-even"><td><p>7.0</p></td>
+<td><p>Added the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> directive for preserving non-entry blocks; added
+support for preserving ‘inverted’ characters (with bit 7 set);
+the byte value in an <code class="docutils literal notranslate"><span class="pre">S</span></code> directive may be left blank</p></td>
+</tr>
+<tr class="row-odd"><td><p>4.5</p></td>
+<td><p>Added support for specifying character values in DEFS statements</p></td>
+</tr>
+<tr class="row-even"><td><p>4.4</p></td>
+<td><p>Added support for specifying that numeric values in instruction
+operands be rendered as characters or in a specific base; added
+support for specifying character values in DEFW statements</p></td>
+</tr>
+<tr class="row-odd"><td><p>4.3</p></td>
+<td><p>Added the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> directive, the <code class="docutils literal notranslate"><span class="pre">N</span></code> directive and support for
+block start comments</p></td>
+</tr>
+<tr class="row-even"><td><p>4.2</p></td>
+<td><p>Added the <code class="docutils literal notranslate"><span class="pre">L</span></code> directive and support for preserving the location
+of <a class="reference internal" href="asm.html#ignoreua"><span class="std std-ref">&#64;ignoreua</span></a> directives</p></td>
+</tr>
+<tr class="row-odd"><td><p>3.7</p></td>
+<td><p>Added support for binary numbers; added support for specifying
+the base of numeric values in DEFB, DEFM, DEFS and DEFW
+statements; added the <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">S</span></code> directives and support for
+DEFS statements with non-zero byte values</p></td>
+</tr>
+<tr class="row-even"><td><p>3.6</p></td>
+<td><p>Added support for preserving blank comments that span two or more
+instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>3.1.4</p></td>
+<td><p>Added support for DEFB and DEFM statements that contain both
+strings and bytes</p></td>
+</tr>
+<tr class="row-even"><td><p>2.4</p></td>
+<td><p>Added support for non-block ASM directives</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.2</p></td>
+<td><p>Added support for the <code class="docutils literal notranslate"><span class="pre">*</span></code> notation in DEFB, DEFM, DEFS and DEFW
+statement length lists</p></td>
+</tr>
+<tr class="row-even"><td><p>2.1.2</p></td>
+<td><p>Added support for DEFM, DEFS and DEFW statement lengths</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.1.1</p></td>
+<td><p>Added the <code class="docutils literal notranslate"><span class="pre">M</span></code> directive</p></td>
+</tr>
+<tr class="row-even"><td><p>2.1</p></td>
+<td><p>Added support for DEFB statement lengths</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.0.6</p></td>
+<td><p>Added support for hexadecimal numbers</p></td>
+</tr>
+<tr class="row-even"><td><p>1.0.7</p></td>
+<td><p>Added support for block titles, block descriptions, register
+values, mid-block comments, block end comments, sub-block types
+and instruction-level comments</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Control files</a><ul>
+<li><a class="reference internal" href="#block-descriptions">Block descriptions</a></li>
+<li><a class="reference internal" href="#register-values">Register values</a></li>
+<li><a class="reference internal" href="#block-start-comments">Block start comments</a></li>
+<li><a class="reference internal" href="#mid-block-comments">Mid-block comments</a></li>
+<li><a class="reference internal" href="#block-end-comments">Block end comments</a></li>
+<li><a class="reference internal" href="#sub-block-syntax">Sub-block syntax</a></li>
+<li><a class="reference internal" href="#sub-block-lengths">Sub-block lengths</a></li>
+<li><a class="reference internal" href="#the-dot-and-colon-directives">The dot and colon directives</a></li>
+<li><a class="reference internal" href="#loops">Loops</a></li>
+<li><a class="reference internal" href="#number-bases">Number bases</a></li>
+<li><a class="reference internal" href="#asm-directives">ASM directives</a></li>
+<li><a class="reference internal" href="#instruction-level-comments">Instruction-level comments</a></li>
+<li><a class="reference internal" href="#non-entry-blocks">Non-entry blocks</a></li>
+<li><a class="reference internal" href="#quick-reference">Quick reference</a><ul>
+<li><a class="reference internal" href="#block-directives">Block directives</a></li>
+<li><a class="reference internal" href="#b-directive">B directive</a></li>
+<li><a class="reference internal" href="#c-directive">C directive</a></li>
+<li><a class="reference internal" href="#d-directive">D directive</a></li>
+<li><a class="reference internal" href="#e-directive">E directive</a></li>
+<li><a class="reference internal" href="#l-directive">L directive</a></li>
+<li><a class="reference internal" href="#m-directive">M directive</a></li>
+<li><a class="reference internal" href="#n-directive">N directive</a></li>
+<li><a class="reference internal" href="#r-directive">R directive</a></li>
+<li><a class="reference internal" href="#s-directive">S directive</a></li>
+<li><a class="reference internal" href="#t-directive">T directive</a></li>
+<li><a class="reference internal" href="#w-directive">W directive</a></li>
+<li><a class="reference internal" href="#directive">‘ ‘ directive</a></li>
+<li><a class="reference internal" href="#id1">&#64; directive</a></li>
+<li><a class="reference internal" href="#and-directives">. and : directives</a></li>
+<li><a class="reference internal" href="#id2">&gt; directive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#control-file-comments">Control file comments</a></li>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+<li><a class="reference internal" href="#revision-history">Revision history</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="parsing.html"
+                          title="previous chapter">Parsing, rendering, and modes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="skool-files.html"
+                          title="next chapter">Skool files</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/control-files.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="skool-files.html" title="Skool files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="parsing.html" title="Parsing, rendering, and modes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SkoolKit 10.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Control files</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Richard Dymond.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

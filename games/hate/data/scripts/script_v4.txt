@@ -1,0 +1,36 @@
+# script_v4 — KEYBOARD-режим: Q/A поворот, J/K газ/тормоз, 1-5 огонь
+CHECKPOINT 700
+CHECKPOINT 1200
+CHECKPOINT 1800
+CHECKPOINT 2400
+30 NONE
+3 SPACE              # титул -> attract
+150 NONE
+3 SPACE              # -> SELECT
+60 NONE
+3 1                  # 1 = KEYBOARD ($C28F=0)
+60 NONE
+3 6                  # 6 = START GAME
+220 NONE             # кадр ~530: миссия пошла
+# --- пробуем настоящее управление ---
+120 q                # поворот 1
+60 NONE
+120 a                # поворот 2
+60 NONE
+120 j                # бит0
+60 NONE
+120 k                # бит1
+60 NONE
+120 5                # огонь (ряд 1-5)
+40 5 q               # огонь+поворот
+40 5 j
+60 NONE
+120 q j              # комбо
+60 NONE
+120 a k
+200 NONE
+300 q
+300 a
+300 j
+300 k
+- NONE

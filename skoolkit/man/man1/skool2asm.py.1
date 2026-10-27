@@ -1,0 +1,358 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "SKOOL2ASM.PY" "1" "Aug 14, 2026" "10.1" "SkoolKit"
+.SH NAME
+skool2asm.py \- convert a skool file to ASM format
+.SH SYNOPSIS
+.sp
+\fBskool2asm.py\fP [options] FILE
+.SH DESCRIPTION
+.sp
+\fBskool2asm.py\fP converts a skool file into an ASM file that can be used by a
+Z80 assembler. The ASM file is written to standard output. When FILE is \(aq\-\(aq,
+\fBskool2asm.py\fP reads from standard input.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.B  \-c\fP,\fB  \-\-create\-labels
+Create default labels for unlabelled instructions.
+.TP
+.B  \-D\fP,\fB  \-\-decimal
+Write the disassembly in decimal.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-E, \-\-end \fIADDR\fP
+Stop converting at this address. \fIADDR\fP must be a decimal number, or a
+hexadecimal number prefixed by \(aq0x\(aq.
+.TP
+.B \-f, \-\-fixes \fIN\fP
+Apply fixes; \fIN\fP may be one of:
+.nf
+
+.in +2
+0: None (default)
+1: @ofix only
+2: @ofix and @bfix
+3: @ofix, @bfix and @rfix (implies \fB\-r\fP)
+.in -2
+.fi
+.sp
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-F\fP,\fB  \-\-force
+Force conversion of the entire skool file, ignoring any \fB@start\fP and
+\fB@end\fP directives.
+.TP
+.B  \-H\fP,\fB  \-\-hex
+Write the disassembly in hexadecimal.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-I, \-\-ini \fIparam=value\fP
+Set the value of a configuration parameter (see \fBCONFIGURATION\fP),
+overriding any value found in \fBskoolkit.ini\fP\&. This option may be used
+multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-l\fP,\fB  \-\-lower
+Write the disassembly in lower case.
+.TP
+.B  \-p\fP,\fB  \-\-package\-dir
+Show the path to the skoolkit package directory and exit.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-P, \-\-set \fIproperty=value\fP
+Set the value of an ASM writer property (see \fBASM WRITER PROPERTIES\fP). This
+option may be used multiple times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-q\fP,\fB  \-\-quiet
+Be quiet. This option suppresses both the timing information, and the message
+about the AsmWriter class being used, but does not suppress warnings.
+.TP
+.B  \-r\fP,\fB  \-\-rsub
+Apply safe substitutions (@ssub) and relocatability substitutions (@rsub)
+(implies \fB\-f 1\fP).
+.TP
+.B  \-\-show\-config
+Show configuration parameter values.
+.TP
+.B  \-s\fP,\fB  \-\-ssub
+Apply safe substitutions (@ssub).
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-S, \-\-start \fIADDR\fP
+Start converting at this address. \fIADDR\fP must be a decimal number, or a
+hexadecimal number prefixed by \(aq0x\(aq.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-u\fP,\fB  \-\-upper
+Write the disassembly in upper case.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-\-var \fIname=value\fP
+Define a variable that can be used by the \fB@if\fP directive and the
+\fB#EVAL\fP, \fB#IF\fP and \fB#MAP\fP macros. This option may be used multiple
+times.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B  \-V\fP,\fB  \-\-version
+Show the SkoolKit version number and exit.
+.TP
+.B  \-w\fP,\fB  \-\-no\-warnings
+Suppress warnings.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B \-W, \-\-writer \fICLASS\fP
+Specify the ASM writer class to use; this will override any @writer directive
+in the skool file.
+.UNINDENT
+.SH CONFIGURATION
+.sp
+\fBskool2asm.py\fP will read configuration from a file named \fBskoolkit.ini\fP in
+the current working directory or in \fB~/.skoolkit\fP, if present. The recognised
+configuration parameters are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B Address
+The format of the default link text for the \fB#R\fP macro when the
+target address has no label (default: \(aq\(aq). This format string recognises
+the replacement field \fBaddress\fP\&. If the format string is blank, the
+address is formatted exactly as it appears in the skool file (without any
+\fB$\fP prefix).
+.TP
+.B Base
+Convert addresses and instruction operands to hexadecimal (\fB16\fP) or
+decimal (\fB10\fP), or leave them as they are (\fB0\fP, the default).
+.TP
+.B Case
+Write the disassembly in lower case (\fB1\fP) or upper case (\fB2\fP), or
+leave it as it is (\fB0\fP, the default).
+.TP
+.B CreateLabels
+Create default labels for unlabelled instructions (\fB1\fP), or
+don\(aqt (\fB0\fP, the default).
+.TP
+.B EntryLabel
+The format of the default label for the first instruction in a
+routine or data block (default: \fBL{address}\fP).
+.TP
+.B EntryPointLabel
+The format of the default label for an instruction other
+than the first in a routine or data block (default: \fB{main}_{index}\fP).
+.TP
+.B Quiet
+Be quiet (\fB1\fP) or verbose (\fB0\fP, the default).
+.TP
+.B Set\-property
+Set an ASM writer property value (see \fBASM WRITER
+PROPERTIES\fP), e.g. \fBSet\-bullet=+\fP\&.
+.TP
+.B Templates
+File from which to read custom ASM templates.
+.TP
+.B Warnings
+Show warnings (\fB1\fP, the default), or suppress them (\fB0\fP).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBEntryLabel\fP and \fBEntryPointLabel\fP are standard Python format strings.
+\fBEntryLabel\fP recognises the following replacement fields:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B address
+The address of the routine or data block as it appears in the skool
+file.
+.TP
+.B location
+The address of the routine or data block as an integer.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBEntryPointLabel\fP recognises the following replacement fields:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B address
+The address of the instruction as it appears in the skool file.
+.TP
+.B index
+0 for the first unlabelled instruction in the routine or data block,
+1 for the second, etc.
+.TP
+.B location
+The address of the instruction as an integer.
+.TP
+.B main
+The label of the first instruction in the routine or data block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters must appear in a \fB[skool2asm]\fP section. For example,
+to make \fBskool2asm.py\fP write the disassembly in hexadecimal with a line width
+of 120 characters by default (without having to use the \fB\-H\fP and \fB\-P\fP
+options on the command line), add the following section to \fBskoolkit.ini\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+[skool2asm]
+Base=16
+Set\-line\-width=120
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+Configuration parameters may also be set on the command line by using the
+\fB\-\-ini\fP option. Parameter values set this way will override any found in
+\fBskoolkit.ini\fP\&.
+.SH ASM WRITER PROPERTIES
+.sp
+Recognised ASM writer property names and their default values are:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B bullet
+The bullet character(s) to use for list items specified in a
+\fB#LIST\fP macro (default: \fB*\fP).
+.TP
+.B comment\-width\-min
+The minimum width of the instruction comment field
+(default: \fB10\fP).
+.TP
+.B crlf
+\fB1\fP to use CR+LF to terminate lines, or \fB0\fP to use the system
+default (default: \fB0\fP).
+.TP
+.B handle\-unsupported\-macros
+How to handle an unsupported macro: \fB1\fP to
+expand it to an empty string, or \fB0\fP to exit with an error (default:
+\fB0\fP).
+.TP
+.B indent
+The number of spaces by which to indent instructions (default:
+\fB2\fP).
+.TP
+.B instruction\-width
+The width of the instruction field (default: \fB23\fP).
+.TP
+.B label\-colons
+\fB1\fP to append a colon to labels, or \fB0\fP to leave labels
+unadorned (default: \fB1\fP).
+.TP
+.B line\-width
+The maximum width of each line (default: \fB79\fP).
+.TP
+.B tab
+\fB1\fP to use a tab character to indent instructions, or \fB0\fP to use
+spaces (default: \fB0\fP).
+.TP
+.B table\-border\-horizontal
+The character to use for the horizontal borders of
+a table defined by a \fB#TABLE\fP macro (default: \fB\-\fP). If two characters
+are specified, the first is used for the external borders and the second is
+used for the internal borders.
+.TP
+.B table\-border\-join
+The character to use for the horizontal and vertical
+border joins of a table defined by a \fB#TABLE\fP macro (default: \fB+\fP).
+.TP
+.B table\-border\-vertical
+The character to use for the vertical borders of a
+table defined by a \fB#TABLE\fP macro (default: \fB|\fP).
+.TP
+.B table\-row\-separator
+The character used to separate non\-header cells in
+adjacent rows of a table defined by a \fB#TABLE\fP macro. By default, such
+cells are not separated.
+.TP
+.B warnings
+\fB1\fP to print any warnings that are produced while writing ASM
+output (after parsing the skool file), or \fB0\fP to suppress them (default:
+\fB1\fP).
+.TP
+.B wrap\-column\-width\-min
+The minimum width of a wrappable table column
+(default: \fB10\fP).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Property values may be set in \fBskoolkit.ini\fP by using the \fBSet\-property\fP
+configuration parameter (see \fBCONFIGURATION\fP), or on the command line by
+using the \fB\-\-set\fP option, or in the skool file by using the \fB@set\fP
+directive.
+.SH EXAMPLES
+.INDENT 0.0
+.IP 1. 3
+Convert \fBgame.skool\fP into an ASM file named \fBgame.asm\fP:
+.nf
+
+.in +2
+\fBskool2asm.py game.skool > game.asm\fP
+.in -2
+.fi
+.sp
+.IP 2. 3
+Convert \fBgame.skool\fP into an ASM file, applying @ssub substitutions and
+creating default labels for unlabelled instructions in the process:
+.nf
+
+.in +2
+\fBskool2asm.py \-s \-c game.skool > game.asm\fP
+.in -2
+.fi
+.sp
+.UNINDENT
+.SH AUTHOR
+Richard Dymond
+.SH COPYRIGHT
+2026, Richard Dymond
+.\" Generated by docutils manpage writer.
+.

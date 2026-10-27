@@ -1,0 +1,24 @@
+# script_v6 — микро-зонд: значения C28F/C290/F0DB на каждом этапе
+CHECKPOINT 250
+CHECKPOINT 315
+CHECKPOINT 400
+CHECKPOINT 525
+CHECKPOINT 660
+CHECKPOINT 780
+CHECKPOINT 900
+CHECKPOINT 1020
+30 NONE
+3 SPACE              # -> attract
+150 NONE
+3 SPACE              # -> SELECT
+60 NONE
+3 1                  # KEYBOARD -> C28F=0?
+60 NONE
+3 6                  # START GAME
+90 NONE
+120 q                # держим Q
+130 NONE
+120 j
+120 k
+120 5
+- NONE
