@@ -23,5 +23,6 @@ env/
 *.log
 *.err
 *.tmp
+nohup.out
 .DS_Store
 Thumbs.db
