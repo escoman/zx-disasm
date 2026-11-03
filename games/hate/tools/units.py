@@ -55,6 +55,9 @@ def main():
     nframes = int(sys.argv[sys.argv.index('--frames') + 1]) \
         if '--frames' in sys.argv else 6
     want_bank = '--bank' in sys.argv
+    # force the player's unit kind, see $D242: ($C008) = 2 * (kind & 15)
+    kind = int(sys.argv[sys.argv.index('--kind') + 1]) \
+        if '--kind' in sys.argv else None
 
     script, _ = parse_script(script_path)
     snapshot = Snapshot.get(os.path.join(HATE, 'tmp', 'HATE.z80'))
@@ -119,6 +122,13 @@ def main():
     for _ in range(nframes):
         if not run_to(BEFORE):
             break
+        if kind is not None:
+            # the $FF00 class byte is the record type's low nibble and the shape
+            # pointer is the word at $C300 + 2 * that, so these two pokes make
+            # the player draw as any kind; the list of *this* pass was built
+            # before them, so the first captured pass can still show the old one
+            mem[0xC000] = kind
+            mem[0xC008] = 2 * (kind & 0x0F)
         f = regs[T] // FRAME_DURATION
         if want_bank:
             # the art page paged in for exactly this pass, so that a shape
